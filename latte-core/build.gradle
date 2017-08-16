@@ -39,5 +39,8 @@ dependencies {
     /*butterknife*/
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
+    /*网络请求*/
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    /*动画加载库*/
+    compile 'com.wang.avi:library:2.1.3'
 }
