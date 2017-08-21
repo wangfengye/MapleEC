@@ -8,6 +8,7 @@ import com.ascend.wangfeng.latte.net.callback.IRequest;
 import com.ascend.wangfeng.latte.net.callback.ISuccess;
 import com.ascend.wangfeng.latte.ui.LoaderStyle;
 
+import java.io.File;
 import java.util.Map;
 
 import okhttp3.MediaType;
@@ -20,13 +21,17 @@ import okhttp3.RequestBody;
 
 public class RestClientBuilder {
     private String mUrl;
-    private static final Map<String,Object>PARAMS=RestCreator.getParams();
+    private static final Map<String, Object> PARAMS = RestCreator.getParams();
     private IRequest mRequest;
+    private String mDownloadUrl;
+    private String mExtension;
+    private String mName;
     private ISuccess mSuccess;
     private IError mError;
     private IFailure mFailure;
     private RequestBody mBody;
     private LoaderStyle mLoaderStyle;
+    private File mFile;
     private Context mContext;
 
     public final RestClientBuilder url(String url) {
@@ -49,6 +54,21 @@ public class RestClientBuilder {
         return this;
     }
 
+    public final RestClientBuilder downloadUrl(String url) {
+        mDownloadUrl = url;
+        return this;
+    }
+
+    public final RestClientBuilder extension(String extension) {
+        mExtension = extension;
+        return this;
+    }
+
+    public final RestClientBuilder name(String name) {
+        mName = name;
+        return this;
+    }
+
     public final RestClientBuilder success(ISuccess success) {
         mSuccess = success;
         return this;
@@ -64,21 +84,38 @@ public class RestClientBuilder {
         return this;
     }
 
+    public final RestClientBuilder file(File file) {
+        this.mFile = file;
+        return this;
+    }
+
+    public final RestClientBuilder file(String filePath) {
+        this.mFile = new File(filePath);
+        return this;
+    }
+
     public final RestClientBuilder raw(String raw) {
         mBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), raw);
         return this;
     }
-    public final RestClientBuilder loader(LoaderStyle style,Context context){
-        this.mContext =context;
-        this.mLoaderStyle =style;
+
+    public final RestClientBuilder loader(LoaderStyle style, Context context) {
+        this.mContext = context;
+        this.mLoaderStyle = style;
         return this;
     }
-    public final RestClientBuilder loader(Context context){
-        this.mContext =context;
+
+    public final RestClientBuilder loader(Context context) {
+        this.mContext = context;
         this.mLoaderStyle = LoaderStyle.BallClipRotatePulseIndicator;
         return this;
     }
-    public final RestClient build(){
-        return new RestClient(mUrl,PARAMS,mRequest,mSuccess,mError,mFailure,mBody,mLoaderStyle,mContext);
+
+    public final RestClient build() {
+        return new RestClient(mUrl, PARAMS, mRequest,
+                mDownloadUrl, mExtension, mName,
+                mSuccess, mError, mFailure,
+                mBody, mFile, mLoaderStyle,
+                mContext);
     }
 }

@@ -1,5 +1,6 @@
 package com.ascend.wangfeng.mapleec;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -8,6 +9,12 @@ import android.widget.Toast;
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.latte.net.RestClient;
 import com.ascend.wangfeng.latte.net.callback.ISuccess;
+import com.ascend.wangfeng.latte.net.rx.BaseObserver;
+import com.ascend.wangfeng.latte.net.rx.RxRestClient;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by fengye on 2017/8/15.
@@ -22,11 +29,11 @@ public class ExampleDelegate extends LatteDelegate{
 
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
-        testRestClient();
+        testRx() ;
     }
     private void  testRestClient(){
         RestClient.builder()
-                .url("api/data/%E7%A6%8F%E5%88%A9/2/1")
+                .url("index")
                 .success(new ISuccess() {
                     @Override
                     public void onSuccess(String response) {
@@ -37,5 +44,25 @@ public class ExampleDelegate extends LatteDelegate{
                 .build().get();
 
 
+    }
+    //TODO:
+    void  testRx(){
+        RxRestClient.builder()
+                .url("s")
+                .build()
+                .get()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseObserver<String>() {
+                    @Override
+                    public Context getContext() {
+                        return ExampleDelegate.this.getContext();
+                    }
+
+                    @Override
+                    public void onNext(@NonNull String s) {
+                        Toast.makeText(_mActivity, s, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

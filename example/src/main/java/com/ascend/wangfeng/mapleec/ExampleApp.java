@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.ascend.wangfeng.latte.app.Latte;
 import com.ascend.wangfeng.latte.ec.icon.FontEcModule;
+import com.ascend.wangfeng.latte.net.interceptors.DebugInterceptor;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 /**
@@ -19,6 +20,7 @@ public class ExampleApp extends Application {
                 .withApiHost("http://gank.io/")
                 .withIcon(new FontAwesomeModule())
                 .withIcon(new FontEcModule())
+                .withInterceptor(new DebugInterceptor("index",R.raw.test))
                 .configure();
     }
 }
