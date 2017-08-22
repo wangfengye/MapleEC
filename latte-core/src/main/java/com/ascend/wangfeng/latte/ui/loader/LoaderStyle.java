@@ -1,4 +1,4 @@
-package com.ascend.wangfeng.latte.ui;
+package com.ascend.wangfeng.latte.ui.loader;
 
 /**
  * Created by fengye on 2017/8/16.

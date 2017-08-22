@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.ascend.wangfeng.latte.net.HttpMethod;
 import com.ascend.wangfeng.latte.net.RestCreator;
-import com.ascend.wangfeng.latte.ui.LatteLoader;
-import com.ascend.wangfeng.latte.ui.LoaderStyle;
+import com.ascend.wangfeng.latte.ui.loader.LatteLoader;
+import com.ascend.wangfeng.latte.ui.loader.LoaderStyle;
 
 import java.io.File;
 import java.util.Map;

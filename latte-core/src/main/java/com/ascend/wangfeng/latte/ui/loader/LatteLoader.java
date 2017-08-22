@@ -1,4 +1,4 @@
-package com.ascend.wangfeng.latte.ui;
+package com.ascend.wangfeng.latte.ui.loader;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatDialog;

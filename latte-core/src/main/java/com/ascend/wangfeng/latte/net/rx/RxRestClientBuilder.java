@@ -3,7 +3,7 @@ package com.ascend.wangfeng.latte.net.rx;
 import android.content.Context;
 
 import com.ascend.wangfeng.latte.net.RestCreator;
-import com.ascend.wangfeng.latte.ui.LoaderStyle;
+import com.ascend.wangfeng.latte.ui.loader.LoaderStyle;
 
 import java.io.File;
 import java.util.Map;

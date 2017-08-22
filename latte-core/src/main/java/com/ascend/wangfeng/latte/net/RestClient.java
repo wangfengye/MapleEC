@@ -7,8 +7,8 @@ import com.ascend.wangfeng.latte.net.callback.IFailure;
 import com.ascend.wangfeng.latte.net.callback.IRequest;
 import com.ascend.wangfeng.latte.net.callback.ISuccess;
 import com.ascend.wangfeng.latte.net.download.DownloadHandler;
-import com.ascend.wangfeng.latte.ui.LatteLoader;
-import com.ascend.wangfeng.latte.ui.LoaderStyle;
+import com.ascend.wangfeng.latte.ui.loader.LatteLoader;
+import com.ascend.wangfeng.latte.ui.loader.LoaderStyle;
 
 import java.io.File;
 import java.util.Map;

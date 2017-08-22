@@ -4,7 +4,7 @@ package com.ascend.wangfeng.latte.net.rx;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.ascend.wangfeng.latte.ui.LatteLoader;
+import com.ascend.wangfeng.latte.ui.loader.LatteLoader;
 
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;

@@ -6,7 +6,7 @@ import com.ascend.wangfeng.latte.net.callback.IError;
 import com.ascend.wangfeng.latte.net.callback.IFailure;
 import com.ascend.wangfeng.latte.net.callback.IRequest;
 import com.ascend.wangfeng.latte.net.callback.ISuccess;
-import com.ascend.wangfeng.latte.ui.LoaderStyle;
+import com.ascend.wangfeng.latte.ui.loader.LoaderStyle;
 
 import java.io.File;
 import java.util.Map;

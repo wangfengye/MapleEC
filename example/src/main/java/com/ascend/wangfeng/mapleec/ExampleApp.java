@@ -3,8 +3,10 @@ package com.ascend.wangfeng.mapleec;
 import android.app.Application;
 
 import com.ascend.wangfeng.latte.app.Latte;
+import com.ascend.wangfeng.latte.ec.database.DatabaseManager;
 import com.ascend.wangfeng.latte.ec.icon.FontEcModule;
 import com.ascend.wangfeng.latte.net.interceptors.DebugInterceptor;
+import com.facebook.stetho.Stetho;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 /**
@@ -20,7 +22,18 @@ public class ExampleApp extends Application {
                 .withApiHost("http://gank.io/")
                 .withIcon(new FontAwesomeModule())
                 .withIcon(new FontEcModule())
-                .withInterceptor(new DebugInterceptor("index",R.raw.test))
+                .withInterceptor(new DebugInterceptor("user", R.raw.test))
                 .configure();
+        DatabaseManager.getInstance().init(this);
+        initStetho();
+    }
+
+    private void initStetho() {
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                        .build()
+        );
     }
 }

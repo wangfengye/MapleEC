@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:padding="16dp"
+                android:background="@mipmap/launcher_4"
+                android:layout_height="match_parent">
+<android.support.v7.widget.AppCompatTextView
+    android:id="@+id/tv_launcher_timer"
+    android:layout_width="72dp"
+    android:layout_height="72dp"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentTop="true"
+    android:background="@drawable/border_circle_timer"
+    tools:text="跳过\n2s"
+    android:gravity="center"
+    android:textColor="@android:color/white"
+    android:textSize="16sp"/>
+</RelativeLayout>
