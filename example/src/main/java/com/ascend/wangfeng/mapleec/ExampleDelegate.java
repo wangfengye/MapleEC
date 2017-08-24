@@ -55,8 +55,8 @@ public class ExampleDelegate extends LatteDelegate{
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseObserver<String>() {
                     @Override
-                    public Context getContext() {
-                        return ExampleDelegate.this.getContext();
+                    public Context getShowContext() {
+                        return getContext();
                     }
 
                     @Override

@@ -69,6 +69,7 @@ public class Configurator {
 
     public Configurator withIcon(IconFontDescriptor descriptor) {
         ICONS.add(descriptor);
+        LATTE_CONFIGS.put(ConfigType.ICON.name(),ICONS);
         return this;
     }
     public final Configurator withInterceptor(Interceptor interceptor){
@@ -76,4 +77,13 @@ public class Configurator {
         LATTE_CONFIGS.put(ConfigType.INTERCEPTORS.name(),INTERCEPTORS);
         return this;
     }
+    public Configurator withWeChatAppId(String id) {
+        LATTE_CONFIGS.put(ConfigType.WECHAT_APP_ID.name(),id);
+        return this;
+    }
+    public Configurator withWeChatAppSecret(String secret) {
+        LATTE_CONFIGS.put(ConfigType.WECHAT_APP_SECRET.name(),secret);
+        return this;
+    }
+
 }

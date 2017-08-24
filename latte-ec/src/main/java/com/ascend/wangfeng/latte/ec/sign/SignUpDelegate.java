@@ -1,7 +1,6 @@
 package com.ascend.wangfeng.latte.ec.sign;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -47,11 +46,6 @@ public class SignUpDelegate extends LatteDelegate {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new BaseObserver<String>() {
-                        @Override
-                        public Context getContext() {
-                            return SignUpDelegate.this.getContext();
-                        }
-
                         @Override
                         public void onNext(@NonNull String s) {
                             SignHandler.onSignIn(s,mSignListener);

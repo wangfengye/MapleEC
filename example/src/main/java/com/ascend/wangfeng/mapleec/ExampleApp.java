@@ -23,6 +23,8 @@ public class ExampleApp extends Application {
                 .withIcon(new FontAwesomeModule())
                 .withIcon(new FontEcModule())
                 .withInterceptor(new DebugInterceptor("user", R.raw.test))
+                .withWeChatAppId("1")
+                .withWeChatAppSecret("2")
                 .configure();
         DatabaseManager.getInstance().init(this);
         initStetho();

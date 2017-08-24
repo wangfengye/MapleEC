@@ -11,6 +11,8 @@ import java.io.File;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -125,5 +127,10 @@ public class RxRestClient {
         final  Observable<ResponseBody> responseBodyObservable = RestCreator.getRxRestService()
                 .download(URL,PARAMS);
         return  responseBodyObservable;
+    }
+        //target:简化设置线程的工作,未完成
+    public Observable<String> subscribeBase(){
+        return get().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

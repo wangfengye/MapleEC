@@ -80,6 +80,15 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="未注册|点击注册"/>
+            <com.joanzapata.iconify.widget.IconTextView
+                android:id="@+id/wechat_sign_in"
+                android:layout_marginTop="56dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="40sp"
+                android:textColor="#04b00f"
+                android:text="{fa-spinner}"/>
         </LinearLayout>
 
     </ScrollView>

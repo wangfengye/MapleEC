@@ -1,17 +1,19 @@
 package com.ascend.wangfeng.latte.ec.sign;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.view.View;
+import android.widget.Toast;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.latte.ec.R;
 import com.ascend.wangfeng.latte.ec.R2;
 import com.ascend.wangfeng.latte.net.rx.BaseObserver;
 import com.ascend.wangfeng.latte.net.rx.RxRestClient;
+import com.ascend.wangfeng.latte.wechat.LatteWeChat;
+import com.ascend.wangfeng.latte.wechat.callback.IWeChatSignInCallback;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -48,11 +50,6 @@ public class SignInDelegate extends LatteDelegate {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new BaseObserver<String>() {
                         @Override
-                        public Context getContext() {
-                            return SignInDelegate.this.getContext();
-                        }
-
-                        @Override
                         public void onNext(@NonNull String s) {
                             SignHandler.onSignIn(s,mSignListener);
 
@@ -64,6 +61,16 @@ public class SignInDelegate extends LatteDelegate {
     @OnClick(R2.id.sign_up)
     void onClickSignUp() {
         start(new SignUpDelegate(), SINGLETASK);
+    }
+    @OnClick(R2.id.wechat_sign_in)
+    void onClick(){
+        Toast.makeText(_mActivity, "wechat_onclick", Toast.LENGTH_SHORT).show();
+        LatteWeChat.getInstance().onSignSucess(new IWeChatSignInCallback() {
+            @Override
+            public void onSignInSuccess(String userInfo) {
+                Toast.makeText(_mActivity, "wechat_success", Toast.LENGTH_SHORT).show();
+            }
+        }).signIn();
     }
 
     private boolean checkForm() {
@@ -80,6 +87,7 @@ public class SignInDelegate extends LatteDelegate {
 
         return true;
     }
+
 
     @Override
     public void onAttach(Activity activity) {

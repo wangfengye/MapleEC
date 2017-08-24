@@ -16,16 +16,20 @@ import io.reactivex.disposables.Disposable;
  */
 
 public abstract class BaseObserver<T> implements Observer<T> {
-    public abstract Context getContext();
+    public Context getShowContext(){
+        return null;
+    }
     @Override
     public void onSubscribe(@NonNull Disposable d) {
-        LatteLoader.showLoading(getContext());
+        if (getShowContext()!=null){
+        LatteLoader.showLoading(getShowContext());}
     }
 
     @Override
     public void onError(@NonNull Throwable e) {
+        if (getShowContext()!=null){
         LatteLoader.stopLoading();
-        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getShowContext(), e.getMessage(), Toast.LENGTH_SHORT).show();}
     }
 
     @Override
