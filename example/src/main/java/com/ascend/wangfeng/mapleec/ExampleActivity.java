@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.ascend.wangfeng.latte.activities.ProxyActivity;
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.latte.ec.launcher.LauncherDelegate;
+import com.ascend.wangfeng.latte.ec.main.EcBottomDelegate;
 import com.ascend.wangfeng.latte.ec.sign.ISignListener;
 import com.ascend.wangfeng.latte.ec.sign.SignInDelegate;
 import com.ascend.wangfeng.latte.ui.launcher.ILauncherListener;
@@ -30,14 +31,14 @@ public class ExampleActivity extends ProxyActivity implements ISignListener,ILau
     @Override
     public void onSignInSuccess() {
         Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-        startWithPop(new ExampleDelegate());
+        startWithPop(new EcBottomDelegate());
     }
 
     @Override
     public void onLauncherFinish(OnLauncherFinishTag tag) {
         switch (tag){
             case SIGNED:
-                startWithPop(new ExampleDelegate());
+                startWithPop(new EcBottomDelegate());
                 break;
             case NOT_SIGNED:
                 startWithPop(new SignInDelegate());
