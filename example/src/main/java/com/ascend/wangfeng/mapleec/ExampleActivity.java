@@ -14,12 +14,15 @@ import com.ascend.wangfeng.latte.ec.sign.SignInDelegate;
 import com.ascend.wangfeng.latte.ui.launcher.ILauncherListener;
 import com.ascend.wangfeng.latte.ui.launcher.OnLauncherFinishTag;
 
+import qiu.niorgai.StatusBarCompat;
+
 public class ExampleActivity extends ProxyActivity implements ISignListener,ILauncherListener{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final ActionBar actionBar =getSupportActionBar();
         if (actionBar!=null)actionBar.hide();
+        StatusBarCompat.translucentStatusBar(this,true);
     }
 
     @Override

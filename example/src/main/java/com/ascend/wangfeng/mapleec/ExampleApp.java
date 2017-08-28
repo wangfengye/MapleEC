@@ -8,6 +8,8 @@ import com.ascend.wangfeng.latte.ec.icon.FontEcModule;
 import com.ascend.wangfeng.latte.net.interceptors.DebugInterceptor;
 import com.facebook.stetho.Stetho;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 
 /**
  * Created by fengye on 2017/8/15.
@@ -23,11 +25,14 @@ public class ExampleApp extends Application {
                 .withIcon(new FontAwesomeModule())
                 .withIcon(new FontEcModule())
                 .withInterceptor(new DebugInterceptor("user", R.raw.test))
+                .withInterceptor(new DebugInterceptor("index",R.raw.index))
                 .withWeChatAppId("1")
                 .withWeChatAppSecret("2")
                 .configure();
         DatabaseManager.getInstance().init(this);
         initStetho();
+        //初始化日志
+        Logger.addLogAdapter(new AndroidLogAdapter());
     }
 
     private void initStetho() {

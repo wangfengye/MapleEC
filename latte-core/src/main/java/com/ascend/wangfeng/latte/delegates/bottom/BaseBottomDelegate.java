@@ -71,6 +71,7 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
         final int size = ITEMS.size();
+
         for (int i = 0; i < size; i++) {
             LayoutInflater.from(getContext()).inflate(R.layout.bottom_item_icon_text_layout, mBottomBar);
             final RelativeLayout item = (RelativeLayout) mBottomBar.getChildAt(i);
@@ -89,7 +90,7 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
         }
         final SupportFragment[] deleagates = ITEM_DELEGATES.toArray(new SupportFragment[size]);
         loadMultipleRootFragment(R.id.bottom_bar_delegate_container, mIndexDelegate, deleagates);
-        resetColor();
+
     }
 
     private void resetColor() {

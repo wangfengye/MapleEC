@@ -36,6 +36,11 @@ public class DebugInterceptor extends BaseInterceptor{
     }
     private Response debugResponse(Chain chain,@RawRes int rawId){
         final String json = FileUtil.getRawFile(rawId);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return getResponse(chain,json);
     }
     @Override

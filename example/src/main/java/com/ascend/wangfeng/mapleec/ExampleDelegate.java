@@ -33,7 +33,7 @@ public class ExampleDelegate extends LatteDelegate{
     }
     private void  testRestClient(){
         RestClient.builder()
-                .url("index")
+                .url("user")
                 .success(new ISuccess() {
                     @Override
                     public void onSuccess(String response) {

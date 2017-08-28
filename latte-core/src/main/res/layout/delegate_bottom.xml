@@ -10,6 +10,7 @@
     android:id="@+id/bottom_bar"
     android:layout_width="match_parent"
     android:layout_height="56dp"
+    android:background="@android:color/white"
     android:layout_alignParentBottom="true"
     android:orientation="horizontal"/>
 </RelativeLayout>
