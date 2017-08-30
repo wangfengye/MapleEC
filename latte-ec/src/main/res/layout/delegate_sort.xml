@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <com.joanzapata.iconify.widget.IconButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="{fa-sort}"
-        android:textColor="@android:color/holo_blue_light"/>
-</RelativeLayout>
+<android.support.v7.widget.Toolbar
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:background="@android:color/holo_orange_dark">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:paddingTop="8dp"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:text="@string/sort"/>
+</android.support.v7.widget.Toolbar>
+<LinearLayout
+    android:background="@color/app_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+    <android.support.v7.widget.ContentFrameLayout
+        android:id="@+id/verticl_list_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+    <android.support.v7.widget.ContentFrameLayout
+        android:id="@+id/verticl_content_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2.5"
+        android:layout_marginLeft="8dp"/>
+</LinearLayout>
+</LinearLayout>

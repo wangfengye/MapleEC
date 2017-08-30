@@ -26,6 +26,8 @@ public class ExampleApp extends Application {
                 .withIcon(new FontEcModule())
                 .withInterceptor(new DebugInterceptor("user", R.raw.test))
                 .withInterceptor(new DebugInterceptor("index",R.raw.index))
+                .withInterceptor(new DebugInterceptor("sortlist",R.raw.sortlist))
+                .withInterceptor(new DebugInterceptor("sortcontent",R.raw.sortcontent))
                 .withWeChatAppId("1")
                 .withWeChatAppSecret("2")
                 .configure();

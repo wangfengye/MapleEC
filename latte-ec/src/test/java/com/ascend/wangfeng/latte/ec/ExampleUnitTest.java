@@ -25,7 +25,7 @@ public class ExampleUnitTest {
     @Test
     public void testFor() throws Exception {
         ArrayList<String> list =new ArrayList<>();
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < 100000000; i++) {
             list.add("test");
         }
         long start =System.currentTimeMillis();

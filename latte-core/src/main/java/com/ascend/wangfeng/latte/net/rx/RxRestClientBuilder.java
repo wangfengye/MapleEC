@@ -23,6 +23,7 @@ public class RxRestClientBuilder {
     private LoaderStyle mLoaderStyle;
     private File mFile;
     private Context mContext;
+    private int mType = 0;
 
     public final RxRestClientBuilder url(String url) {
         mUrl = url;
@@ -61,6 +62,11 @@ public class RxRestClientBuilder {
         return this;
     }
 
+    public final RxRestClientBuilder type(int type) {
+        this.mType = type;
+        return this;
+    }
+
     public final RxRestClientBuilder loader(Context context) {
         this.mContext = context;
         this.mLoaderStyle = LoaderStyle.BallClipRotatePulseIndicator;
@@ -68,8 +74,11 @@ public class RxRestClientBuilder {
     }
 
     public final RxRestClient build() {
+        if (mType == 0) {
+            mType = RxRestClient.TYPE_DEFAULT;
+        }
         return new RxRestClient(mUrl, PARAMS,
                 mBody, mFile, mLoaderStyle,
-                mContext);
+                mContext, mType);
     }
 }

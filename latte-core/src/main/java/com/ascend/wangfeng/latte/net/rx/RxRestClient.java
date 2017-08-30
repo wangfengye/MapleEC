@@ -24,19 +24,23 @@ import okhttp3.ResponseBody;
  */
 
 public class RxRestClient {
+    public final static  int TYPE_DEFAULT=0;//io ,main
+    private final static  int TYPE_DIY=1;//自行添加工作线程的切换
     private final String URL;
     private static final Map<String, Object> PARAMS = RestCreator.getParams();
     private final RequestBody BODY;
     private final LoaderStyle LOADER_STYLE;
     private final File FILE;
     private final Context CONTEXT;
+    private final int  TYPE;//type决定observer,subject的工作线程
+
 
     public RxRestClient(String url,
                         Map<String, Object> params,
                         RequestBody body,
                         File file,
                         LoaderStyle loaderStyle,
-                        Context context) {
+                        Context context,int type) {
         this.URL = url;
         this.PARAMS.putAll(params);
 
@@ -44,6 +48,7 @@ public class RxRestClient {
         this.FILE = file;
         this.LOADER_STYLE = loaderStyle;
         this.CONTEXT = context;
+        this.TYPE = type;
     }
 
     public static RxRestClientBuilder builder() {
@@ -85,6 +90,10 @@ public class RxRestClient {
             default:
                 break;
         }
+        if (observable != null&& TYPE == TYPE_DEFAULT) {
+            observable=observable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread());
+        }
         return observable;
     }
 
@@ -124,12 +133,13 @@ public class RxRestClient {
     }
 
     public final Observable<ResponseBody> download() {
-        final  Observable<ResponseBody> responseBodyObservable = RestCreator.getRxRestService()
-                .download(URL,PARAMS);
-        return  responseBodyObservable;
+        final Observable<ResponseBody> responseBodyObservable = RestCreator.getRxRestService()
+                .download(URL, PARAMS);
+        return responseBodyObservable;
     }
-        //target:简化设置线程的工作,未完成
-    public Observable<String> subscribeBase(){
+
+    //target:简化设置线程的工作,未完成
+    public Observable<String> subscribeBase() {
         return get().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

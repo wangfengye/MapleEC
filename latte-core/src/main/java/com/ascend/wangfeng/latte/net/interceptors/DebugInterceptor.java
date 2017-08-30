@@ -17,6 +17,8 @@ import okhttp3.ResponseBody;
  */
 
 public class DebugInterceptor extends BaseInterceptor{
+
+    private static final long DELAY_TIME = 500;//ms
     private final String DEBUG_URL;
     private final int DEBUG_RAW_ID;
 
@@ -37,7 +39,8 @@ public class DebugInterceptor extends BaseInterceptor{
     private Response debugResponse(Chain chain,@RawRes int rawId){
         final String json = FileUtil.getRawFile(rawId);
         try {
-            Thread.sleep(1000);
+
+            Thread.sleep(DELAY_TIME);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

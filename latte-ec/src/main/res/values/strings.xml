@@ -3,4 +3,6 @@
     <string name="search">搜索</string>
     <string name="ic_scan">{fa-qrcode}</string>
     <string name="ic_message">{fa-bullhorn}</string>
+    <string name="sort">分类</string>
+    <string name="more"><![CDATA[more >]]></string>
 </resources>

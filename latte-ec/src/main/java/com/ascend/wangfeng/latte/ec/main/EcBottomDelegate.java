@@ -7,6 +7,7 @@ import com.ascend.wangfeng.latte.delegates.bottom.BottomBean;
 import com.ascend.wangfeng.latte.delegates.bottom.BottomItemDelegate;
 import com.ascend.wangfeng.latte.delegates.bottom.ItemBuilder;
 import com.ascend.wangfeng.latte.ec.main.index.IndexDelegate;
+import com.ascend.wangfeng.latte.ec.main.sort.SortDelegate;
 
 import java.util.LinkedHashMap;
 
