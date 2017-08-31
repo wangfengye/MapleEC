@@ -3,8 +3,10 @@ package com.ascend.wangfeng.mapleec;
 import android.app.Application;
 
 import com.ascend.wangfeng.latte.app.Latte;
+import com.ascend.wangfeng.latte.delegates.web.event.TestEvent;
 import com.ascend.wangfeng.latte.ec.database.DatabaseManager;
 import com.ascend.wangfeng.latte.ec.icon.FontEcModule;
+import com.ascend.wangfeng.latte.net.interceptors.AddCookieInterceptor;
 import com.ascend.wangfeng.latte.net.interceptors.DebugInterceptor;
 import com.facebook.stetho.Stetho;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
@@ -28,8 +30,11 @@ public class ExampleApp extends Application {
                 .withInterceptor(new DebugInterceptor("index",R.raw.index))
                 .withInterceptor(new DebugInterceptor("sortlist",R.raw.sortlist))
                 .withInterceptor(new DebugInterceptor("sortcontent",R.raw.sortcontent))
+                .withInterceptor(new AddCookieInterceptor())
                 .withWeChatAppId("1")
                 .withWeChatAppSecret("2")
+                .withJavascriptInterface("latte")
+                .withWebEvent("test", new TestEvent())
                 .configure();
         DatabaseManager.getInstance().init(this);
         initStetho();

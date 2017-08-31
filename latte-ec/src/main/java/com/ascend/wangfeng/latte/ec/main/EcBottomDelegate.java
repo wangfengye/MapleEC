@@ -6,6 +6,7 @@ import com.ascend.wangfeng.latte.delegates.bottom.BaseBottomDelegate;
 import com.ascend.wangfeng.latte.delegates.bottom.BottomBean;
 import com.ascend.wangfeng.latte.delegates.bottom.BottomItemDelegate;
 import com.ascend.wangfeng.latte.delegates.bottom.ItemBuilder;
+import com.ascend.wangfeng.latte.ec.main.discover.DiscoverDelegate;
 import com.ascend.wangfeng.latte.ec.main.index.IndexDelegate;
 import com.ascend.wangfeng.latte.ec.main.sort.SortDelegate;
 
@@ -22,7 +23,7 @@ public class EcBottomDelegate extends BaseBottomDelegate{
         final LinkedHashMap<BottomBean,BottomItemDelegate> items = new LinkedHashMap<>();
         items.put(new BottomBean("{fa-home}","主页"),new IndexDelegate());
         items.put(new BottomBean("{fa-sort}","分类"),new SortDelegate());
-        items.put(new BottomBean("{fa-compass}","发现"),new CompassDelegate());
+        items.put(new BottomBean("{fa-compass}","发现"),new DiscoverDelegate());
         items.put(new BottomBean("{fa-shopping-cart}","购物车"),new ShoppingCartDelegate());
         items.put(new BottomBean("{fa-user}","我的"),new UserDelegate());
         return builder.addItem(items).build();

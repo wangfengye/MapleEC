@@ -1,5 +1,9 @@
 package com.ascend.wangfeng.latte.app;
 
+import android.support.annotation.NonNull;
+
+import com.ascend.wangfeng.latte.delegates.web.event.Event;
+import com.ascend.wangfeng.latte.delegates.web.event.EventManager;
 import com.joanzapata.iconify.IconFontDescriptor;
 import com.joanzapata.iconify.Iconify;
 
@@ -83,6 +87,18 @@ public class Configurator {
     }
     public Configurator withWeChatAppSecret(String secret) {
         LATTE_CONFIGS.put(ConfigType.WECHAT_APP_SECRET.name(),secret);
+        return this;
+    }
+    public Configurator withJavascriptInterface(@NonNull String name){
+        LATTE_CONFIGS.put(ConfigType.JAVASCRIPT_INTERFACE.name(),name);
+        return this;
+    }
+    public Configurator withWebEvent(@NonNull String name, @NonNull Event event){
+        EventManager.getInstance().addEvent(name,event);
+        return this;
+    }
+    public Configurator withWebEvent(@NonNull String url){
+        LATTE_CONFIGS.put(ConfigType.WEB_HOST.name(),url);
         return this;
     }
 

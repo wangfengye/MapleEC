@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools">
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="@android:color/holo_orange_dark">
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            tools:text="@string/sort"/>
+    </android.support.v7.widget.Toolbar>
+</merge>

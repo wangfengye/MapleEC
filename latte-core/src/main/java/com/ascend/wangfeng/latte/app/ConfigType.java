@@ -13,4 +13,7 @@ public enum  ConfigType {
     INTERCEPTORS,
     WECHAT_APP_ID,
     WECHAT_APP_SECRET,
+    JAVASCRIPT_INTERFACE,
+    WEB_EVENT,
+    WEB_HOST
 }
