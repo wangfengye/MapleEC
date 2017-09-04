@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="sub_title_text">
-        <item name="android:textColor">@color/we_chat_black</item>
+    <item name="android:textColor">@color/we_chat_black</item>
+    <item name="android:paddingLeft">16dp</item>
+    <item name="android:textSize">20sp</item>
+    <item name="android:textStyle">bold</item>
+</style>
+    <style name="sub_title_text_white">
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
     </style>
     <style name="hint_text">
         <item name="android:textColor">@color/we_chat_black</item>
         <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
         <item name="android:textSize">16sp</item>
+    </style>
+    <style name="text_white">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 </resources>

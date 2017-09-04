@@ -13,6 +13,8 @@ import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 
+import me.yokeyword.fragmentation.Fragmentation;
+
 /**
  * Created by fengye on 2017/8/15.
  * email 1040441325@qq.com
@@ -30,6 +32,8 @@ public class ExampleApp extends Application {
                 .withInterceptor(new DebugInterceptor("index",R.raw.index))
                 .withInterceptor(new DebugInterceptor("sortlist",R.raw.sortlist))
                 .withInterceptor(new DebugInterceptor("sortcontent",R.raw.sortcontent))
+                .withInterceptor(new DebugInterceptor("shopcart",R.raw.shopcart))
+                .withInterceptor(new DebugInterceptor("orderlist",R.raw.orderlist))
                 .withInterceptor(new AddCookieInterceptor())
                 .withWeChatAppId("1")
                 .withWeChatAppSecret("2")
@@ -40,6 +44,13 @@ public class ExampleApp extends Application {
         initStetho();
         //初始化日志
         Logger.addLogAdapter(new AndroidLogAdapter());
+
+    }
+
+    private void initFragmentation() {
+        Fragmentation.builder()
+                .stackViewMode(Fragmentation.BUBBLE)
+                .install();
     }
 
     private void initStetho() {

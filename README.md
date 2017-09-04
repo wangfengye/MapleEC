@@ -9,3 +9,6 @@
 
 * 使用IndexBean时无法监听宽度(待测试 )
 
+* 异常 点击事件混乱 (shopcartdelegate)
+
+*(暂不实现支付)

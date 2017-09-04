@@ -31,7 +31,8 @@ public abstract class ProxyActivity extends SupportActivity {
         final ContentFrameLayout container =new ContentFrameLayout(this);
         container.setId(R.id.delegate_container);
         setContentView(container);
-        if (savedInstanceState==null){
+
+        if (findFragment(LatteDelegate.class) == null&&savedInstanceState==null){
             loadRootFragment(R.id.delegate_container,setRootDelegate());
         }
     }

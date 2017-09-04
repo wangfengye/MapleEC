@@ -1,6 +1,5 @@
 package com.ascend.wangfeng.latte.delegates.bottom;
 
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -12,9 +11,9 @@ import com.ascend.wangfeng.latte.delegates.LatteDelegate;
  * email 1040441325@qq.com
  */
 
-public abstract class BottomItemDelegate extends LatteDelegate implements View.OnKeyListener{
-    private long mExitTime = 0;
-    private static final int EXIT_TIME= 2000;
+public abstract class BottomItemDelegate extends LatteDelegate{
+    private long mTouchTime = 0;
+    private static final long WAIT_TIME= 2000L;
 
     @Override
     public void onResume() {
@@ -23,22 +22,25 @@ public abstract class BottomItemDelegate extends LatteDelegate implements View.O
         if (rootView!=null){
             rootView.setFocusableInTouchMode(true);
             rootView.requestFocus();
-            rootView.setOnKeyListener(this);
         }
     }
 
     @Override
-    public boolean onKey(View view, int i, KeyEvent event) {
-        if (i == KeyEvent.KEYCODE_BACK&& event.getAction()==KeyEvent.ACTION_DOWN){
-            if (System.currentTimeMillis()-mExitTime >EXIT_TIME){
-                Toast.makeText(getContext(), "双击退出"+getString(R.string.app_name), Toast.LENGTH_SHORT).show();
-                mExitTime = System.currentTimeMillis();
-            }else {
-                _mActivity.finish();
-                if (mExitTime!=0)mExitTime =0;
-            }
-            return true;
+    public boolean onBackPressedSupport() {
+        if (System.currentTimeMillis()-mTouchTime<WAIT_TIME){
+            _mActivity.finish();
+        }else {
+            mTouchTime=System.currentTimeMillis();
+            Toast.makeText(_mActivity, "双击退出 "+ R.string.app_name, Toast.LENGTH_SHORT).show();
         }
-        return false;
+        return true;
+
+    }
+
+    public void goContainer(int i){
+        BaseBottomDelegate parent = (BaseBottomDelegate) getParentDelegate();
+        if (parent instanceof BaseBottomDelegate){
+            parent.goContainer(i);
+        }
     }
 }

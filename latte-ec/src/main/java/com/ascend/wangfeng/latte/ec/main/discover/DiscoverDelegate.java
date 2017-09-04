@@ -13,8 +13,6 @@ import com.ascend.wangfeng.latte.ec.R;
 import com.ascend.wangfeng.latte.ec.R2;
 
 import butterknife.BindView;
-import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
-import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 /**
  * Created by fengye on 2017/8/30.
@@ -50,8 +48,4 @@ public class DiscoverDelegate extends BottomItemDelegate {
         mToolbarTitle.setText("dicover");
     }
 
-    @Override
-    protected FragmentAnimator onCreateFragmentAnimator() {
-        return new DefaultHorizontalAnimator();
-    }
 }

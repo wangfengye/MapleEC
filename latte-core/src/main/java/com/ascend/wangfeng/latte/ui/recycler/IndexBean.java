@@ -14,6 +14,7 @@ public class IndexBean implements MultiItemEntity{
     public static final int IMAGE = 2;
     public static final int TEXT_IMAGE = 3;
     public static final int BANNER = 4;
+
     private int id;
     private String imageUrl;
     private String text;

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="112dp"
+    android:background="@android:color/white"
+    android:orientation="horizontal"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/icon_item_shop_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:text="{fa-check-circle}"
+        android:textColor="@color/gray"
+        android:textSize="20sp"
+        tools:ignore="HardcodedText"/>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/image_item_shop_cart"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"/>
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/title_item_shop_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/good_title"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/desc_item_shop_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/good_desc"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/price_item_shop_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/app_main"
+            android:typeface="monospace"
+            tools:text="$8.20"/>
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:id="@+id/icon_item_minus"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:text="{fa-minus-square-o}"
+            android:textSize="24sp"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/count_item_shop_cart"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            tools:text="1"/>
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:id="@+id/icon_item_plus"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:text="{fa-plus-square-o}"
+            android:textSize="24sp"/>
+    </android.support.v7.widget.LinearLayoutCompat>
+</android.support.v7.widget.LinearLayoutCompat>

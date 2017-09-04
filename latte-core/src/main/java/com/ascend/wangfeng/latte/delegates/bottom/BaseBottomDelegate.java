@@ -21,8 +21,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import me.yokeyword.fragmentation.SupportFragment;
-import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
-import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 /**
  * Created by fengye on 2017/8/24.
@@ -95,6 +93,19 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
 
     }
 
+    public void goContainer(int i) {
+        final RelativeLayout view = (RelativeLayout) mBottomBar.getChildAt(i);
+        final int tag = (int) view.getTag();
+        resetColor();
+        final RelativeLayout item =  view;
+        final IconTextView itemIcon = (IconTextView) item.getChildAt(0);
+        final AppCompatTextView itemTitle = (AppCompatTextView) item.getChildAt(1);
+        itemIcon.setTextColor(mClickedColor);
+        itemTitle.setTextColor(mClickedColor);
+        showHideFragment(ITEM_DELEGATES.get(tag), ITEM_DELEGATES.get(mCurrentDelegate));
+        mCurrentDelegate = tag;
+    }
+
     private void resetColor() {
         final int count = mBottomBar.getChildCount();
         for (int i = 0; i < count; i++) {
@@ -118,9 +129,5 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
         showHideFragment(ITEM_DELEGATES.get(tag), ITEM_DELEGATES.get(mCurrentDelegate));
         mCurrentDelegate = tag;
     }
-
-    @Override
-    protected FragmentAnimator onCreateFragmentAnimator() {
-        return new DefaultHorizontalAnimator();
-    }
+    
 }

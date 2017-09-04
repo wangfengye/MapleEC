@@ -56,17 +56,17 @@ implements BaseQuickAdapter.SpanSizeLookup, OnItemClickListener {
         final String imgUrl;
         final ArrayList<String> bannerImages;
         switch (helper.getItemViewType()){
-            case IndexBean.TEXT:
+            case ItemType.TEXT:
                 text= item.getField(MultipleFields.TEXT);
                 helper.setText(R.id.text_single,text);
                 break;
-            case IndexBean.IMAGE:
+            case ItemType.IMAGE:
                 imgUrl =item.getField(MultipleFields.IMAGE_URL);
                 Glide.with(mContext)
                         .load(imgUrl)
                         .into((ImageView) helper.getView(R.id.img_single));
                 break;
-            case IndexBean.TEXT_IMAGE:
+            case ItemType.IMAGE_TEXT:
                 text= item.getField(MultipleFields.TEXT);
                 helper.setText(R.id.text_single,text);
                 imgUrl =item.getField(MultipleFields.IMAGE_URL);
@@ -77,7 +77,7 @@ implements BaseQuickAdapter.SpanSizeLookup, OnItemClickListener {
                         .centerCrop()
                         .into((ImageView) helper.getView(R.id.img_single));
                 break;
-            case IndexBean.BANNER:
+            case ItemType.BANNER:
                 if(!mIsInitBanner){
                     bannerImages = (ArrayList<String>) item.getField(MultipleFields.BANNERS);
                     final ConvenientBanner<String> convenientBanner =helper.getView(R.id.banner_recycler_banner);

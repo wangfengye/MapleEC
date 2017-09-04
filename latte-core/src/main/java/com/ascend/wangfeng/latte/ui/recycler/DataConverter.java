@@ -9,15 +9,18 @@ import java.util.ArrayList;
  */
 
 public abstract class DataConverter {
-protected final ArrayList<MultipleItemEntity> ENTITIES =new ArrayList<>();
-    private String mJson =null;
+    protected final ArrayList<MultipleItemEntity> ENTITIES = new ArrayList<>();
+    private String mJson = null;
+
     public abstract ArrayList<MultipleItemEntity> convert();
-    public DataConverter setJsonData(String json){
+
+    public DataConverter setJsonData(String json) {
         this.mJson = json;
         return this;
     }
-    protected String getJsonData(){
-        if (mJson ==null||mJson.isEmpty()){
+
+    protected String getJsonData() {
+        if (mJson == null || mJson.isEmpty()) {
             throw new NullPointerException("DATA IS NULL");
         }
         return mJson;

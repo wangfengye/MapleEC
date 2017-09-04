@@ -6,9 +6,11 @@ import com.ascend.wangfeng.latte.delegates.bottom.BaseBottomDelegate;
 import com.ascend.wangfeng.latte.delegates.bottom.BottomBean;
 import com.ascend.wangfeng.latte.delegates.bottom.BottomItemDelegate;
 import com.ascend.wangfeng.latte.delegates.bottom.ItemBuilder;
+import com.ascend.wangfeng.latte.ec.main.cart.ShoppingCartDelegate;
 import com.ascend.wangfeng.latte.ec.main.discover.DiscoverDelegate;
 import com.ascend.wangfeng.latte.ec.main.index.IndexDelegate;
 import com.ascend.wangfeng.latte.ec.main.sort.SortDelegate;
+import com.ascend.wangfeng.latte.ec.main.personal.UserDelegate;
 
 import java.util.LinkedHashMap;
 

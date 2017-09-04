@@ -4,5 +4,19 @@
     <string name="ic_scan">{fa-qrcode}</string>
     <string name="ic_message">{fa-bullhorn}</string>
     <string name="sort">分类</string>
+    <string name="cart">购物车</string>
     <string name="more"><![CDATA[more >]]></string>
+    <string name="clear">清空</string>
+    <string name="remove">删除</string>
+    <string name="cart_account">结算</string>
+    <string name="select_all">全选</string>
+    <string name="total">合计</string>
+    <string name="good_title">商品标题</string>
+    <string name="good_desc">商品描述</string>
+    <string name="go_shopping">GO SHOPPING</string>
+    <string name="order_all">全部订单</string>
+    <string name="order_before_pay">未支付</string>
+    <string name="order_before_receive">未收货</string>
+    <string name="order_before_evaluate">未评价</string>
+    <string name="order_after_market">售后</string>
 </resources>

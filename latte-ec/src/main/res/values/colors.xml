@@ -4,4 +4,6 @@
     <color name="we_chat_black">#323232</color>
     <color name="item_background">#F1F1F1</color>
     <color name="app_main">@android:color/holo_orange_dark</color>
+    <color name="delegate_background">#1111</color>
+    <color name="gray">@android:color/darker_gray</color>
 </resources>
