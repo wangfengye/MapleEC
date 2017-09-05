@@ -18,8 +18,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="订单列表"
-            android:textColor="@android:color/white"
-            android:textSize="24sp" />
+            style="@style/sub_title_text_white" />
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView

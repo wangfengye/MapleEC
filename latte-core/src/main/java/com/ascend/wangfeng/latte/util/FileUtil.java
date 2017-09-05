@@ -87,7 +87,7 @@ public class FileUtil {
      * @param fileName      文件名
      * @return 创建的文件
      */
-    private static File createFile(String sdcardDirName, String fileName) {
+    public static File createFile(String sdcardDirName, String fileName) {
         return new File(createDir(sdcardDirName), fileName);
     }
 

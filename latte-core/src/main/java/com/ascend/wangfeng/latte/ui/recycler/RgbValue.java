@@ -1,5 +1,6 @@
 package com.ascend.wangfeng.latte.ui.recycler;
 
+
 import com.google.auto.value.AutoValue;
 
 /**

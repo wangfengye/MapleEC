@@ -19,5 +19,8 @@ public enum MultipleFields {
     DESC,
     COUNT,
     PRICE,
-    TIME
+    TIME,
+    //adress
+    PHONE,
+    ADDRESS
 }

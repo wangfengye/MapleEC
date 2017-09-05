@@ -60,7 +60,7 @@ public class ListBean implements MultiItemEntity {
 
     @Override
     public int getItemType() {
-        return 0;
+        return mItemType;
     }
 
     public static final class Builder {

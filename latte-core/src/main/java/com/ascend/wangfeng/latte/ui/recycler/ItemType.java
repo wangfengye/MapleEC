@@ -6,14 +6,17 @@ package com.ascend.wangfeng.latte.ui.recycler;
  */
 
 public class ItemType {
-    public static final int TEXT =1;
-    public static final int IMAGE =2;
-    public static final int IMAGE_TEXT =3;
-    public static final int BANNER =4;
+    public static final int TEXT = 1;
+    public static final int IMAGE = 2;
+    public static final int IMAGE_TEXT = 3;
+    public static final int BANNER = 4;
 
-    public static final int VERTICAL_MENU_LIST =5;
+    public static final int VERTICAL_MENU_LIST = 5;
+    //购物车
+    public static final int SHOP_CART_ITEM = 6;
+    //订单
+    public static final int ITEM_ORDER_LIST = 7;
 
-    public static final int SHOP_CART_ITEM =6;
-
-    public static final int ITEM_ORDER_LIST =7;
+    //地址
+    public static final int ITEM_ADDRESS = 8;
 }

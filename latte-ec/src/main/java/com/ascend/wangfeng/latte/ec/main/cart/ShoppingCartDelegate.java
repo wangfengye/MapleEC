@@ -124,7 +124,7 @@ public class ShoppingCartDelegate extends BottomItemDelegate implements ICartIte
         if (count ==0){
             if (isShowEmpty)return;
             final View stubView= mStubEmpty.inflate();
-            final AppCompatTextView emptyView =stubView.findViewById(R.id.empty_hint);
+            final AppCompatTextView emptyView = (AppCompatTextView) stubView.findViewById(R.id.empty_hint);
             emptyView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

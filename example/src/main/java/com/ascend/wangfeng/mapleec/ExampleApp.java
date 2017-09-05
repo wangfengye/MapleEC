@@ -8,6 +8,7 @@ import com.ascend.wangfeng.latte.ec.database.DatabaseManager;
 import com.ascend.wangfeng.latte.ec.icon.FontEcModule;
 import com.ascend.wangfeng.latte.net.interceptors.AddCookieInterceptor;
 import com.ascend.wangfeng.latte.net.interceptors.DebugInterceptor;
+import com.blankj.utilcode.util.Utils;
 import com.facebook.stetho.Stetho;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -34,6 +35,7 @@ public class ExampleApp extends Application {
                 .withInterceptor(new DebugInterceptor("sortcontent",R.raw.sortcontent))
                 .withInterceptor(new DebugInterceptor("shopcart",R.raw.shopcart))
                 .withInterceptor(new DebugInterceptor("orderlist",R.raw.orderlist))
+                .withInterceptor(new DebugInterceptor("address",R.raw.address))
                 .withInterceptor(new AddCookieInterceptor())
                 .withWeChatAppId("1")
                 .withWeChatAppSecret("2")
@@ -44,6 +46,8 @@ public class ExampleApp extends Application {
         initStetho();
         //初始化日志
         Logger.addLogAdapter(new AndroidLogAdapter());
+        //初始化工具类
+        Utils.init(this);
 
     }
 
