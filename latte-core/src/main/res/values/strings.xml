@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Latte</string>
     <string name="crop_error">裁剪失败</string>
+    <string name="agree">同意使用</string>
+    <string name="disagree">拒绝使用</string>
+    <string name="permission_refuse_never">永久拒绝权限</string>
+    <string name="camera_refuse">不允许拍照</string>
 </resources>

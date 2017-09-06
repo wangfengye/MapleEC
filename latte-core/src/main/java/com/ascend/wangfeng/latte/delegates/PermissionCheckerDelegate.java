@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
@@ -12,6 +14,7 @@ import com.ascend.wangfeng.latte.R;
 import com.ascend.wangfeng.latte.ui.camera.CameraImageBean;
 import com.ascend.wangfeng.latte.ui.camera.LatteCamera;
 import com.ascend.wangfeng.latte.ui.camera.RequestCodes;
+import com.ascend.wangfeng.latte.ui.scanner.ScannerDelegate;
 import com.ascend.wangfeng.latte.util.callback.CallbackManager;
 import com.ascend.wangfeng.latte.util.callback.CallbackType;
 import com.ascend.wangfeng.latte.util.callback.IGlobalCallback;
@@ -35,19 +38,26 @@ public abstract class PermissionCheckerDelegate extends BaseDelegate {
     void startCamera() {
         LatteCamera.start(this);
     }
+    @NeedsPermission(Manifest.permission.CAMERA)
+    void startScan(BaseDelegate delegate){
+        delegate.getSupportDelegate().startForResult(new ScannerDelegate(),RequestCodes.SCAN);
+    }
 
     public void startCameraWithCheck() {
         PermissionCheckerDelegatePermissionsDispatcher.startCameraWithCheck(this);
     }
+    public void startScanWithCheck(BaseDelegate delegate){
+        PermissionCheckerDelegatePermissionsDispatcher.startScanWithCheck(this,delegate);
+    }
 
     @OnPermissionDenied(Manifest.permission.CAMERA)
     void onCameraDenied() {
-        Toast.makeText(getContext(), "不允许拍照", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.camera_refuse, Toast.LENGTH_SHORT).show();
     }
 
     @OnNeverAskAgain(Manifest.permission.CAMERA)
     void onCameraNever() {
-        Toast.makeText(getContext(), "永久拒绝权限", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), R.string.permission_refuse_never, Toast.LENGTH_LONG).show();
     }
 
     @OnShowRationale(Manifest.permission.CAMERA)
@@ -57,13 +67,13 @@ public abstract class PermissionCheckerDelegate extends BaseDelegate {
 
     void showDialog(final PermissionRequest request) {
         new AlertDialog.Builder(getContext())
-                .setPositiveButton("同意使用", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.agree, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         request.proceed();
                     }
                 })
-                .setNegativeButton("拒绝使用", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.disagree, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         request.cancel();
@@ -122,4 +132,6 @@ public abstract class PermissionCheckerDelegate extends BaseDelegate {
             }
         }
     }
+
+
 }

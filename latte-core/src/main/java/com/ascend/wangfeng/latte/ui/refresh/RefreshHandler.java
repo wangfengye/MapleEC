@@ -1,6 +1,5 @@
 package com.ascend.wangfeng.latte.ui.refresh;
 
-import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 
@@ -21,27 +20,29 @@ import io.reactivex.schedulers.Schedulers;
  * email 1040441325@qq.com
  */
 
-public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener,BaseQuickAdapter.RequestLoadMoreListener{
-   private final SwipeRefreshLayout REFRESH_LAYOUT;
+public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
+    private final SwipeRefreshLayout REFRESH_LAYOUT;
     private final RecyclerView RECYCLERVIEW;
     private final PagingBean BEAN;
-    private MultipleRecyclerAdapter mAdapter =null;
+    private MultipleRecyclerAdapter mAdapter = null;
     private final DataConverter CONVERTER;
 
 
-    private RefreshHandler(SwipeRefreshLayout refreshLayout,RecyclerView recyclerView,DataConverter converter,PagingBean bean) {
+    private RefreshHandler(SwipeRefreshLayout refreshLayout, RecyclerView recyclerView, DataConverter converter, PagingBean bean) {
         this.REFRESH_LAYOUT = refreshLayout;
-        this.RECYCLERVIEW =recyclerView;
-        this.CONVERTER =converter;
-        this.BEAN =bean;
+        this.RECYCLERVIEW = recyclerView;
+        this.CONVERTER = converter;
+        this.BEAN = bean;
         REFRESH_LAYOUT.setOnRefreshListener(this);
     }
-    public static RefreshHandler create(SwipeRefreshLayout refreshLayout,RecyclerView recyclerView,DataConverter c){
-        return new RefreshHandler(refreshLayout,recyclerView,c,new PagingBean());
+
+    public static RefreshHandler create(SwipeRefreshLayout refreshLayout, RecyclerView recyclerView, DataConverter c) {
+        return new RefreshHandler(refreshLayout, recyclerView, c, new PagingBean());
     }
-    public void firstPage(String url){
+
+    public void firstPage(String url) {
         RxRestClient.builder()
-                .url("index")
+                .url(url)
                 .build()
                 .get()
                 .subscribeOn(Schedulers.io())
@@ -52,17 +53,42 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener,Base
                         final JSONObject object = JSON.parseObject(s);
                         BEAN.setTotal(object.getInteger("total"))
                                 .setPageSize(object.getInteger("page_size"));
-                        mAdapter=MultipleRecyclerAdapter.create(CONVERTER.setJsonData(s));
-                        mAdapter.setOnLoadMoreListener(RefreshHandler.this,RECYCLERVIEW);
+                        mAdapter = MultipleRecyclerAdapter.create(CONVERTER.setJsonData(s));
+                        mAdapter.setOnLoadMoreListener(RefreshHandler.this, RECYCLERVIEW);
                         RECYCLERVIEW.setAdapter(mAdapter);
                     }
                 });
     }
 
+    private void pagging(String url) {
+        final int pageSize = BEAN.getPageSize();
+        final int currentCount = BEAN.getCurrentCount();
+        final int total = BEAN.getTotal();
+        final int index = BEAN.getPageIndex();
+        if (mAdapter.getData().size() < pageSize || currentCount >= total) {
+            mAdapter.loadMoreEnd(true);
+        } else {
+            RxRestClient.builder()
+                    .url(url + index)
+                    .build()
+                    .get()
+                    .subscribe(new BaseObserver<String>() {
+                        @Override
+                        public void onNext(@NonNull String s) {
+                            mAdapter.addData(CONVERTER.setJsonData(s).convert());
+                            BEAN.setCurrentCount(mAdapter.getData().size());
+                            mAdapter.loadMoreComplete();
+                            BEAN.addIndex();
+                            REFRESH_LAYOUT.setRefreshing(false);
+                        }
+                    });
+        }
+    }
+
     @Override
     public void onRefresh() {
         REFRESH_LAYOUT.setRefreshing(true);
-        addData();
+        firstPage("index");
     }
 
     private void addData() {
@@ -79,18 +105,10 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener,Base
                 });
     }
 
-    private void testRefresh() {
-        Handler handler =new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                REFRESH_LAYOUT.setRefreshing(false);
-            }
-        }, 2000);
-    }
 
     @Override
     public void onLoadMoreRequested() {
-
+        //测试模式会加载重复数据
+        pagging("index?index=");
     }
 }

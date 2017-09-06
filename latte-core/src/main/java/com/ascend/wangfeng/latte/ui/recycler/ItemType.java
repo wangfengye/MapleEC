@@ -19,4 +19,6 @@ public class ItemType {
 
     //地址
     public static final int ITEM_ADDRESS = 8;
+    //搜索历史
+    public static final int ITEM_SEARCH =9;
 }
