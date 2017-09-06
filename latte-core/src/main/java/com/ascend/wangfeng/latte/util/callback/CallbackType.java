@@ -6,5 +6,8 @@ package com.ascend.wangfeng.latte.util.callback;
  */
 
 public enum CallbackType {
-    ON_CROP
+    ON_CROP,
+    //推送接口
+    TAG_PUSH_OPEN,
+    TAG_PUSH_CLOSE
 }

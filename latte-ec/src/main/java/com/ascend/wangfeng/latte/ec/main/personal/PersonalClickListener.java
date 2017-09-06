@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.listener.SimpleClickListener;
 /**
  * Created by fengye on 2017/9/5.
  * email 1040441325@qq.com
+ * id作为判断执行方式的参数
  */
 
 public class PersonalClickListener extends SimpleClickListener{
@@ -25,6 +26,8 @@ public class PersonalClickListener extends SimpleClickListener{
             case 1:
                 DELEGATE.getParentDelegate().getSupportDelegate().start(bean.getDelegate());
                 break;
+            case 2:
+                DELEGATE.getSupportDelegate().start(bean.getDelegate());
             default:
                 break;
         }

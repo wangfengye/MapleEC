@@ -12,3 +12,13 @@
 * 异常 点击事件混乱 (shopcartdelegate)
 
 *(暂不实现支付)
+
+* 方法数超上限
+    > 在build.gradle 的android{}内添加
+        ```   dexOptions {
+                   jumboMode true
+               }
+         ```
+
+* 依赖倒置
+    >反射,接口,消息机制

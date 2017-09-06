@@ -1,6 +1,9 @@
 apply plugin: 'com.android.application'
 
 android {
+    dexOptions {
+        jumboMode true
+    }
     compileSdkVersion 25
     buildToolsVersion '25.0.3'
     defaultConfig {
@@ -10,6 +13,15 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            //选择要添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a'
+        }
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : applicationId,
+                JPUSH_APPKEY : "dc6e2d92d1516ed1bfa54ccd",
+                JPUSH_CHANNEL : "developer-default",
+        ]
     }
     buildTypes {
         release {
@@ -24,10 +36,8 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':latte-ec')
-    testCompile 'junit:junit:4.12'
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
     annotationProcessor project(':latte-compiler')
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    //极光推送
+    compile 'cn.jiguang.sdk:jpush:3.0.3'
+    compile 'cn.jiguang.sdk:jcore:1.1.1'
 }

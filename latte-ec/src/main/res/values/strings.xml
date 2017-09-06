@@ -19,4 +19,8 @@
     <string name="order_before_receive">未收货</string>
     <string name="order_before_evaluate">未评价</string>
     <string name="order_after_market">售后</string>
+    <string name="about">关于我们</string>
+    <string name="about_content">　杭州爱赛德科技有限公司坐落于美丽的西子湖畔，是一家致力于无线通信领域，网络信息侦测及设备制造的高科技企业，由一批具有行业背景的长期从事通信领域的技术人员组成，集研发、服务与一体。\n
+　　爱赛德提供一系列完全拥有自主知识产权的针对网络安全相关的产品，包括基于无线网络的扫频及频谱分析系统、公共场所无线上网安全管理系统、无线终端特征采集系统、无线单兵侦测系统、无线网络审计系统等等。截止目前，已经有10万多套各类终端，服务于各地用户。\n
+　　为用户提供专业的测试设备、检测仪表，提供网络安全、网络优化、网络维护整体解决方案。</string>
 </resources>

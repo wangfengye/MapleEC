@@ -14,6 +14,7 @@ import com.ascend.wangfeng.latte.ec.sign.SignInDelegate;
 import com.ascend.wangfeng.latte.ui.launcher.ILauncherListener;
 import com.ascend.wangfeng.latte.ui.launcher.OnLauncherFinishTag;
 
+import cn.jpush.android.api.JPushInterface;
 import qiu.niorgai.StatusBarCompat;
 
 public class ExampleActivity extends ProxyActivity implements ISignListener,ILauncherListener{
@@ -48,5 +49,17 @@ public class ExampleActivity extends ProxyActivity implements ISignListener,ILau
                 break;
 
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        JPushInterface.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JPushInterface.onPause(this);
     }
 }
