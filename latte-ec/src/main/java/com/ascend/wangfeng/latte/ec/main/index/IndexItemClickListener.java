@@ -4,6 +4,8 @@ import android.view.View;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.latte.ec.detail.GoodsDetailDelegate;
+import com.ascend.wangfeng.latte.ui.recycler.MultipleFields;
+import com.ascend.wangfeng.latte.ui.recycler.MultipleItemEntity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.SimpleClickListener;
 
@@ -24,7 +26,9 @@ public class IndexItemClickListener extends SimpleClickListener{
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        final GoodsDetailDelegate delegate = new GoodsDetailDelegate();
+        final MultipleItemEntity item =(MultipleItemEntity)(baseQuickAdapter.getData().get(position));
+        final int id = item.getField(MultipleFields.ID);
+        final GoodsDetailDelegate delegate = GoodsDetailDelegate.newInstance(id);
         DELEGATE.start(delegate);
     }
 

@@ -1,5 +1,6 @@
 package com.ascend.wangfeng.latte.app;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.ascend.wangfeng.latte.delegates.web.event.Event;
@@ -99,6 +100,10 @@ public class Configurator {
     }
     public Configurator withWebEvent(@NonNull String url){
         LATTE_CONFIGS.put(ConfigType.WEB_HOST.name(),url);
+        return this;
+    }
+    public Configurator withActivityContext(@NonNull Context context ){
+        LATTE_CONFIGS.put(ConfigType.ACTIVITY_CONTEXT.name(),context);
         return this;
     }
 

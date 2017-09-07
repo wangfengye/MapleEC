@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.widget.Toast;
 
 import com.ascend.wangfeng.latte.activities.ProxyActivity;
+import com.ascend.wangfeng.latte.app.Latte;
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.latte.ec.launcher.LauncherDelegate;
 import com.ascend.wangfeng.latte.ec.main.EcBottomDelegate;
@@ -24,6 +25,8 @@ public class ExampleActivity extends ProxyActivity implements ISignListener,ILau
         final ActionBar actionBar =getSupportActionBar();
         if (actionBar!=null)actionBar.hide();
         StatusBarCompat.translucentStatusBar(this,true);
+        //初始化activity content;
+        Latte.getConfigurator().withActivityContext(this);
     }
 
     @Override

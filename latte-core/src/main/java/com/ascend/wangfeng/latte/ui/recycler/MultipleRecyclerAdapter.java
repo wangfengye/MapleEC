@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +97,6 @@ implements BaseQuickAdapter.SpanSizeLookup, OnItemClickListener {
 
     @Override
     public int getSpanSize(GridLayoutManager gridLayoutManager, int position) {
-        Logger.i("getspansize lg:"+getData().get(position).getField(MultipleFields.SPAN_SIZE));
         return getData().get(position).getField(MultipleFields.SPAN_SIZE);
     }
 

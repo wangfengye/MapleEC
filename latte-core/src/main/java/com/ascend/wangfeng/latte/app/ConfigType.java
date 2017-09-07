@@ -15,5 +15,7 @@ public enum  ConfigType {
     WECHAT_APP_SECRET,
     JAVASCRIPT_INTERFACE,
     WEB_EVENT,
-    WEB_HOST
+    WEB_HOST,
+    //activity的context 用于网络请求默认的失败处理
+    ACTIVITY_CONTEXT
 }

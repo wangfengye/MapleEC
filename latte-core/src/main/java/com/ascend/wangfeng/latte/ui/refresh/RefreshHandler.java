@@ -56,6 +56,8 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener, Bas
                         mAdapter = MultipleRecyclerAdapter.create(CONVERTER.setJsonData(s));
                         mAdapter.setOnLoadMoreListener(RefreshHandler.this, RECYCLERVIEW);
                         RECYCLERVIEW.setAdapter(mAdapter);
+                        REFRESH_LAYOUT.setRefreshing(false);
+
                     }
                 });
     }
@@ -91,19 +93,6 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener, Bas
         firstPage("index");
     }
 
-    private void addData() {
-        RxRestClient.builder()
-                .url("index")
-                .build()
-                .get()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseObserver<String>() {
-                    @Override
-                    public void onNext(@NonNull String s) {
-                    }
-                });
-    }
 
 
     @Override

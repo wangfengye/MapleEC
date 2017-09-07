@@ -3,25 +3,23 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp">
+                android:layout_weight="1">
 
     <com.joanzapata.iconify.widget.IconTextView
         android:id="@+id/icon_bottom_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_above="@+id/text"
         android:gravity="center"
         android:textSize="24sp"
         tools:text="{fa-we}"/>
 
     <TextView
+        android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:gravity="center"
         tools:text="home"/>
-
 </RelativeLayout>

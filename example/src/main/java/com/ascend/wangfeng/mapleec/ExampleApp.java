@@ -41,6 +41,7 @@ public class ExampleApp extends Application {
                 .withInterceptor(new DebugInterceptor("orderlist",R.raw.orderlist))
                 .withInterceptor(new DebugInterceptor("address",R.raw.address))
                 .withInterceptor(new DebugInterceptor("search",R.raw.search))
+                .withInterceptor(new DebugInterceptor("gooddetail",R.raw.gooddetail))
                 .withInterceptor(new AddCookieInterceptor())
                 .withWeChatAppId("1")
                 .withWeChatAppSecret("2")

@@ -21,4 +21,8 @@ public class ItemType {
     public static final int ITEM_ADDRESS = 8;
     //搜索历史
     public static final int ITEM_SEARCH =9;
+    //大图
+    public static final int SINGLE_BIG_IMAGE =10;
+    //删除
+    public static final int ITEM_DELETE=11;
 }

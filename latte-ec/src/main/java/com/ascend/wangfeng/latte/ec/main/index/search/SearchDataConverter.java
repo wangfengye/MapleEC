@@ -31,6 +31,12 @@ public class SearchDataConverter extends DataConverter{
                         .build();
                 ENTITIES.add(entity);
             }
+            //添加足部
+            final MultipleItemEntity entity =new MultipleItemEntity.Builder()
+                    .setItemType(ItemType.ITEM_DELETE)
+                    .setField(MultipleFields.TEXT, "删除历史记录")
+                    .build();
+            ENTITIES.add(entity);
         }
         return ENTITIES;
     }
