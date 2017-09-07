@@ -21,6 +21,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by fengye on 2017/9/6.
@@ -44,6 +45,7 @@ public class AutoPhotoLayout extends LinearLayoutCompat {
     private final float mIconSize;
     private final ArrayList<ArrayList<View>> ALL_VIEWS = new ArrayList<>();
     private final ArrayList<Integer> LINE_HEIGHTS = new ArrayList<>();
+    private final HashMap<Integer,Uri> mUris =new HashMap<>();
 
     //防止多次的测量和布局过程
     private boolean mIsOnceInitOnMeasure = false;
@@ -51,12 +53,18 @@ public class AutoPhotoLayout extends LinearLayoutCompat {
 
     public final void onCrop(Uri uri) {
         createNewImageView();
+
+        mUris.put(mTargetImageView.getId(),uri);
         Glide.with(mDelegate)
                 .load(uri)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .centerCrop()
                 .into(mTargetImageView);
 
+    }
+    public  HashMap<Integer,Uri> getUris(){
+
+        return mUris;
     }
 
     private void createNewImageView() {
@@ -69,7 +77,6 @@ public class AutoPhotoLayout extends LinearLayoutCompat {
                 //获取图片id
                 mDeleteId = view.getId();
                 mTargetDialog.show();
-                ;
                 final Window window = mTargetDialog.getWindow();
                 if (window != null) {
                     window.setContentView(R.layout.dialog_image_click_panel);
@@ -94,6 +101,7 @@ public class AutoPhotoLayout extends LinearLayoutCompat {
                                     animation.setStartOffset(0);
                                     deleteImageView.setAnimation(animation);
                                     animation.start();
+                                    mUris.remove(mDeleteId);
                                     AutoPhotoLayout.this.removeView(deleteImageView);
                                     mCurrentNum -= 1;
                                     if (mCurrentNum < mMaxNum) {

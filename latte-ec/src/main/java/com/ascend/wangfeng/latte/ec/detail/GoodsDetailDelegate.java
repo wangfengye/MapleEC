@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by fengye on 2017/8/28.
@@ -78,7 +79,25 @@ public class GoodsDetailDelegate extends LatteDelegate implements OnOffsetChange
     @BindView(R2.id.ll_bottom)
     LinearLayoutCompat mLlBottom;
     private int mGoodsId;
+    private boolean isFavor;
 
+    private int mGoodsNum;
+    @OnClick(R2.id.rl_favor)
+    void  onClickFacour(){
+        isFavor=!isFavor;
+        if (isFavor){
+        mIconFavor.setText("{fa-heart}");
+        mIconFavor.setTextColor(getResources().getColor(R.color.app_main));}
+        else {
+            mIconFavor.setText("{fa-heart-o}");
+            mIconFavor.setTextColor(getResources().getColor(R.color.gray));
+        }
+    }
+    @OnClick(R2.id.rl_add_shop_cart)
+    void onClickAddGoods(){
+        mGoodsNum++;
+        resetCircleText();
+    }
     public static GoodsDetailDelegate newInstance(@NonNull int goodsId){
         final Bundle args = new Bundle();
         args.putInt(GOOD_ID,goodsId);
@@ -108,6 +127,18 @@ public class GoodsDetailDelegate extends LatteDelegate implements OnOffsetChange
         initData();
         initTabLayout();
 
+        mTvShoppingCartAmount.setCircleBackground(Color.RED);
+        resetCircleText();
+
+    }
+
+    private void resetCircleText() {
+        if (mGoodsNum>0){
+        mTvShoppingCartAmount.setText(String.valueOf(mGoodsNum));
+        mTvShoppingCartAmount.setVisibility(View.VISIBLE);}
+        else {
+            mTvShoppingCartAmount.setVisibility(View.GONE);
+        }
     }
 
     private void initTabLayout() {

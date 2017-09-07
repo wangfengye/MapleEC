@@ -19,6 +19,10 @@ import com.ascend.wangfeng.latte.ui.widget.StatLayout;
 import com.ascend.wangfeng.latte.util.callback.CallbackManager;
 import com.ascend.wangfeng.latte.util.callback.CallbackType;
 import com.ascend.wangfeng.latte.util.callback.IGlobalCallback;
+import com.bumptech.glide.Glide;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -48,7 +52,24 @@ public class OrderCommentDelegate extends LatteDelegate {
 
     @OnClick(R2.id.top_tv_comment_commit)
     void onClickCommit() {
-        Toast.makeText(getContext(), "评分:" + mCustomStarLayout.getStarCount(), Toast.LENGTH_SHORT).show();
+        StringBuilder result =new StringBuilder();
+        HashMap<Integer, Uri> maps = mCustomAutoPhotoLayout.getUris();
+        String uris ="";
+        for (Map.Entry<Integer,Uri> e: maps.entrySet()) {
+            Uri uri = e.getValue();
+            if (uri==null)continue;
+            uris+=uri.toString();
+            uris+=" ,";
+        }
+        result.append( "评分: " )
+                .append(mCustomStarLayout.getStarCount())
+                .append("\n")
+                .append("评论: ")
+                .append(mEtOrderComment.getText().toString())
+                .append("\n")
+                .append("图片: ")
+                .append(uris );
+        Toast.makeText(getContext(),result.toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -66,5 +87,10 @@ public class OrderCommentDelegate extends LatteDelegate {
                         mCustomAutoPhotoLayout.onCrop(args);
                     }
                 });
+        //随便给张图
+        Glide.with(getContext())
+                .load("https://i8.mifile.cn/v1/a1/375bd3a4-aab9-f77b-f6a1-5dbf01087495.webp")
+                .centerCrop()
+                .into(mImgOrderComment);
     }
 }
