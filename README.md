@@ -26,4 +26,4 @@
 ---
 ### 9/7 
  >初步完成,缺少 贝塞尔曲线动画,分享,第三方登录
-[下载链接](./outputs/example-release.apk)
+[下载链接](https://raw.githubusercontent.com/wangfengye/MapleEC/master/outputs/example-release.apk)
