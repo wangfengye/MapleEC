@@ -3,8 +3,9 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleHome" value="$USER_HOME$/.gradle/wrapper/dists/gradle-3.3-all" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -14,6 +15,7 @@
             <option value="$PROJECT_DIR$/latte-core" />
             <option value="$PROJECT_DIR$/latte-ec" />
             <option value="$PROJECT_DIR$/latte-ui" />
+            <option value="$PROJECT_DIR$/wifimap" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
