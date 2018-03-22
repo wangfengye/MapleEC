@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">P02设备</string>
+    <string name="wifi_info">WIFI信息</string>
+    <string name="scan_info">侦码信息</string>
+    <string name="equiment_manage">设备管理</string>
+    <string name="start">开始</string>
+    <string name="stop">停止</string>
+    <string name="sure">确认</string>
+    <string name="cancel">取消</string>
+    <string name="scan_desc"><![CDATA[侦码扫描? 扫描需要一段时间(<=300秒),请稍候]]></string>
+    <string name="restart_desc">侦码重启?</string>
+    <string name="restart">侦码重启</string>
+    <string name="scan">侦码扫描</string>
+</resources>
