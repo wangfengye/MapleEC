@@ -8,16 +8,14 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.ascend.wangfeng.latte.net.rx.RxBus;
 import com.ascend.wangfeng.locationby4g.Config;
 import com.ascend.wangfeng.locationby4g.api.ISwr;
+import com.ascend.wangfeng.locationby4g.delegates.imsi.CellMeaureAckEntry;
+import com.ascend.wangfeng.locationby4g.rxbus.RxBus;
 import com.ascend.wangfeng.locationby4g.services.bean.CellCmd;
 import com.ascend.wangfeng.locationby4g.services.bean.CellMeaureAck;
 import com.ascend.wangfeng.locationby4g.services.bean.CellSysAck;
 import com.ascend.wangfeng.locationby4g.services.bean.Metrocell;
-import com.ascend.wangfeng.locationby4g.services.rxbus.BaseObserver;
-import com.ascend.wangfeng.locationby4g.services.rxbus.CMDEvent;
-import com.ascend.wangfeng.locationby4g.services.rxbus.CellMeaureAckEvent;
 import com.ascend.wangfeng.locationby4g.services.rxbus.MetrocellEvent;
 import com.ascend.wangfeng.locationby4g.util.ArrayUtil;
 import com.ascend.wangfeng.locationby4g.util.StringUtil;
@@ -31,8 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
 
 /**
@@ -60,12 +56,16 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * ```` ':.          ':::::::::'                  ::::..
  * '.:::::'                    ':'````..
  */
-public class SocketService extends Service implements ISwr{
+public class SocketService extends Service implements ISwr {
 
     public static final String TAG = SocketService.class.getSimpleName();
     private ExecutorService mThreadPool;
     private ArrayList<CellSysAck> mAcks;
     private SocketBinder mBinder = new SocketBinder();
+    private ArrayList<CellMeaureAckEntry> mCellMeaureAckEntries = new ArrayList<>();
+    public  ArrayList<CellMeaureAckEntry> getCellMeaureAckEntries(){
+        return mCellMeaureAckEntries;
+    }
 
     @Nullable
     @Override
@@ -75,17 +75,17 @@ public class SocketService extends Service implements ISwr{
 
     @Override
     public void getEquimentState() {
-        setCellRstCmd();
+        setCellSynReq();
     }
 
     @Override
     public void restart() {
-
+        setCellRstCmd();
     }
 
     @Override
     public void scan() {
-
+        Toast.makeText(this, "等待实现", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -95,25 +95,34 @@ public class SocketService extends Service implements ISwr{
 
     @Override
     public void setMode(int type) {
-
+        Toast.makeText(this, "等待实现", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void start() {
         // 需要同时设置RF0和RF1的发射功率,RF0类型为5，RF1类型为19
-        setCellPwrAdjCmd(5,Config.getInstance().getPower());
-        setCellPwrAdjCmd(19,Config.getInstance().getPower());
-        Toast.makeText(this, "start-ser", Toast.LENGTH_SHORT).show();
+        setCellPwrAdjCmd(5, Config.getInstance().getPower());
+        setCellPwrAdjCmd(19, Config.getInstance().getPower());
     }
 
     @Override
     public void stop() {
-        setCellPwrAdjCmd(5,0);
-        setCellPwrAdjCmd(19,0);
+        setCellPwrAdjCmd(5, 0);
+        setCellPwrAdjCmd(19, 0);
     }
 
-    public class SocketBinder extends Binder{
-        public SocketService getService(){
+    @Override
+    public void locaion(String imsi) {
+        setCellNumListStopTCmd(imsi,2);
+    }
+
+    @Override
+    public void unLocation(String imsi) {
+        setCellNumListStopTCmd(imsi,1);
+    }
+
+    public class SocketBinder extends Binder {
+        public SocketService getService() {
             return SocketService.this;
         }
     }
@@ -121,7 +130,7 @@ public class SocketService extends Service implements ISwr{
     @Override
     public void onCreate() {
         super.onCreate();
-        Toast.makeText(SocketService.this, "service_start", Toast.LENGTH_LONG).show();
+
         mThreadPool = Executors.newCachedThreadPool();
         mAcks = Config.getInstance().getAcks();
         for (CellSysAck ack : mAcks) {
@@ -131,7 +140,7 @@ public class SocketService extends Service implements ISwr{
     }
 
     private void initRxBus() {
-        RxBus.getDefault().toObservable(CMDEvent.class)
+      /*  RxBus.getDefault().toObservable(CMDEvent.class)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseObserver<CMDEvent>() {
                     @Override
@@ -144,7 +153,7 @@ public class SocketService extends Service implements ISwr{
                                 break;
                         }
                     }
-                });
+                });*/
     }
 
     private void initSocket(final CellSysAck cellSysAck) {
@@ -163,34 +172,52 @@ public class SocketService extends Service implements ISwr{
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
+                    Log.e(TAG, "run: ", e);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                    Log.e(TAG, "run: ", e);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Log.e(TAG, "run: ", e);
+                } finally {
+                    clear(cellSysAck);
                 }
             }
         });
     }
 
-    private void writeBytes(final byte[] s) {
+    private void clear(CellSysAck ack) {
+        try {
+            ack.getSocket().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ack.setRf0TransmittedPower("off");
+        ack.setState(CellSysAck.STATE_UNSYNC_UNACTIVE);
+    }
 
-        mThreadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    for (CellSysAck ack : mAcks) {
-                        DataOutputStream out = new DataOutputStream(ack.getSocket().getOutputStream());
+    private void writeBytes(final byte[] s) {
+        for (CellSysAck ack : mAcks) {
+            final Socket socket = ack.getSocket();
+            if (socket == null || !socket.isConnected()){
+                Toast.makeText(this, "连接已断开", Toast.LENGTH_SHORT).show();
+                break;
+            }
+            mThreadPool.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        DataOutputStream out = new DataOutputStream(socket.getOutputStream());
                         out.write(s);
                         out.flush();
 
+                    } catch (IOException e) {
+                        Log.e(TAG, "writeBytes: ", e);
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    Log.e(TAG, "writeBytes: ", e);
-                    e.printStackTrace();
                 }
-            }
-        });
-
+            });
+        }
     }
 
     private void writeData(String data) {
@@ -201,17 +228,11 @@ public class SocketService extends Service implements ISwr{
     private ArrayList<String> readData(CellSysAck ack) throws IOException {
         DataInputStream in = new DataInputStream(ack.getSocket().getInputStream());
         ArrayList<String> response = new ArrayList<>();
-        try {
-            byte[] buffer = new byte[in.available()];
-            if (in.read(buffer) > 0) {
-                for (int i = 0; i < buffer.length; i++) {
-                    response.add(Integer.toHexString(buffer[i] & 0xFF));
-                }
+        byte[] buffer = new byte[in.available()];
+        if (in.read(buffer) > 0) {
+            for (int i = 0; i < buffer.length; i++) {
+                response.add(Integer.toHexString(buffer[i] & 0xFF));
             }
-            return response;
-        } catch (IOException e) {
-            Log.e(TAG, "readData: ", e);
-            e.printStackTrace();
         }
         return response;
     }
@@ -222,7 +243,7 @@ public class SocketService extends Service implements ISwr{
      * @param data 源数据
      * @throws Exception 数据完整性校验异常
      */
-    public static void analyseData(List<String> data, CellSysAck ack) throws Exception {
+    public void analyseData(List<String> data, CellSysAck ack) throws Exception {
         while (data.size() > 0) {
             // Log.i(TAG, "analyseData: "+data.toString());
             // 读取数据时会将已读取的删除,因此需要一开始就获取长度
@@ -331,7 +352,7 @@ public class SocketService extends Service implements ISwr{
      *
      * @param data
      */
-    private static void getCellMeasureAck(List<String> data) {
+    private void getCellMeasureAck(List<String> data) {
         CellMeaureAck ack = new CellMeaureAck();
         String imsi = SwrUtil.hex2Imsi(data);
         ack.setImsi(imsi);
@@ -345,8 +366,19 @@ public class SocketService extends Service implements ISwr{
             int upIntensity = SwrUtil.hex2Intensity(data);
             ack.setUpFieldIntensity(upIntensity);
         }
-        RxBus.getDefault().post(new CellMeaureAckEvent(ack));
-        Log.i(TAG, "getCellMeasureAck: " + ack);
+        for (int i = 0; i < mCellMeaureAckEntries.size(); i++) {
+            if (mCellMeaureAckEntries.get(i).getImsi().equals(ack.getImsi())){
+                if (ack.getTimestamp()<=mCellMeaureAckEntries.get(i).getTimestamp()){
+                    return;
+                }
+                mCellMeaureAckEntries.get(i).copy(ack);
+                // RxBus.getDefault().post(new CellMeaureAckEvent(mCellMeaureAckEntries,ack));
+                return;
+            }
+        }
+        mCellMeaureAckEntries.add(CellMeaureAckEntry.copyStatic(ack));
+        Log.i(TAG, "getCellMeasureAck: "+ ack);
+        // RxBus.getDefault().post(new CellMeaureAckEvent(mCellMeaureAckEntries,ack));
     }
 
     /**
@@ -377,10 +409,10 @@ public class SocketService extends Service implements ISwr{
      * 定位目标
      *
      * @param imsi
-     * @param type
+     * @param type 2:定位 1:释放
      */
     private void setCellNumListStopTCmd(String imsi, int type) {
-        CellCmd.build(47).addBodyInt(1);
+        CellCmd.build(47).addBodyInt(1).addImsi(imsi).addBodyInt(type);
     }
 
 

@@ -34,6 +34,7 @@
             </intent-filter>
         </activity>
         <service android:name=".services.SocketService"></service>
+        <service android:name=".services.SocketService2"></service>
     </application>
 
 </manifest>

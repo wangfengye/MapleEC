@@ -105,7 +105,6 @@ public class LineDelegate extends LatteDelegate {
     private void initData() {
         ArrayList<Entry> values = new ArrayList<>();
         LineDataSet set;
-
         set = new LineDataSet(values, "Line-1");
         set.setFillFormatter(new FillFormatter() {
             @Override

@@ -51,4 +51,14 @@ public class Swr implements ISwr{
         Toast.makeText(getActivity(), "stop:", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void locaion(String imsi) {
+
+    }
+
+    @Override
+    public void unLocation(String imsi) {
+
+    }
+
 }

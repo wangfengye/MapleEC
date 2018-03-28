@@ -9,9 +9,10 @@ import com.ascend.wangfeng.locationby4g.services.bean.CellMeaureAck;
  */
 
 public class CellMeaureAckEvent {
+    // 当前采集的ack
     private CellMeaureAck mAck;
 
-    public CellMeaureAckEvent(CellMeaureAck ack) {
+    public CellMeaureAckEvent( CellMeaureAck ack) {
         mAck = ack;
     }
 
@@ -22,4 +23,5 @@ public class CellMeaureAckEvent {
     public void setAck(CellMeaureAck ack) {
         mAck = ack;
     }
+
 }

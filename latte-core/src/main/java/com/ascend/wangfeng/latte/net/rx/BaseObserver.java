@@ -23,8 +23,9 @@ public abstract class BaseObserver<T> implements Observer<T> {
     }
     @Override
     public void onSubscribe(@NonNull Disposable d) {
-        if (getShowContext()!=null){
-        LatteLoader.showLoading(getShowContext());}
+        // 开启动画
+      /*  if (getShowContext()!=null){
+        LatteLoader.showLoading(getShowContext());}*/
     }
 
     @Override

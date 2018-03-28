@@ -15,6 +15,39 @@ public class CellCmd {
         mStrings = new ArrayList<>();
     }
 
+    /**
+     * 查询设备运行状态
+     */
+    public static String setCellSynReq() {
+        return CellCmd.build(12).toString();
+    }
+
+    /**
+     * 开启侦测 命令
+     *
+     * @param type     rfo:5,rf1:19
+     * @param idensity 功率
+     */
+    public static String setCellPwrAdjCmd(int type, int idensity) {
+        return CellCmd.build(type).addBodyInt(idensity).toString();
+    }
+
+    /**
+     * 复位
+     */
+    public static String setCellRstCmd() {
+        return CellCmd.build(6).toString();
+    }
+
+    /**
+     * 定位目标
+     *
+     * @param imsi
+     * @param type 2:定位 1:释放
+     */
+    public static String setCellNumListStopTCmd(String imsi, int type) {
+        return CellCmd.build(47).addBodyInt(1).addImsi(imsi).addBodyInt(type).toString();
+    }
     public static CellCmd build(int type){
         CellCmd cmd = new CellCmd();
         // 头信息,类型

@@ -14,4 +14,12 @@ public class CellSysAckEvent {
     public CellSysAckEvent(CellSysAck ack) {
         mAck = ack;
     }
+
+    public CellSysAck getAck() {
+        return mAck;
+    }
+
+    public void setAck(CellSysAck ack) {
+        mAck = ack;
+    }
 }

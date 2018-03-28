@@ -2,6 +2,7 @@ package com.ascend.wangfeng.locationby4g.delegates.imsi;
 
 import android.view.View;
 
+import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.latte.ui.recycler.MultipleViewHolder;
 import com.ascend.wangfeng.locationby4g.R;
 import com.ascend.wangfeng.locationby4g.services.bean.CellMeaureAck;
@@ -16,20 +17,32 @@ import java.util.List;
  */
 
 public class ImsiAdapter extends BaseMultiItemQuickAdapter<CellMeaureAckEntry,MultipleViewHolder> {
-
-    public ImsiAdapter(List<CellMeaureAckEntry> data) {
+    private LatteDelegate mDelegate;
+    public ImsiAdapter(List<CellMeaureAckEntry> data, LatteDelegate delegate) {
         super(data);
+        mDelegate = delegate;
         addItemType(0, R.layout.item_multiple_imsi);
     }
 
     @Override
-    protected void convert(MultipleViewHolder helper, CellMeaureAckEntry item) {
+    protected void convert(MultipleViewHolder helper, final CellMeaureAckEntry item) {
         helper.setText(R.id.tv_imsi,item.getImsi());
         helper.setText(R.id.tv_time, TimeUtil.format(item.getTimestamp()));
         helper.setText(R.id.tv_operator,getImsiOperator(item.getImsi()));
         helper.setText(R.id.tv_count,(item.getFieldIntensitys().size()+1) + "次");
         helper.setText(R.id.tv_dbm,item.getFieldIntensity() + "dBm");
         helper.setText(R.id.tv_error_range,getErrorRange(item));
+        helper.setOnClickListener(R.id.cl_imsi, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDelegate.getParentDelegate().start(ImsiLineDelegate.newInstance(item.getImsi()));
+            }
+        });
+        if (item.isLocation()){
+            helper.getView(R.id.iv_location).setVisibility(View.VISIBLE);
+        }else {
+            helper.getView(R.id.iv_location).setVisibility(View.INVISIBLE);
+        }
     }
 
     /**

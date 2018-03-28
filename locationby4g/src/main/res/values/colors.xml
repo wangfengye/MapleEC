@@ -5,4 +5,5 @@
     <color name="colorAccent">#03A9F4</color>
     <color name="success">#67C23A</color>
     <color name="danger">#F56C6C</color>
+    <color name="info">#909399</color>
 </resources>

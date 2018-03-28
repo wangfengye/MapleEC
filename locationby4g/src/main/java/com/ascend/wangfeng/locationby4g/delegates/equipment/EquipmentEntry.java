@@ -69,9 +69,10 @@ public class EquipmentEntry implements MultiItemEntity{
         entry.mChoices = choices;
         return entry;
     }
-    public static EquipmentEntry createList(String title,LinkedHashMap<String,Boolean> map){
+    public static EquipmentEntry createList(String title,LinkedHashMap<String,Boolean> map,Callback callback){
         EquipmentEntry entry = new EquipmentEntry();
         entry.mType = LIST;
+        entry.mCallback = callback;
         entry.mTitle = title;
         entry.mListMap = map;
         return entry;

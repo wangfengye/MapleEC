@@ -9,6 +9,8 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
  */
 
 public class CellMeaureAckEntry extends CellMeaureAck implements MultiItemEntity{
+    // 是否监控
+    private boolean isLocation = false;
     @Override
     public int getItemType() {
         return 0;
@@ -24,6 +26,10 @@ public class CellMeaureAckEntry extends CellMeaureAck implements MultiItemEntity
         return entry;
     }
     public CellMeaureAckEntry copy(CellMeaureAck ack){
+        if (ack.getTimestamp()<= this.getTimestamp()){
+            //去除时间重复的数据
+            return this;
+        }
         this.addFieldIntensitys(this.getFieldIntensity());
         this.addTimeStamps(this.getTimestamp());
         this.setCarrier(ack.getCarrier());
@@ -31,5 +37,13 @@ public class CellMeaureAckEntry extends CellMeaureAck implements MultiItemEntity
         this.setTimestamp(ack.getTimestamp());
         this.setUpFieldIntensity(ack.getUpFieldIntensity());
         return this;
+    }
+
+    public boolean isLocation() {
+        return isLocation;
+    }
+
+    public void setLocation(boolean location) {
+        isLocation = location;
     }
 }

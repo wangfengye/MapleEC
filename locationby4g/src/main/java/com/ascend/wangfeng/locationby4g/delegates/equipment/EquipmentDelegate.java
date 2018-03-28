@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ascend.wangfeng.latte.delegates.bottom.BottomItemDelegate;
 import com.ascend.wangfeng.latte.ui.recycler.BaseDecoration;
@@ -14,8 +15,9 @@ import com.ascend.wangfeng.locationby4g.Config;
 import com.ascend.wangfeng.locationby4g.MainActivity;
 import com.ascend.wangfeng.locationby4g.R;
 import com.ascend.wangfeng.locationby4g.api.ISwr;
+import com.ascend.wangfeng.locationby4g.services.bean.CellSysAck;
+import com.threshold.rxbus2.RxBus;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Timer;
@@ -23,6 +25,10 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 
 /**
@@ -44,27 +50,28 @@ public class EquipmentDelegate extends BottomItemDelegate {
     private int mTime = 0;
     private TimerTask mTask;
     private Timer mTimer;
+    String mTest;
+    CompositeDisposable mDisposable = new CompositeDisposable();
 
     @OnClick(R.id.btn_running)
-    void onClickBtnRunnind(){
+    void onClickBtnRunnind() {
         isRunning = !isRunning;
-        if (isRunning){
+        if (isRunning) {
+            if (hasSwr()){
             initTimer();
             mBtnRunning.setText(getResources().getText(R.string.stop));
             mBtnRunning.setBackground(getResources().getDrawable(R.drawable.circle_red));
             goContainer(1);
-            if (mSwr == null){
-                mSwr = ((MainActivity)getProxyActivity()).getService();
+            mSwr.start();}else {
+                isRunning =!isRunning;
             }
-            mSwr.start();
-        }else {
+        } else {
             stopTimer();
             mBtnRunning.setText(getResources().getText(R.string.start));
             mBtnRunning.setBackground(getResources().getDrawable(R.drawable.circle));
             mSwr.stop();
         }
     }
-
 
 
     @Override
@@ -74,9 +81,31 @@ public class EquipmentDelegate extends BottomItemDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
-        MainActivity activity = (MainActivity) getProxyActivity();
-        mSwr = activity.getService();
         initSetting();
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MainActivity activity = (MainActivity) getProxyActivity();
+                        mSwr = activity.getService();
+                    }
+                });
+            }
+        };
+        timer.schedule(task,1000);
+    }
+    private boolean hasSwr(){
+        if (mSwr == null){
+            MainActivity activity = (MainActivity) getProxyActivity();
+            mSwr = activity.getService();
+            Toast.makeText(getContext(), "设备未启动", Toast.LENGTH_SHORT).show();
+            return false;
+        }else {
+            return true;
+        }
     }
 
     private void initTimer() {
@@ -85,8 +114,7 @@ public class EquipmentDelegate extends BottomItemDelegate {
             @Override
             public void run() {
                 mTime++;
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-                final String time =secondsFormat( mTime);
+                final String time = secondsFormat(mTime);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -95,13 +123,18 @@ public class EquipmentDelegate extends BottomItemDelegate {
                 });
             }
         };
-        mTimer.schedule(mTask,1000,1000);
+        mTimer.schedule(mTask, 1000, 1000);
     }
-    private void stopTimer(){
-        mTimer.cancel();
-        mTime = 0;
-        mTvTime.setText(secondsFormat(mTime));
+
+    private void stopTimer() {
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTime = 0;
+            mTvTime.setText(secondsFormat(mTime));
+        }
+
     }
+
     public String secondsFormat(int second) {
         int h = 0;
         int m = 0;
@@ -127,27 +160,36 @@ public class EquipmentDelegate extends BottomItemDelegate {
         }
 
 
-        return String.format("%02d",h) + ":" +String.format("%02d",m) + ":" + String.format("%02d",s) + "";
+        return String.format("%02d", h) + ":" + String.format("%02d", m) + ":" + String.format("%02d", s) + "";
     }
 
     private void initSetting() {
-        ArrayList<EquipmentEntry> entries = new ArrayList<>();
+        final ArrayList<EquipmentEntry> entries = new ArrayList<>();
         LinkedHashMap<String, Boolean> map = new LinkedHashMap<>();
-        map.put("移动", true);
-        map.put("电信", true);
+        map.put("移动", false);
+        map.put("电信", false);
         map.put("联通", false);
-        entries.add(EquipmentEntry.createList("侦码状态", map));
 
-        entries.add(EquipmentEntry.createDialog(getString(R.string.restart), getString(R.string.restart_desc),getProxyActivity(), new EquipmentEntry.Callback() {
+        entries.add(EquipmentEntry.createList("侦码状态", map, new EquipmentEntry.Callback() {
             @Override
             public void onClickListener(int i) {
-                mSwr.restart();
+                if (hasSwr()){
+                    mSwr.getEquimentState();
+                }
+
+            }
+        }));
+
+        entries.add(EquipmentEntry.createDialog(getString(R.string.restart), getString(R.string.restart_desc), getProxyActivity(), new EquipmentEntry.Callback() {
+            @Override
+            public void onClickListener(int i) {
+                if (hasSwr()){mSwr.restart();}
             }
         }));
         entries.add(EquipmentEntry.createDialog(getString(R.string.scan), getString(R.string.scan_desc), getProxyActivity(), new EquipmentEntry.Callback() {
             @Override
             public void onClickListener(int i) {
-                mSwr.scan();
+               if (hasSwr()){mSwr.scan();}
             }
         }));
         ArrayList<String> list = new ArrayList<>();
@@ -157,7 +199,7 @@ public class EquipmentDelegate extends BottomItemDelegate {
         entries.add(EquipmentEntry.createMultipleChoice("侦码功率", list, new EquipmentEntry.Callback() {
             @Override
             public void onClickListener(int i) {
-                switch (i){
+                switch (i) {
                     case R.id.rb_1:
                         Config.getInstance().setPower(Config.POWER_HEIGHT);
                         break;
@@ -181,11 +223,34 @@ public class EquipmentDelegate extends BottomItemDelegate {
                 mSwr.setMode(i);
             }
         }));
-        EquipmentAdapter adapter = new EquipmentAdapter(entries);
+        final EquipmentAdapter adapter = new EquipmentAdapter(entries);
         final LinearLayoutManager manager = new LinearLayoutManager(getContext());
         mRvSetting.setLayoutManager(manager);
         mRvSetting.setAdapter(adapter);
+
         mRvSetting.addItemDecoration(BaseDecoration.create(getResources()
                 .getColor(R.color.colorAccent), 1));
+        // 接收设备状态改变信息
+        Disposable subscribe = RxBus.getDefault().ofType(CellSysAck.class)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<CellSysAck>() {
+                    @Override
+                    public void accept(CellSysAck ack) throws Exception {
+                        adapter.notifyItemChanged(0);
+                    }
+                });
+        mDisposable.add(subscribe);
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mTimer != null) {
+            mTimer.cancel();
+        }
+        if (mDisposable!=null){
+            mDisposable.clear();
+        }
+
+        super.onDestroy();
     }
 }

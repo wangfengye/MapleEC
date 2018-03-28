@@ -42,4 +42,16 @@ public interface ISwr {
      * 停止
      */
     void stop();
+
+    /**
+     * 定位目标
+     * @param imsi
+     */
+    void locaion(String imsi);
+
+    /**
+     * 解除定位
+     * @param imsi
+     */
+    void unLocation(String imsi);
 }
