@@ -11,4 +11,6 @@
     <string name="restart_desc">侦码重启?</string>
     <string name="restart">侦码重启</string>
     <string name="scan">侦码扫描</string>
+    <string name="unlocation">释放</string>
+    <string name="location">定位</string>
 </resources>

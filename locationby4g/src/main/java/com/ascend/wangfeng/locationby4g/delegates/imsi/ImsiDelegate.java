@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.ascend.wangfeng.latte.delegates.bottom.BottomItemDelegate;
 import com.ascend.wangfeng.latte.ui.recycler.BaseDecoration;
@@ -13,8 +15,12 @@ import com.ascend.wangfeng.locationby4g.R;
 import com.ascend.wangfeng.locationby4g.rxbus.RxBus;
 import com.ascend.wangfeng.locationby4g.rxbus.Subscribe;
 import com.ascend.wangfeng.locationby4g.services.rxbus.CellMeaureAckListEvent;
+import com.ascend.wangfeng.locationby4g.util.ImsiUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -27,8 +33,14 @@ public class ImsiDelegate extends BottomItemDelegate {
     public static final String TAG = ImsiDelegate.class.getSimpleName();
     @BindView(R.id.rv_imsi)
     RecyclerView mRvImsi;
+    @BindView(R.id.spinner_sort)
+    Spinner mSpinnerSort;
+    @BindView(R.id.tv_range)
+    TextView mTvRange;
+
     private ArrayList<CellMeaureAckEntry> mData = new ArrayList<>();
     private ImsiAdapter mAdapter;
+    private int mType;//过滤类型
 
 
     @Override
@@ -40,15 +52,31 @@ public class ImsiDelegate extends BottomItemDelegate {
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
         initRv();
         RxBus.getDefault().register(this);
+        mSpinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mType = position;
+                if (position == 5)return;
+                mAdapter.update(filterData(mData,position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
     @Subscribe
     public void receive(CellMeaureAckListEvent event){
-        mData.clear();
-        mData.addAll(event.getEntries());
-        Log.i(TAG, "onNext: " + mData.toString());
-        updateView();
+        Collections.sort(event.getEntries(), new Comparator<CellMeaureAckEntry>() {
+            @Override
+            public int compare(CellMeaureAckEntry o1, CellMeaureAckEntry o2) {
+                return (int) (o1.getTimestamp()-o2.getTimestamp());
+            }
+        });
+        mData = event.getEntries();
+        updateView(event.getEntries());
     }
-
 
     @Override
     public void onStart() {
@@ -57,7 +85,7 @@ public class ImsiDelegate extends BottomItemDelegate {
 
     private void initRv() {
         mData = new ArrayList<>();
-        mAdapter = new ImsiAdapter(mData, this);
+        mAdapter = new ImsiAdapter(new ArrayList<CellMeaureAckEntry>(), this);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         mRvImsi.setLayoutManager(manager);
         mRvImsi.setAdapter(mAdapter);
@@ -65,11 +93,11 @@ public class ImsiDelegate extends BottomItemDelegate {
                 .getColor(android.R.color.darker_gray), 1));
     }
 
-    private void updateView() {
+    private void updateView(final List<CellMeaureAckEntry> entries) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mAdapter.notifyDataSetChanged();
+                mAdapter.update(filterData(entries,mType));
             }
         });
     }
@@ -79,4 +107,57 @@ public class ImsiDelegate extends BottomItemDelegate {
         RxBus.getDefault().unregister(this);
         super.onDestroy();
     }
+    public List<CellMeaureAckEntry> filterData(List<CellMeaureAckEntry> entries,int type){
+        return filterData(entries,type,0,-1000);
+    }
+    public List<CellMeaureAckEntry> filterData(List<CellMeaureAckEntry> entries,int type, int start,int end){
+      switch (type){
+          case 0:
+              // 全部
+              return entries;
+          case 1:
+              // 中国移动
+              return getEntries(entries, "中国移动");
+          case 2:
+              //中国联通
+              return getEntries(entries, "中国联通");
+          case 3:
+              //中国电信
+              return getEntries(entries,"中国电信");
+          case 4:
+              // 其他制式
+              return getEntries(entries,"未知");
+          case 5:
+              //场强
+              return getEntries(entries,start,end);
+          default:
+              return entries;
+
+      }
+    }
+
+    /**
+     * 场强条件过滤
+     * @param entries 数据
+     * @param start 最大值
+     * @param end 最下值
+     * @return
+     */
+    private List<CellMeaureAckEntry> getEntries(List<CellMeaureAckEntry> entries, int start, int end) {
+        List<CellMeaureAckEntry> result = new ArrayList<>();
+        for (CellMeaureAckEntry e : entries) {
+            if (e.getTimestamp() <= start && e.getTimestamp() >= end ){result.add(e);}
+        }
+        return result;
+    }
+
+    private List<CellMeaureAckEntry> getEntries(List<CellMeaureAckEntry> entries,String operator) {
+        List<CellMeaureAckEntry> result = new ArrayList<>();
+        for (CellMeaureAckEntry e : entries) {
+            if (ImsiUtil.getImsiOperator(e.getImsi()).equals(operator)){result.add(e);}
+        }
+        return result;
+    }
+
+    ;
 }

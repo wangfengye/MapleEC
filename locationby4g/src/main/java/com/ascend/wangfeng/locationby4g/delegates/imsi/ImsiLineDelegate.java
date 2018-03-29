@@ -53,18 +53,19 @@ public class ImsiLineDelegate extends LatteDelegate {
 
     @OnClick(R.id.btn_location)
     void setBtnLocationClick() {
-        if (!mEntry.isLocation()){
+        if (!mEntry.isLocation()) {
             ((MainActivity) getProxyActivity()).getService().locaion(mImsi);
             mEntry.setLocation(true);
             mBtnLocation.setBackgroundColor(getResources().getColor(R.color.success));
-            mBtnLocation.setText("定位中,点击取消");
-        }else {
+            mBtnLocation.setText(R.string.unlocation);
+        } else {
             ((MainActivity) getProxyActivity()).getService().unLocation(mImsi);
             mBtnLocation.setBackgroundColor(getResources().getColor(R.color.info));
-            mBtnLocation.setText("定位");
+            mBtnLocation.setText(R.string.location);
             mEntry.setLocation(false);
         }
     }
+
     private String mImsi;
 
     public static ImsiLineDelegate newInstance(String imsi) {
@@ -93,12 +94,12 @@ public class ImsiLineDelegate extends LatteDelegate {
     }
 
     private void initBtn() {
-        if (mEntry.isLocation()){
+        if (mEntry.isLocation()) {
             mBtnLocation.setBackgroundColor(getResources().getColor(R.color.success));
-            mBtnLocation.setText("定位中,点击取消");
-        }else {
-            mBtnLocation.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
-            mBtnLocation.setText("定位");
+            mBtnLocation.setText(R.string.unlocation);
+        } else {
+            mBtnLocation.setBackgroundColor(getResources().getColor(R.color.info));
+            mBtnLocation.setText(R.string.location);
         }
     }
 
@@ -123,7 +124,7 @@ public class ImsiLineDelegate extends LatteDelegate {
                 });
             }
         };
-        timer.schedule(task,2000,1000);
+        timer.schedule(task, 2000, 1000);
     }
 
     private void initData() {
@@ -171,15 +172,12 @@ public class ImsiLineDelegate extends LatteDelegate {
         XAxis xAxis = chart.getXAxis();
         xAxis.setTextSize(8f);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setAvoidFirstLastClipping(true);
         xAxis.setGranularity(1);
         // x轴刻度内容修改
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-
                 return " ";
-
             }
 
         });
@@ -197,9 +195,9 @@ public class ImsiLineDelegate extends LatteDelegate {
         if (mChartImsi.getData() == null) {
             createData(mChartImsi);
         }
-        Entry entry = new Entry(mChartImsi.getData().getDataSetByIndex(0).getEntryCount(),y);
+        Entry entry = new Entry(mChartImsi.getData().getDataSetByIndex(0).getEntryCount(), y);
 
-        mChartImsi.getData().addEntry(entry,0);
+        mChartImsi.getData().addEntry(entry, 0);
         mChartImsi.getData().notifyDataChanged();
         mChartImsi.notifyDataSetChanged();
         mChartImsi.setVisibleXRangeMaximum(10);

@@ -7,6 +7,7 @@ import com.ascend.wangfeng.locationby4g.services.bean.CellMeaureAck;
 import com.ascend.wangfeng.locationby4g.services.bean.CellSysAck;
 import com.ascend.wangfeng.locationby4g.services.bean.Metrocell;
 import com.ascend.wangfeng.locationby4g.services.rxbus.CellMeaureAckEvent;
+import com.ascend.wangfeng.locationby4g.services.rxbus.ErrorEvent;
 import com.ascend.wangfeng.locationby4g.services.rxbus.MetrocellEvent;
 import com.ascend.wangfeng.locationby4g.util.ArrayUtil;
 import com.ascend.wangfeng.locationby4g.util.SwrUtil;
@@ -24,19 +25,19 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by fengye on 2018/3/27.
  * email 1040441325@qq.com
- * socket 长连接
+ * socket 长连接(包含数据解析)
  */
 
 public class SocketClient implements Runnable {
     public static final String TAG = SocketClient.class.getSimpleName();
     public static final int CONNECT_PERIOD = 1000;
     public static final int HEART_PERIOD = 3000;
-    private CellSysAck mCellSysAck;
+    private static final int CONNECT_TIME_OUT = 10 * 1000;
     private static final int CONNECT_TRY_TIMES = 2;
+    private CellSysAck mCellSysAck;
     private int mConnectTimes = 0;
     private Socket mSocket;
     private InetSocketAddress mAddress;
-    private static final int CONNECT_TIME_OUT = 10 * 1000;
     private HeartBeatTask mTask;
     private ScheduledExecutorService mPool;
 
@@ -61,6 +62,8 @@ public class SocketClient implements Runnable {
         if (mSocket != null && mSocket.isConnected()) {
             keepHeartBeat();
             reciceData();
+        }else {
+            RxBus.getDefault().post(new ErrorEvent(mCellSysAck.getIp() + "连接已断开"));
         }
     }
 

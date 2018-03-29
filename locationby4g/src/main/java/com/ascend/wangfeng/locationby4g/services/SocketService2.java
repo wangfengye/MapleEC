@@ -156,7 +156,9 @@ public class SocketService2 extends Service implements ISwr {
             }}
         });
     }
+    private void showDialog(){
 
+    }
     @Override
     public void onDestroy() {
         RxBus.getDefault().unregister(this);
