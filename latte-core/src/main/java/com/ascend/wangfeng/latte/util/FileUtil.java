@@ -97,7 +97,7 @@ public class FileUtil {
      * @param extension        后缀
      * @return 创建文件
      */
-    private static File createFileByTime(String sdcardDirName, String timeFormatHeader, String extension) {
+    public static File createFileByTime(String sdcardDirName, String timeFormatHeader, String extension) {
         final String fileName = getFileNameByTime(timeFormatHeader, extension);
         return createFile(sdcardDirName, fileName);
     }

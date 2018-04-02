@@ -16,6 +16,7 @@ import com.ascend.wangfeng.locationby4g.rxbus.Subscribe;
 import com.ascend.wangfeng.locationby4g.services.bean.CellCmd;
 import com.ascend.wangfeng.locationby4g.services.bean.CellMeaureAck;
 import com.ascend.wangfeng.locationby4g.services.bean.CellSysAck;
+import com.ascend.wangfeng.locationby4g.services.rxbus.CMDEvent;
 import com.ascend.wangfeng.locationby4g.services.rxbus.CellMeaureAckEvent;
 import com.ascend.wangfeng.locationby4g.services.rxbus.CellMeaureAckListEvent;
 import com.ascend.wangfeng.locationby4g.util.StringUtil;
@@ -131,6 +132,17 @@ public class SocketService2 extends Service implements ISwr {
         mEntries.add(CellMeaureAckEntry.copyStatic(ack));
         Log.i(TAG, "getCellMeasureAck: " + ack);
         RxBus.getDefault().post(new CellMeaureAckListEvent(mEntries));
+    }
+    @Subscribe
+    public void receiveCmd(CMDEvent event){
+        switch (event.getCmd()){
+            case CMDEvent.DATA_CLEAR:
+                mEntries.clear();
+                RxBus.getDefault().post(new CellMeaureAckListEvent(mEntries));
+                break;
+            default:
+                break;
+        }
     }
 
     private void initRxbus() {

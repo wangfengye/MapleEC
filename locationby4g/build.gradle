@@ -9,11 +9,11 @@ android {
 
     defaultConfig {
         applicationId "com.ascend.wangfeng.locationby4g"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         jackOptions {
             enabled true
@@ -45,4 +45,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile project(':latte-core')
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    compile files('libs/poi-3.9.jar')
+    /*64k异常*/
+    compile 'com.android.support:multidex:1.0.1'
 }

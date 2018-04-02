@@ -58,4 +58,9 @@ public class StringUtil {
     private static byte charToByte(char c) {
         return (byte) "0123456789ABCDEF".indexOf(c);
     }
+    public static boolean isEmpty(String s){
+        if (s == null)return true;
+        if (s == "")return  true;
+        return false;
+    }
 }

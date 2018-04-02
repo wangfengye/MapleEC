@@ -15,7 +15,7 @@ import java.util.List;
  * email 1040441325@qq.com
  */
 
-public class EquipmentEntry implements MultiItemEntity{
+public class  EquipmentEntry implements MultiItemEntity{
     public static final int DIALOG = 0;
     public static final int MULTIPLE_CHOICE = 1;
     public static final int LIST =2;

@@ -274,7 +274,6 @@ public class SocketClient implements Runnable {
         public void run() {
             try {
                 mSocket.sendUrgentData(65);
-
             } catch (IOException e) {
                 e.printStackTrace();
                 try {

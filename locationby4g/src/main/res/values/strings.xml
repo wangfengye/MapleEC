@@ -13,4 +13,6 @@
     <string name="scan">侦码扫描</string>
     <string name="unlocation">释放</string>
     <string name="location">定位</string>
+    <string name="base_path">hotspot/imsi</string>
+    <string name="path_hint">默认:当前时间</string>
 </resources>

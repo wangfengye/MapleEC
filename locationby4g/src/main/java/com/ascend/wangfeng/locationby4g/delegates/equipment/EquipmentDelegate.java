@@ -15,8 +15,9 @@ import com.ascend.wangfeng.locationby4g.Config;
 import com.ascend.wangfeng.locationby4g.MainActivity;
 import com.ascend.wangfeng.locationby4g.R;
 import com.ascend.wangfeng.locationby4g.api.ISwr;
+import com.ascend.wangfeng.locationby4g.rxbus.RxBus;
+import com.ascend.wangfeng.locationby4g.rxbus.Subscribe;
 import com.ascend.wangfeng.locationby4g.services.bean.CellSysAck;
-import com.threshold.rxbus2.RxBus;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -25,10 +26,6 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 
 /**
@@ -51,19 +48,22 @@ public class EquipmentDelegate extends BottomItemDelegate {
     private TimerTask mTask;
     private Timer mTimer;
     String mTest;
-    CompositeDisposable mDisposable = new CompositeDisposable();
+    EquipmentAdapter mAdapterd;
+
 
     @OnClick(R.id.btn_running)
     void onClickBtnRunnind() {
         isRunning = !isRunning;
         if (isRunning) {
-            if (hasSwr()){
-            initTimer();
-            mBtnRunning.setText(getResources().getText(R.string.stop));
-            mBtnRunning.setBackground(getResources().getDrawable(R.drawable.circle_red));
-            goContainer(1);
-            mSwr.start();}else {
-                isRunning =!isRunning;
+            if (hasSwr() && hasActive()) {
+
+                initTimer();
+                mBtnRunning.setText(getResources().getText(R.string.stop));
+                mBtnRunning.setBackground(getResources().getDrawable(R.drawable.circle_red));
+                goContainer(1);
+                mSwr.start();
+            } else {
+                isRunning = !isRunning;
             }
         } else {
             stopTimer();
@@ -71,6 +71,17 @@ public class EquipmentDelegate extends BottomItemDelegate {
             mBtnRunning.setBackground(getResources().getDrawable(R.drawable.circle));
             mSwr.stop();
         }
+    }
+
+    private boolean hasActive() {
+        for (CellSysAck ack : Config.getInstance().getAcks()) {
+            if (ack.getState() == CellSysAck.STATE_SYNC_ACTIVE ||
+                    ack.getState() == CellSysAck.STATE_UNSYNC_ACTIVE) {
+                return true;
+            }
+        }
+        Toast.makeText(getActivity(), "设备尚未启动", Toast.LENGTH_SHORT).show();
+        return false;
     }
 
 
@@ -81,7 +92,9 @@ public class EquipmentDelegate extends BottomItemDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
+        RxBus.getDefault().register(this);
         initSetting();
+        // 获取service
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
@@ -95,15 +108,16 @@ public class EquipmentDelegate extends BottomItemDelegate {
                 });
             }
         };
-        timer.schedule(task,1000);
+        timer.schedule(task, 1000);
     }
-    private boolean hasSwr(){
-        if (mSwr == null){
+
+    private boolean hasSwr() {
+        if (mSwr == null) {
             MainActivity activity = (MainActivity) getProxyActivity();
             mSwr = activity.getService();
             Toast.makeText(getContext(), "设备未启动", Toast.LENGTH_SHORT).show();
             return false;
-        }else {
+        } else {
             return true;
         }
     }
@@ -173,7 +187,7 @@ public class EquipmentDelegate extends BottomItemDelegate {
         entries.add(EquipmentEntry.createList("侦码状态", map, new EquipmentEntry.Callback() {
             @Override
             public void onClickListener(int i) {
-                if (hasSwr()){
+                if (hasSwr()) {
                     mSwr.getEquimentState();
                 }
 
@@ -183,13 +197,17 @@ public class EquipmentDelegate extends BottomItemDelegate {
         entries.add(EquipmentEntry.createDialog(getString(R.string.restart), getString(R.string.restart_desc), getProxyActivity(), new EquipmentEntry.Callback() {
             @Override
             public void onClickListener(int i) {
-                if (hasSwr()){mSwr.restart();}
+                if (hasSwr()) {
+                    mSwr.restart();
+                }
             }
         }));
         entries.add(EquipmentEntry.createDialog(getString(R.string.scan), getString(R.string.scan_desc), getProxyActivity(), new EquipmentEntry.Callback() {
             @Override
             public void onClickListener(int i) {
-               if (hasSwr()){mSwr.scan();}
+                if (hasSwr()) {
+                    mSwr.scan();
+                }
             }
         }));
         ArrayList<String> list = new ArrayList<>();
@@ -223,23 +241,20 @@ public class EquipmentDelegate extends BottomItemDelegate {
                 mSwr.setMode(i);
             }
         }));
-        final EquipmentAdapter adapter = new EquipmentAdapter(entries);
+        mAdapterd = new EquipmentAdapter(entries);
         final LinearLayoutManager manager = new LinearLayoutManager(getContext());
         mRvSetting.setLayoutManager(manager);
-        mRvSetting.setAdapter(adapter);
+        mRvSetting.setAdapter(mAdapterd);
 
         mRvSetting.addItemDecoration(BaseDecoration.create(getResources()
                 .getColor(R.color.colorAccent), 1));
-        // 接收设备状态改变信息
-        Disposable subscribe = RxBus.getDefault().ofType(CellSysAck.class)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<CellSysAck>() {
-                    @Override
-                    public void accept(CellSysAck ack) throws Exception {
-                        adapter.notifyItemChanged(0);
-                    }
-                });
-        mDisposable.add(subscribe);
+
+    }
+
+    @Subscribe
+    public void receiveState(CellSysAck ack) {
+        if (mAdapterd != null)
+            mAdapterd.notifyItemChanged(0);
     }
 
     @Override
@@ -247,10 +262,7 @@ public class EquipmentDelegate extends BottomItemDelegate {
         if (mTimer != null) {
             mTimer.cancel();
         }
-        if (mDisposable!=null){
-            mDisposable.clear();
-        }
-
+        RxBus.getDefault().unregister(this);
         super.onDestroy();
     }
 }

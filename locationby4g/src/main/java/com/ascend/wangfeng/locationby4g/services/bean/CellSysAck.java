@@ -1,6 +1,7 @@
 package com.ascend.wangfeng.locationby4g.services.bean;
 
-import com.threshold.rxbus2.RxBus;
+
+import com.ascend.wangfeng.locationby4g.rxbus.RxBus;
 
 import java.net.Socket;
 

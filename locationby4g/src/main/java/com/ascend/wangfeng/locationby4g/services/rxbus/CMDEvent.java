@@ -6,8 +6,8 @@ package com.ascend.wangfeng.locationby4g.services.rxbus;
  */
 
 public class CMDEvent {
-    public static final int SEND_DATA = 0;
-    public static final int SHOW_DATA = 1;
+    public static final int DATA_CLEAR = 0;
+
     private int cmd;
     private String content;
 
