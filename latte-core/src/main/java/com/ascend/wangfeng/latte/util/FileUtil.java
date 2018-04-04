@@ -50,6 +50,21 @@ public class FileUtil {
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getPath() + "/Camera/";
 
     /**
+     *  获取sd卡文件列表
+     * @param path
+     * @return
+     */
+    public static File[] getFileList(String path){
+        String actualPath = SDCARD_DIR +  "/" + path;
+        File dir = new File(actualPath);
+        if (dir.exists()){
+            File[] files = dir.listFiles();
+            return files;
+        }else {
+            return null;
+        }
+    }
+    /**
      * @param timeFormatHeader 前缀
      * @return 添加时间
      */

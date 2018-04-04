@@ -45,7 +45,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile project(':latte-core')
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.3'
-    compile files('libs/poi-3.9.jar')
     /*64k异常*/
     compile 'com.android.support:multidex:1.0.1'
+    compile files('libs/opencsv-2.3.jar')
 }

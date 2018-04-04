@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">P02设备</string>
     <string name="wifi_info">WIFI信息</string>
+    <string name="analyse">分析</string>
     <string name="scan_info">侦码信息</string>
     <string name="equiment_manage">设备管理</string>
     <string name="start">开始</string>

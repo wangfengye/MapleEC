@@ -5,6 +5,7 @@ import com.ascend.wangfeng.latte.delegates.bottom.BottomBean;
 import com.ascend.wangfeng.latte.delegates.bottom.BottomItemDelegate;
 import com.ascend.wangfeng.latte.delegates.bottom.ItemBuilder;
 import com.ascend.wangfeng.locationby4g.R;
+import com.ascend.wangfeng.locationby4g.delegates.analyse.AnalyseDelegate;
 import com.ascend.wangfeng.locationby4g.delegates.equipment.EquipmentDelegate;
 import com.ascend.wangfeng.locationby4g.delegates.imsi.ImsiDelegate;
 
@@ -22,7 +23,7 @@ public class MainDelegate extends BaseBottomDelegate{
         final LinkedHashMap<BottomBean,BottomItemDelegate> items = new LinkedHashMap<>();
         items.put(new BottomBean("{fa-th-large}",getString(R.string.equiment_manage)),new EquipmentDelegate());
         items.put(new BottomBean("{fa-stack-overflow}",getString(R.string.scan_info)),new ImsiDelegate());
-       // items.put(new BottomBean("{fa-wifi}",getString(R.string.wifi_info)),new EquipmentDelegate());
+        items.put(new BottomBean("{fa-random}",getString(R.string.analyse)),new AnalyseDelegate());
 
         return builder.addItem(items).build();
     }

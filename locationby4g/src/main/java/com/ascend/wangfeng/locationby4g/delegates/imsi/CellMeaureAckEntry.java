@@ -9,11 +9,39 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
  */
 
 public class CellMeaureAckEntry extends CellMeaureAck implements MultiItemEntity{
+    public static final int TYPE_NORMAL = 0;
+    public static final int TYPE_IMSI_RESULT = 1;
     // 是否监控
     private boolean isLocation = false;
+    // 用于碰撞分析,记录多少文件采集到
+    private int crashCounter = 1;
+    private String fileName;
+    private int type;
     @Override
     public int getItemType() {
-        return 0;
+        return type;
+    }
+    public void setItemType(int type){
+        this.type = type;
+    }
+
+    public int getCrashCounter() {
+        return crashCounter;
+    }
+
+    public void setCrashCounter(int crashCounter) {
+        this.crashCounter = crashCounter;
+    }
+    public void addCrash() {
+        this.crashCounter = crashCounter +1;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public static CellMeaureAckEntry copyStatic(CellMeaureAck ack){
