@@ -6,7 +6,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.ascend.wangfeng.locationby4g.Config;
 import com.ascend.wangfeng.locationby4g.api.ISwr;
@@ -33,7 +32,7 @@ import java.util.concurrent.Executors;
  */
 
 public class SocketService2 extends Service implements ISwr {
-    public static final String TAG = SocketService.class.getSimpleName();
+    public static final String TAG = SocketService2.class.getSimpleName();
     private ArrayList<CellSysAck> mAcks;
     private SocketService2.SocketBinder mBinder = new SocketService2.SocketBinder();
     private ExecutorService mPool;
@@ -57,7 +56,7 @@ public class SocketService2 extends Service implements ISwr {
 
     @Override
     public void scan() {
-        Toast.makeText(this, "等待实现", Toast.LENGTH_SHORT).show();
+       writeData(CellCmd.setCellScanREQ());
     }
 
     @Override
@@ -69,7 +68,7 @@ public class SocketService2 extends Service implements ISwr {
 
     @Override
     public void setMode(int type) {
-        Toast.makeText(this, "等待实现", Toast.LENGTH_SHORT).show();
+        writeData(CellCmd.setSwitchEnableReq(type));
     }
 
     @Override

@@ -53,7 +53,11 @@ public class EquipmentAdapter extends BaseMultiItemQuickAdapter<EquipmentEntry, 
             case EquipmentEntry.MULTIPLE_CHOICE:
                 helper.setText(R.id.rb_1, item.getChoices().get(0));
                 helper.setText(R.id.rb_2, item.getChoices().get(1));
-                helper.setText(R.id.rb_3, item.getChoices().get(2));
+                if (item.getChoices().size()<3){
+                    helper.getView(R.id.rb_3).setVisibility(View.GONE);
+                }else {
+                    helper.setText(R.id.rb_3, item.getChoices().get(2));
+                }
                 ((RadioGroup) helper.getView(R.id.rg_choices)).setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId) {

@@ -56,7 +56,6 @@ public class EquipmentDelegate extends BottomItemDelegate {
         isRunning = !isRunning;
         if (isRunning) {
             if (hasSwr() && hasActive()) {
-
                 initTimer();
                 mBtnRunning.setText(getResources().getText(R.string.stop));
                 mBtnRunning.setBackground(getResources().getDrawable(R.drawable.circle_red));
@@ -72,7 +71,7 @@ public class EquipmentDelegate extends BottomItemDelegate {
             mSwr.stop();
         }
     }
-
+// 判断设备程序是否已启动
     private boolean hasActive() {
         for (CellSysAck ack : Config.getInstance().getAcks()) {
             if (ack.getState() == CellSysAck.STATE_SYNC_ACTIVE ||
@@ -80,6 +79,7 @@ public class EquipmentDelegate extends BottomItemDelegate {
                 return true;
             }
         }
+        mSwr.getEquimentState();
         Toast.makeText(getActivity(), "设备尚未启动", Toast.LENGTH_SHORT).show();
         return false;
     }
@@ -232,13 +232,22 @@ public class EquipmentDelegate extends BottomItemDelegate {
             }
         }));
         ArrayList<String> changes = new ArrayList<>();
-        changes.add("自动");
         changes.add("关闭");
         changes.add("开启");
         entries.add(EquipmentEntry.createMultipleChoice("侦码切换", changes, new EquipmentEntry.Callback() {
             @Override
             public void onClickListener(int i) {
-                mSwr.setMode(i);
+                switch (i) {
+                    case R.id.rb_1:
+                        mSwr.setMode(0);
+                        break;
+                    case R.id.rb_2:
+                        mSwr.setMode(1);
+                        break;
+                    default:
+                        break;
+                }
+
             }
         }));
         mAdapterd = new EquipmentAdapter(entries);

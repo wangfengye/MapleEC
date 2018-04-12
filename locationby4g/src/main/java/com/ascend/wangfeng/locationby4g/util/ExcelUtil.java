@@ -71,8 +71,8 @@ public class ExcelUtil {
                 entry.setFieldIntensity(Integer.parseInt(strings[2]));
                 boolean has = false;// 是否已存在
                 for (int j = 0; j < mEntries.size(); j++) {
-                    if (mEntries.get(i).getImsi().equals(entry.getImsi())) {
-                        mEntries.get(i).copy(entry);
+                    if (mEntries.get(j).getImsi().equals(entry.getImsi())) {
+                        mEntries.get(j).copy(entry);
                         has = true;
                         break;
                     }
