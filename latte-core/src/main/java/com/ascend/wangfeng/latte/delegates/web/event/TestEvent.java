@@ -12,7 +12,7 @@ public class TestEvent extends Event{
     @Override
     public String execute(String params) {
         Toast.makeText(getContext(), getAction(), Toast.LENGTH_SHORT).show();
-        if (getAction().equals("test")){
+        if (getAction().equals("share")){
             final WebView webView =getWebView();
             webView.post(new Runnable() {
                 @Override

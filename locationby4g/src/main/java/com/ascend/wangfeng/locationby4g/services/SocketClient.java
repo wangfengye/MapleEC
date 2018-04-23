@@ -2,12 +2,13 @@ package com.ascend.wangfeng.locationby4g.services;
 
 import android.util.Log;
 
+import com.ascend.wangfeng.locationby4g.MainApp;
+import com.ascend.wangfeng.locationby4g.R;
 import com.ascend.wangfeng.locationby4g.rxbus.RxBus;
 import com.ascend.wangfeng.locationby4g.services.bean.CellMeaureAck;
 import com.ascend.wangfeng.locationby4g.services.bean.CellSysAck;
 import com.ascend.wangfeng.locationby4g.services.bean.Metrocell;
 import com.ascend.wangfeng.locationby4g.services.rxbus.CellMeaureAckEvent;
-import com.ascend.wangfeng.locationby4g.services.rxbus.ErrorEvent;
 import com.ascend.wangfeng.locationby4g.services.rxbus.MetrocellEvent;
 import com.ascend.wangfeng.locationby4g.util.ArrayUtil;
 import com.ascend.wangfeng.locationby4g.util.SwrUtil;
@@ -33,7 +34,7 @@ public class SocketClient implements Runnable {
     public static final int CONNECT_PERIOD = 1000;
     public static final int HEART_PERIOD = 3000;
     private static final int CONNECT_TIME_OUT = 10 * 1000;
-    private static final int CONNECT_TRY_TIMES = 2;
+    private static final int CONNECT_TRY_TIMES = 3;// 重连次数
     private CellSysAck mCellSysAck;
     private int mConnectTimes = 0;
     private Socket mSocket;
@@ -63,7 +64,7 @@ public class SocketClient implements Runnable {
             keepHeartBeat();
             reciceData();
         }else {
-            RxBus.getDefault().post(new ErrorEvent(mCellSysAck.getIp() + "连接已断开"));
+            MainApp.toast(R.string.unconnected);
         }
     }
 
@@ -86,7 +87,6 @@ public class SocketClient implements Runnable {
      * 数据解析
      */
     private void reciceData() {
-
         while (mSocket != null && mSocket.isConnected()) {
             try {
                 DataInputStream in = new DataInputStream(mSocket.getInputStream());
@@ -97,7 +97,6 @@ public class SocketClient implements Runnable {
                         response.add(Integer.toHexString(buffer[i] & 0xFF));
                     }
                 }
-
                 analyseData(response, mCellSysAck);
             } catch (IOException e) {
 
@@ -226,6 +225,7 @@ public class SocketClient implements Runnable {
      * @param data
      */
     private void getCellMeasureAck(List<String> data) {
+
         CellMeaureAck ack = new CellMeaureAck();
         String imsi = SwrUtil.hex2Imsi(data);
         ack.setImsi(imsi);

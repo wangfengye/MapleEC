@@ -16,4 +16,5 @@
     <string name="location">定位</string>
     <string name="base_path">hotspot/imsi</string>
     <string name="path_hint">默认:当前时间</string>
+    <string name="unconnected">连接已断开</string>
 </resources>

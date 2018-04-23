@@ -16,15 +16,15 @@ import java.lang.ref.WeakReference;
  * email 1040441325@qq.com
  */
 
-public abstract class WebDelegate extends LatteDelegate implements IWebViewinitializer{
-    private WebView mWebView =null;
+public abstract class WebDelegate extends LatteDelegate implements IWebViewinitializer {
+    private WebView mWebView = null;
     private final ReferenceQueue<WebView> WEB_VIEW_QUEUE = new ReferenceQueue<>();
     private String mUrl = null;
-    private boolean mIsWebViewAvaiable =false;
-    private LatteDelegate mTopDelegate =null;
+    private boolean mIsWebViewAvaiable = false;
+    private LatteDelegate mTopDelegate = null;
 
     public LatteDelegate getTopDelegate() {
-        if (mTopDelegate ==null){
+        if (mTopDelegate == null) {
             return this;
         }
         return mTopDelegate;
@@ -36,6 +36,7 @@ public abstract class WebDelegate extends LatteDelegate implements IWebViewiniti
 
     public WebDelegate() {
     }
+
     public abstract IWebViewinitializer setInitializer();
 
     @Override
@@ -45,44 +46,47 @@ public abstract class WebDelegate extends LatteDelegate implements IWebViewiniti
         mUrl = args.getString(Routekeys.URL.name());
         initWebView();
     }
+
     @SuppressLint("JacascriptIntreface")
-    private void initWebView(){
-        if (mWebView !=null){
+    private void initWebView() {
+        if (mWebView != null) {
             mWebView.removeAllViews();
             mWebView.destroy();
-        }else {
-            final IWebViewinitializer initializer =setInitializer();
-            if (initializer!=null){
+        } else {
+            final IWebViewinitializer initializer = setInitializer();
+            if (initializer != null) {
                 final WeakReference<WebView> webViewWeakReference =
-                        new WeakReference<WebView>(new WebView(getContext()),WEB_VIEW_QUEUE);
+                        new WeakReference<WebView>(new WebView(getContext()), WEB_VIEW_QUEUE);
                 mWebView = webViewWeakReference.get();
-                mWebView =initializer.initWebView(mWebView);
+                mWebView = initializer.initWebView(mWebView);
                 mWebView.setWebViewClient(initializer.initWebViewClient());
                 mWebView.setWebChromeClient(initializer.initWebChromeClient());
-                mWebView.addJavascriptInterface(LatteWebInterface.create(this),"latte");
-                mIsWebViewAvaiable =true;
-            }else {
+                mWebView.addJavascriptInterface(LatteWebInterface.create(this), "latte");
+                mIsWebViewAvaiable = true;
+            } else {
                 throw new NullPointerException("Initializer is null");
             }
         }
     }
-    public WebView getWebView(){
-        if (mWebView==null){
+
+    public WebView getWebView() {
+        if (mWebView == null) {
             throw new NullPointerException("WebView is null");
         }
-        return mIsWebViewAvaiable? mWebView:null;
+        return mIsWebViewAvaiable ? mWebView : null;
     }
 
-    public String getUrl(){
-        if (mUrl ==null){
+    public String getUrl() {
+        if (mUrl == null) {
             throw new NullPointerException("WebView is null");
         }
         return mUrl;
     }
+
     @Override
     public void onPause() {
         super.onPause();
-        if (mWebView!=null){
+        if (mWebView != null) {
             mWebView.onPause();
         }
     }
@@ -90,7 +94,7 @@ public abstract class WebDelegate extends LatteDelegate implements IWebViewiniti
     @Override
     public void onResume() {
         super.onResume();
-        if (mWebView!=null){
+        if (mWebView != null) {
             mWebView.onResume();
         }
     }
@@ -98,13 +102,13 @@ public abstract class WebDelegate extends LatteDelegate implements IWebViewiniti
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mIsWebViewAvaiable =false;
+        mIsWebViewAvaiable = false;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mWebView!=null){
+        if (mWebView != null) {
             mWebView.removeAllViews();
             mWebView.destroy();
         }

@@ -23,7 +23,6 @@ public class MainActivity extends ProxyActivity {
     }
     @Override
     public LatteDelegate setRootDelegate() {
-        // return new MainDelegate();
         return  new MainDelegate();
     }
 }

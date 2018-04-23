@@ -46,7 +46,7 @@ public class ExampleApp extends Application {
                 .withWeChatAppId("1")
                 .withWeChatAppSecret("2")
                 .withJavascriptInterface("latte")
-                .withWebEvent("test", new TestEvent())
+                .withWebEvent("share", new TestEvent())
                 .configure();
         DatabaseManager.getInstance().init(this);
         initStetho();

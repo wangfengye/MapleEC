@@ -24,3 +24,6 @@ $(function () {
 
         });
 });
+function nativeCall(){
+    alert("android connect me")
+}

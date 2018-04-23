@@ -10,7 +10,7 @@ import com.orhanobut.logger.Logger;
 public class UndefindEvent extends Event{
     @Override
     public String execute(String params) {
-        Logger.e("UndefindEvent");
+        Logger.e("UndefindEvent: 未定义此事件---"+params);
         return null;
     }
 }
