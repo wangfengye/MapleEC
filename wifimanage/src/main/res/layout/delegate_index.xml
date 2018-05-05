@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:circle="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical"
+    tools:context="com.ascend.wangfeng.wifimanage.MainActivity">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <TextView
+        style="@style/indexTitle"
+        android:text="在线总览"
+        android:textSize="18sp"/>
+
+    <LinearLayout
+        android:elevation="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/white"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            style="@style/counterLayout">
+
+            <TextView
+                style="@style/counterNumber"
+                android:text="10"/>
+
+            <TextView
+                style="@style/counterBottom"
+                android:background="@drawable/tv_round_blue"
+                android:text="在线人数"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            style="@style/counterLayout">
+
+            <TextView
+                style="@style/counterNumber"
+                android:text="10"/>
+
+            <TextView
+                style="@style/counterBottom"
+                android:background="@drawable/tv_round_green"
+                android:text="在线设备"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            style="@style/counterLayout">
+
+            <TextView
+                style="@style/counterNumber"
+                android:text="1"/>
+
+            <TextView
+                style="@style/counterBottom"
+                android:background="@drawable/tv_round_orange"
+                android:text="未知设备"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <TextView
+        style="@style/indexTitle"
+        android:text="设备统计"/>
+    <LinearLayout
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:elevation="1dp"
+        android:layout_marginTop="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:weightSum="4">
+
+            <com.ascend.wangfeng.wifimanage.views.CircleImageView
+                circle:needBg="true"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:src="@drawable/phone"/>
+
+            <com.ascend.wangfeng.wifimanage.views.CircleImageView
+                circle:needBg="true"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:src="@drawable/phone"/>
+
+            <com.ascend.wangfeng.wifimanage.views.CircleImageView
+                circle:needBg="true"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:src="@drawable/phone"/>
+
+            <com.ascend.wangfeng.wifimanage.views.CircleImageView
+                circle:needBg="true"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:src="@drawable/phone"
+                circle:online="true"/>
+        </LinearLayout>
+        <View
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/bgFour"/>
+        <TextView
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="16dp"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textThi"
+            android:text="详情 >"/>
+    </LinearLayout>
+    <TextView
+        style="@style/indexTitle"
+        android:text="人员统计"/>
+    <LinearLayout
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:elevation="1dp"
+        android:layout_marginTop="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:weightSum="4" >
+            <com.ascend.wangfeng.wifimanage.views.CircleImageView
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_width="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                circle:online="true"
+                android:src="@drawable/test"/>
+            <com.ascend.wangfeng.wifimanage.views.CircleImageView
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_width="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:src="@drawable/test"/>
+            <com.ascend.wangfeng.wifimanage.views.CircleImageView
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_width="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                circle:online="true"
+                circle:icon="@drawable/phone"
+                android:src="@drawable/test"/>
+            <com.ascend.wangfeng.wifimanage.views.CircleImageView
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_width="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:src="@drawable/test"/>
+        </LinearLayout>
+        <View
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/bgFour"/>
+        <TextView
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="16dp"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textThi"
+            android:text="详情 >"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:padding="16dp"
+        android:background="@android:color/white">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="未知设备"
+            android:textSize="18sp"/>
+    </RelativeLayout>
+</LinearLayout>
+</ScrollView>

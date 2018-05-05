@@ -1,19 +1,21 @@
-package com.ascend.wangfeng.wifimap;
+package com.ascend.wangfeng.wifimanage;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 
 import com.ascend.wangfeng.latte.activities.ProxyActivity;
 import com.ascend.wangfeng.latte.app.Latte;
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
-import com.ascend.wangfeng.wifimap.delegates.CircleImageDelegate;
+import com.ascend.wangfeng.wifimanage.delegates.launch.LaunchDelegate;
 
 import qiu.niorgai.StatusBarCompat;
 
 public class MainActivity extends ProxyActivity {
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
         super.onCreate(savedInstanceState);
         final ActionBar actionBar =getSupportActionBar();
         if (actionBar!=null)actionBar.hide();
@@ -21,9 +23,10 @@ public class MainActivity extends ProxyActivity {
         //初始化activity content;
         Latte.getConfigurator().withActivityContext(this);
     }
+
     @Override
     public LatteDelegate setRootDelegate() {
-        //return  new MainDelegate();
-        return new CircleImageDelegate();
+        // return new MainDelegate();
+        return new LaunchDelegate();
     }
 }
