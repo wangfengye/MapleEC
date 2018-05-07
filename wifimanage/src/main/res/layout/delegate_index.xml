@@ -83,7 +83,7 @@
             android:weightSum="4">
 
             <com.ascend.wangfeng.wifimanage.views.CircleImageView
-                circle:needBg="true"
+
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -93,7 +93,7 @@
                 android:src="@drawable/phone"/>
 
             <com.ascend.wangfeng.wifimanage.views.CircleImageView
-                circle:needBg="true"
+
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -103,7 +103,7 @@
                 android:src="@drawable/phone"/>
 
             <com.ascend.wangfeng.wifimanage.views.CircleImageView
-                circle:needBg="true"
+
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -113,7 +113,7 @@
                 android:src="@drawable/phone"/>
 
             <com.ascend.wangfeng.wifimanage.views.CircleImageView
-                circle:needBg="true"
+
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

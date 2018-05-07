@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
-                android:padding="8dp"
                 android:layout_width="0dp"
                 android:clipChildren="false"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
     <com.joanzapata.iconify.widget.IconTextView
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-10dp"
         android:id="@+id/icon_bottom_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/text"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:background="@drawable/round_bg"
         android:gravity="center"
-        android:textSize="24sp"
+        android:textSize="36sp"
+        android:elevation="20dp"
         tools:text="{fa-we}"/>
-
     <TextView
         android:id="@+id/text"
         android:layout_width="match_parent"
@@ -23,5 +24,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:gravity="center"
+        android:visibility="invisible"
         tools:text="home"/>
 </RelativeLayout>

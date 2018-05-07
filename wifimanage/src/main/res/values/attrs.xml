@@ -3,6 +3,7 @@
     <declare-styleable name="CircleImageView">
         <attr name="icon" format="reference"/>
         <attr name="online" format="boolean"/>
-        <attr name="needBg" format="boolean"/>
+        <attr name="needBg" format="color"/>
+
     </declare-styleable>
 </resources>

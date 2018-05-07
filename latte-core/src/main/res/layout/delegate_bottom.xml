@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:clipChildren="false"
               android:orientation="vertical">
 
     <android.support.v7.widget.ContentFrameLayout
@@ -10,17 +12,20 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"/>
     <View
+        android:clipChildren="false"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@android:color/darker_gray"/>
+
     <android.support.v7.widget.LinearLayoutCompat
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
-        android:padding="8dp"
+
         android:layout_height="0dp"
         android:layout_weight="1"
         android:minHeight="56dp"
         android:elevation="10dp"
+        android:clipChildren="false"
         android:layout_alignParentBottom="true"
         android:background="@android:color/white"
         android:orientation="horizontal"/>

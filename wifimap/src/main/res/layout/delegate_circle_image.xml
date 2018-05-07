@@ -5,14 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:clipChildren="false"
     xmlns:cirle="http://schemas.android.com/tools">
-
-<com.ascend.wangfeng.wifimap.CircleImageView2
-    android:layout_width="50dp"
-    android:layout_height="50dp"
-    android:src="@drawable/test"/>
-    <com.ascend.wangfeng.wifimap.CircleImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/test"/>
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:background="#f00"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:clipChildren="false"
+        android:layout_weight="1">
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:clipChildren="false"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_marginTop="-20dp"
+                android:background="#0f0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

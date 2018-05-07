@@ -37,7 +37,7 @@ dependencies {
 
     /*字体图标*/
     compile 'com.joanzapata.iconify:android-iconify-ionicons:2.2.2'
-    compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2'
+    compile 'com.joanzapata.iconify:android-iconify-fontawesome:+'
 
     /*frangment库*/
     compile 'me.yokeyword:fragmentation:1.1.3'

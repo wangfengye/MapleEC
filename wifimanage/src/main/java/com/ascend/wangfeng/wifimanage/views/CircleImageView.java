@@ -15,6 +15,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import com.ascend.wangfeng.wifimanage.R;
 
@@ -28,7 +29,7 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
     private static final int RADIUS_ICON = 3;// 小图标半径比例的倒数
     private static final int RADIUS_POINT = 5;//点半径比例的倒数
     private static final int BLANK = 20; //空白距离比例
-    private boolean mNeedBg = false;//是否需要背景;
+    private int mNeedBg;//背景颜色,0表示不需要;
     private int mRadius;
     private int mRadiusIcon;
     private int mRadiusPoint;
@@ -62,7 +63,8 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
             mIcon = ta.getDrawable(R.styleable.CircleImageView_icon);
         }
         if (ta.hasValue(R.styleable.CircleImageView_needBg)) {
-            mNeedBg = ta.getBoolean(R.styleable.CircleImageView_needBg,false);
+            mNeedBg  = ta.getColor(R.styleable.CircleImageView_needBg, 0);
+            Log.i("tag", "CircleImageView: "+mNeedBg);
         }
         // 不再使用typedArray,释放资源,以便系统复用;
         ta.recycle();
@@ -88,11 +90,13 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
             mOnlinePaint.setColor(mOnline ? getResources().getColor(R.color.colorAccent) : Color.GRAY);
         invalidate();
     }
-
+    public void setNeedBg(int color){
+        this.mNeedBg = color;
+    }
     private void init() {
         mWidth = getMeasuredWidth();
         mHeight = getMeasuredHeight();
-        mRadius = mWidth > mHeight ? mHeight / 2 : mWidth / 2;
+        mRadius = (mWidth > mHeight ? mHeight / 2 : mWidth / 2)-2;
         mRadiusIcon = mRadius / RADIUS_ICON;
         mRadiusPoint = mRadius / RADIUS_POINT;
         mBlank = mRadius / BLANK;
@@ -108,11 +112,12 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
 
         mBgPaint = new Paint();
         mBgPaint.setAntiAlias(true);
-        mBgPaint.setStyle(Paint.Style.FILL);
+        mBgPaint.setStyle(Paint.Style.STROKE);
         mBgPaint.setColor(getResources().getColor(R.color.textFir));
 
         mBlankPaint = new Paint();
         mBlankPaint.setAntiAlias(true);
+        mBgPaint.setStrokeWidth(2.0f);
         mBlankPaint.setColor(Color.WHITE);
         mBlankPaint.setStyle(Paint.Style.FILL);
 
@@ -151,16 +156,27 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
             }
             BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
             // 缩放
-            if(mNeedBg){
-                float scale = mRadius*3/4 * 2.0f / Math.min(bitmap.getHeight(), bitmap.getWidth());
+            if(mNeedBg!=0){
+                float scale = (mRadius*3/4) * 2.0f / Math.min(bitmap.getHeight(), bitmap.getWidth());
                 Matrix matrix = new Matrix();
-                matrix.setTranslate(  mRadius*1/4,   mRadius*1/4);
+                matrix.setTranslate(  mRadius/4,   mRadius/4);
                 matrix.preScale(scale, scale);
                 shader.setLocalMatrix(matrix);
                 mImgPaint.setShader(shader);
+                int red = (mNeedBg & 0xff0000) >> 16;
+                int green = (mNeedBg & 0x00ff00) >> 8;
+                int blue = (mNeedBg & 0x0000ff);
+                ColorMatrix cm = new ColorMatrix(new float[]{
+                        1,0,0,0,red,
+                        0,1,0,0,green,
+                        0,0,1,0,blue,
+                        0,0,0,1,0,
+                });
+                ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
+                mImgPaint.setColorFilter(f);
                 // 绘制主圆
                 canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius, mBgPaint);
-                canvas.drawCircle(mWidth / 2, mHeight / 2,   mRadius*3/4, mImgPaint);
+                canvas.drawCircle(mWidth / 2, mHeight / 2,   mRadius, mImgPaint);
             }else {
                 float scale = mRadius * 2.0f / Math.min(bitmap.getHeight(), bitmap.getWidth());
                 Matrix matrix = new Matrix();

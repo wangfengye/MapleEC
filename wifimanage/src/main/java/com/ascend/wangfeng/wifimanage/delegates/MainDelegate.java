@@ -20,16 +20,18 @@ public class MainDelegate extends BaseBottomDelegate{
     @Override
     public LinkedHashMap<BottomBean, BottomItemDelegate> setItems(ItemBuilder builder) {
         final LinkedHashMap<BottomBean,BottomItemDelegate> items = new LinkedHashMap<>();
-        items.put(new BottomBean("{fa-home}","主页"),new IndexDelegate());
-        items.put(new BottomBean("{fa-list-ul}","历史"),new UserDelegate());
-        items.put(new BottomBean("{fa-cogs}","管理"),new UserDelegate());
+
+        items.put(new BottomBean("{fa-calendar}","时间线"),new UserDelegate());
+        items.put(new BottomBean("{fa-hourglass}","计划"),new UserDelegate());
+        items.put(new BottomBean("{fa-heartbeat}","主页",BottomBean.TYPE_TOP),new IndexDelegate());
+        items.put(new BottomBean("{fa-star}","关注"),new UserDelegate());
         items.put(new BottomBean("{fa-user}","我的"),new UserDelegate());
         return  items;
     }
 
     @Override
     public int setIndexDelegate() {
-        return 0;
+        return 2;
     }
 
     @Override
