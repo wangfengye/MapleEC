@@ -25,6 +25,7 @@ public class MainApp extends MultiDexApplication {
         super.onCreate();
         mContext = getApplicationContext();
         Latte.init(this).withIcon(new FontAwesomeModule()).configure();
+        initGreenDao();
     }
     public static Context getContent(){
         return mContext;

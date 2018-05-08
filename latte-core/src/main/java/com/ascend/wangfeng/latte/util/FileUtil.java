@@ -34,7 +34,7 @@ import java.util.Locale;
  * email 1040441325@qq.com
  */
 
-public class FileUtil {
+public class  FileUtil {
     //格式化模板
     private static final String TIME_FORMAT = "_yyyyMMdd_HHmmss";
     private static final String SDCARD_DIR =

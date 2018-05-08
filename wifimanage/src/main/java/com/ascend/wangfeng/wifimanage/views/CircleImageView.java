@@ -188,7 +188,7 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
                 canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius, mImgPaint);
             }
             // recycle后其他图片加载异常
-            bitmap.recycle();
+           // bitmap.recycle();
         }
     }
 
@@ -241,7 +241,7 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
             canvas.drawCircle(mWidth - mRadiusIcon, mRadiusIcon, mRadiusIcon, mBlankPaint);
             canvas.drawCircle(mWidth - mRadiusIcon, mRadiusIcon, mRadiusIcon - mBlank, mBgPaint);
             canvas.drawCircle(mWidth - mRadiusIcon, mRadiusIcon, mRadiusIcon - 2*mBlank, mIconPaint);
-            bitmap.recycle();
+           // bitmap.recycle();
         }
     }
 

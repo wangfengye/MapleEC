@@ -1,8 +1,13 @@
 package com.ascend.wangfeng.wifimanage.bean;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Transient;
+
+import java.io.Serializable;
 
 /**
  * Created by fengye on 2018/4/26.
@@ -10,7 +15,9 @@ import org.greenrobot.greendao.annotation.Generated;
  * 设备
  */
 @Entity
-public class Device {
+public class Device implements MultiItemEntity,Serializable {
+    @Transient
+    private static final long serialVersionUID = -1251039796477336552L;
     @Id
     private long id;
     private String name;//设备名称
@@ -20,7 +27,7 @@ public class Device {
     private String dhcp;//主机名
     private String bonjour;
     private String netbios;
-    private String brand;//场商
+    private String brand;//厂商
     private String model;//型号
     private long firsttime;//首次出现时间
     private long lasttime;//最近更新时间
@@ -131,5 +138,10 @@ public class Device {
     }
     public void setApBssid(String apBssid) {
         this.apBssid = apBssid;
+    }
+
+    @Override
+    public int getItemType() {
+        return 0;
     }
 }

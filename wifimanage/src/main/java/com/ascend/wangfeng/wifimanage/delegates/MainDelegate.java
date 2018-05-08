@@ -16,7 +16,9 @@ import java.util.LinkedHashMap;
  */
 
 public class MainDelegate extends BaseBottomDelegate{
-
+    public static MainDelegate newInstance(){
+        return new MainDelegate();
+    }
     @Override
     public LinkedHashMap<BottomBean, BottomItemDelegate> setItems(ItemBuilder builder) {
         final LinkedHashMap<BottomBean,BottomItemDelegate> items = new LinkedHashMap<>();

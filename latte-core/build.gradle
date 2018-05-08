@@ -40,8 +40,8 @@ dependencies {
     compile 'com.joanzapata.iconify:android-iconify-fontawesome:+'
 
     /*frangment库*/
-    compile 'me.yokeyword:fragmentation:1.1.3'
-    compile 'me.yokeyword:fragmentation-swipeback:1.1.3'
+    compile 'me.yokeyword:fragmentation:1.3.3'
+    compile 'me.yokeyword:fragmentation-swipeback:1.3.3'
 
     /*butterknife*/
     compile 'com.jakewharton:butterknife:8.8.1'

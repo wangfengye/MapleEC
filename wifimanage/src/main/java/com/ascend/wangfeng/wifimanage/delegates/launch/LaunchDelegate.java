@@ -28,8 +28,8 @@ public class LaunchDelegate extends LatteDelegate{
     ConvenientBanner mBannerLaunch;
     @OnClick(R.id.btn_demo)
     void clickDemo(){
-        pop();
-        startWithPop(new MainDelegate());
+        startWithPop(MainDelegate.newInstance());
+
     }
     @Override
     public Object setLayout() {

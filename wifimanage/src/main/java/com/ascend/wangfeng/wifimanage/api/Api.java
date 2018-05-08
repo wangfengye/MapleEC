@@ -43,10 +43,15 @@ public interface Api {
     void updateDevice(Device device,Callback<Boolean> callback);
 
     /**
-     *  获取 设备信息
+     *  获取 存储的设备信息
      * @param callback 设备列表
      */
     void getDevices(Callback<List<Device>> callback);
+    /**
+     *  从设备获取设备信息
+     * @param callback 设备列表
+     */
+    void getCurrentDevices(Callback<List<Device>> callback);
 
     /**
      * 新增人员
