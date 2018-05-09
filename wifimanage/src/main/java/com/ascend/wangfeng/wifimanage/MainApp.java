@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.ascend.wangfeng.latte.app.Latte;
 import com.ascend.wangfeng.wifimanage.greendao.DaoMaster;
 import com.ascend.wangfeng.wifimanage.greendao.DaoSession;
+import com.facebook.stetho.Stetho;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 /**
@@ -26,6 +27,9 @@ public class MainApp extends MultiDexApplication {
         mContext = getApplicationContext();
         Latte.init(this).withIcon(new FontAwesomeModule()).configure();
         initGreenDao();
+        Stetho.initializeWithDefaults(this);
+
+
     }
     public static Context getContent(){
         return mContext;

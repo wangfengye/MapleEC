@@ -68,8 +68,9 @@
     </LinearLayout>
 
     <com.joanzapata.iconify.widget.IconTextView
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_vertical"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="8dp"
         android:gravity="center"

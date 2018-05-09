@@ -18,8 +18,8 @@ import java.io.Serializable;
 public class Device implements MultiItemEntity,Serializable {
     @Transient
     private static final long serialVersionUID = -1251039796477336552L;
-    @Id
-    private long id;
+    @Id(autoincrement = true)
+    private Long id;
     private String name;//设备名称
     private int type;// 设备类型
     private String mac;//mac地址
@@ -33,8 +33,10 @@ public class Device implements MultiItemEntity,Serializable {
     private long lasttime;//最近更新时间
     private int status; //活跃状态
     private String apBssid;//归属网络
-    @Generated(hash = 1774427028)
-    public Device(long id, String name, int type, String mac, String ip,
+
+
+    @Generated(hash = 122497461)
+    public Device(Long id, String name, int type, String mac, String ip,
             String dhcp, String bonjour, String netbios, String brand, String model,
             long firsttime, long lasttime, int status, String apBssid) {
         this.id = id;
@@ -52,96 +54,143 @@ public class Device implements MultiItemEntity,Serializable {
         this.status = status;
         this.apBssid = apBssid;
     }
+
+
     @Generated(hash = 1469582394)
     public Device() {
     }
-    public long getId() {
-        return this.id;
-    }
-    public void setId(long id) {
-        this.id = id;
-    }
-    public String getName() {
-        return this.name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public int getType() {
-        return this.type;
-    }
-    public void setType(int type) {
-        this.type = type;
-    }
-    public String getMac() {
-        return this.mac;
-    }
-    public void setMac(String mac) {
-        this.mac = mac;
-    }
-    public String getIp() {
-        return this.ip;
-    }
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-    public String getDhcp() {
-        return this.dhcp;
-    }
-    public void setDhcp(String dhcp) {
-        this.dhcp = dhcp;
-    }
-    public String getBonjour() {
-        return this.bonjour;
-    }
-    public void setBonjour(String bonjour) {
-        this.bonjour = bonjour;
-    }
-    public String getNetbios() {
-        return this.netbios;
-    }
-    public void setNetbios(String netbios) {
-        this.netbios = netbios;
-    }
-    public String getBrand() {
-        return this.brand;
-    }
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-    public String getModel() {
-        return this.model;
-    }
-    public void setModel(String model) {
-        this.model = model;
-    }
-    public long getFirsttime() {
-        return this.firsttime;
-    }
-    public void setFirsttime(long firsttime) {
-        this.firsttime = firsttime;
-    }
-    public long getLasttime() {
-        return this.lasttime;
-    }
-    public void setLasttime(long lasttime) {
-        this.lasttime = lasttime;
-    }
-    public int getStatus() {
-        return this.status;
-    }
-    public void setStatus(int status) {
-        this.status = status;
-    }
-    public String getApBssid() {
-        return this.apBssid;
-    }
-    public void setApBssid(String apBssid) {
-        this.apBssid = apBssid;
-    }
+
 
     @Override
     public int getItemType() {
         return 0;
+    }
+
+
+    public Long getId() {
+        return this.id;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+
+    public String getName() {
+        return this.name;
+    }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public int getType() {
+        return this.type;
+    }
+
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+
+    public String getMac() {
+        return this.mac;
+    }
+
+
+    public void setMac(String mac) {
+        this.mac = mac;
+    }
+
+
+    public String getIp() {
+        return this.ip;
+    }
+
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+
+    public String getDhcp() {
+        return this.dhcp;
+    }
+
+    public void setDhcp(String dhcp) {
+        this.dhcp = dhcp;
+    }
+
+    public String getBonjour() {
+        return this.bonjour;
+    }
+
+    public void setBonjour(String bonjour) {
+        this.bonjour = bonjour;
+    }
+
+    public String getNetbios() {
+        return this.netbios;
+    }
+
+    public void setNetbios(String netbios) {
+        this.netbios = netbios;
+    }
+
+    public String getBrand() {
+        return this.brand;
+    }
+
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getModel() {
+        return this.model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public long getFirsttime() {
+        return this.firsttime;
+    }
+
+    public void setFirsttime(long firsttime) {
+        this.firsttime = firsttime;
+    }
+
+    public long getLasttime() {
+        return this.lasttime;
+    }
+
+    public void setLasttime(long lasttime) {
+        this.lasttime = lasttime;
+    }
+
+
+    public int getStatus() {
+        return this.status;
+    }
+
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+
+    public String getApBssid() {
+        return this.apBssid;
+    }
+
+
+    public void setApBssid(String apBssid) {
+        this.apBssid = apBssid;
     }
 }

@@ -132,17 +132,20 @@ public class IndexDelegate extends BottomItemDelegate {
             Device rD = result.get(0);
             rD.setLasttime(System.currentTimeMillis());
             dao.update(rD);
-            List<PersonDevicesMap> maps = mapDao.queryBuilder().where(PersonDevicesMapDao.Properties.DId.eq(device.getId())).list();
+            List<PersonDevicesMap> maps = mapDao.queryBuilder().where(PersonDevicesMapDao.Properties.DId.eq(rD.getId())).list();
             if (maps.size()>0){
                 mOnlineDevices.add(rD);
             }else {
-                mNewDevices.add(device);
+                mNewDevices.add(rD);
             }
 
         } else {
-            mNewDevices.add(device);
+
             device.setFirsttime(System.currentTimeMillis());
+            device.setLasttime(System.currentTimeMillis());
             dao.insert(device);
+            List<Device> devices = dao.queryBuilder().where(DeviceDao.Properties.Mac.eq(device.getMac())).list();
+            mNewDevices.add(devices.get(0));
         }
 
     }

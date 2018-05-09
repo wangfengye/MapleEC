@@ -11,12 +11,12 @@ import org.greenrobot.greendao.annotation.Generated;
  */
 @Entity
 public class PersonDevicesMap {
-    @Id
-    private long id;
+    @Id(autoincrement = true)
+    private Long id;
     private long pId;//人员id;
     private long dId;//设备id;
-    @Generated(hash = 898955644)
-    public PersonDevicesMap(long id, long pId, long dId) {
+    @Generated(hash = 37060736)
+    public PersonDevicesMap(Long id, long pId, long dId) {
         this.id = id;
         this.pId = pId;
         this.dId = dId;
@@ -24,10 +24,10 @@ public class PersonDevicesMap {
     @Generated(hash = 1504450817)
     public PersonDevicesMap() {
     }
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public long getPId() {
@@ -42,4 +42,5 @@ public class PersonDevicesMap {
     public void setDId(long dId) {
         this.dId = dId;
     }
+
 }

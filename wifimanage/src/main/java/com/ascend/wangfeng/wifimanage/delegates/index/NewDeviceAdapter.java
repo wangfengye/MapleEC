@@ -32,7 +32,7 @@ public class NewDeviceAdapter extends BaseMultiItemQuickAdapter<Device,MultipleV
     }
 
     @Override
-    protected void convert(MultipleViewHolder helper, Device item) {
+    protected void convert(MultipleViewHolder helper, final Device item) {
         helper.setText(R.id.tv_name,item.getName());
         helper.setText(R.id.tv_ip,item.getIp());
         helper.setText(R.id.tv_brand,item.getBrand());
@@ -40,7 +40,9 @@ public class NewDeviceAdapter extends BaseMultiItemQuickAdapter<Device,MultipleV
         helper.setOnClickListener(R.id.ll_main, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDelegate.start(DeviceDetailDelegate.newInstance(new Bundle()));
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("device",item);
+                mDelegate.start(DeviceDetailDelegate.newInstance(bundle));
             }
         });
     }

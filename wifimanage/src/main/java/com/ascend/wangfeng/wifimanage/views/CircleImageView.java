@@ -13,6 +13,7 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -76,7 +77,9 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
         super.setImageDrawable(drawable);
         invalidate();
     }
-
+    public void setImage(@DrawableRes int id) {
+        setImage(getResources().getDrawable(id));
+    }
     // 设置图标
     public void setIcon(Drawable drawable) {
         mIcon = drawable;

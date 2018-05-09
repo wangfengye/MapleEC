@@ -42,4 +42,6 @@ dependencies {
     /*64k异常*/
     compile 'com.android.support:multidex:1.0.1'
     compile project(path: ':latte-core')
+    // 数据库调试
+    compile 'com.facebook.stetho:stetho:1.5.0'
 }

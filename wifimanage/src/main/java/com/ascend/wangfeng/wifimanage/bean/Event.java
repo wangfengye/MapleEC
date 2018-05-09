@@ -11,14 +11,14 @@ import org.greenrobot.greendao.annotation.Generated;
  */
 @Entity
 public class Event {
-    @Id
-    private long id;
+    @Id(autoincrement = true)
+    private Long id;
     private long time;
     private long pId;//人员id
     private long dId;//设备id
     private int event;//事件
-    @Generated(hash = 1187009342)
-    public Event(long id, long time, long pId, long dId, int event) {
+    @Generated(hash = 1876606629)
+    public Event(Long id, long time, long pId, long dId, int event) {
         this.id = id;
         this.time = time;
         this.pId = pId;
@@ -28,10 +28,10 @@ public class Event {
     @Generated(hash = 344677835)
     public Event() {
     }
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public long getTime() {
