@@ -13,6 +13,7 @@ import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.PersonDevicesMap;
+import com.ascend.wangfeng.wifimanage.delegates.index.person.PersonListEditDelegate;
 import com.ascend.wangfeng.wifimanage.greendao.PersonDao;
 import com.ascend.wangfeng.wifimanage.greendao.PersonDevicesMapDao;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
@@ -98,7 +99,7 @@ public class DeviceDetailDelegate extends LatteDelegate {
         mTvOwner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startForResult(PersonListDelegate.newInstance(), 1);
+                startForResult(PersonListEditDelegate.newInstance(), 1);
             }
         });
     }
@@ -118,12 +119,15 @@ public class DeviceDetailDelegate extends LatteDelegate {
 
     @Override
     public void onFragmentResult(int requestCode, int resultCode, Bundle data) {
+
         Person person = (Person) data.getSerializable("person");
-        mTvOwner.setText(person.getName());
-        PersonDevicesMapDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDevicesMapDao();
-        PersonDevicesMap map = new PersonDevicesMap();
-        map.setDId(mDevice.getId());
-        map.setPId(person.getId());
-        dao.insert(map);
+        if (person != null) {
+            mTvOwner.setText(person.getName());
+            PersonDevicesMapDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDevicesMapDao();
+            PersonDevicesMap map = new PersonDevicesMap();
+            map.setDId(mDevice.getId());
+            map.setPId(person.getId());
+            dao.insert(map);
+        }
     }
 }

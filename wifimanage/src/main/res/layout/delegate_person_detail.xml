@@ -1,44 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:circle="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:orientation="vertical">
 
-    <com.ascend.wangfeng.wifimanage.views.CircleImageView
-        android:id="@+id/cimg_icon"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/test"/>
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar"/>
 
-    <EditText
-        android:id="@+id/et_name"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:hint="请输入姓名"/>
+        android:layout_height="120dp">
 
+        <com.ascend.wangfeng.wifimanage.views.CircleImageView
+            android:id="@+id/cimg_icon"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_margin="16dp"
+            android:src="@drawable/test"
+            circle:online="true"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="王枫"
+                android:textColor="@color/textFir"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/tv_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="最近上线时间: 18:00"
+                android:textSize="14sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--设备表-->
     <TextView
+        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:text="管理的设备"
+        android:text="我的设备"
         android:textColor="@color/textFir"
         android:textSize="18sp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_devices"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"/>
-    <Button
-        android:id="@+id/btn_save"
+        android:layout_height="wrap_content"/>
+    <!--设备表-->
+    <TextView
+        android:layout_margin="16dp"
         android:layout_width="match_parent"
-        android:layout_margin="32dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/tv_round_green"
-        android:textColor="@android:color/white"
-        android:text="保存"/>
+        android:text="最近一周使用"
+        android:textColor="@color/textFir"
+        android:textSize="18sp"/>
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/bar_history"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

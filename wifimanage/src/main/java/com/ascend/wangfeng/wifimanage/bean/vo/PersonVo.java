@@ -15,6 +15,16 @@ public class PersonVo extends Person implements MultiItemEntity,Serializable{
     private static final long serialVersionUID = -6663300915671491564L;
     private boolean mIsChecked;
 
+    public boolean isOnline() {
+        return mOnline;
+    }
+
+    public void setOnline(boolean online) {
+        mOnline = online;
+    }
+
+    private boolean mOnline;
+
     public boolean isChecked() {
         return mIsChecked;
     }

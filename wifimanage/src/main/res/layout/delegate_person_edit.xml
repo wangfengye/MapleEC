@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:circle="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical">
+        <include layout="@layout/toolbar"/>
+        <com.ascend.wangfeng.wifimanage.views.CircleImageView
+            android:id="@+id/cimg_icon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            circle:online="true"
+            android:src="@drawable/test"/>
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="请输入姓名"/>
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_margin="32dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tv_round_green"
+            android:textColor="@android:color/white"
+            android:text="保存"/>
+    </LinearLayout>

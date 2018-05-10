@@ -44,4 +44,5 @@ dependencies {
     compile project(path: ':latte-core')
     // 数据库调试
     compile 'com.facebook.stetho:stetho:1.5.0'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
 }

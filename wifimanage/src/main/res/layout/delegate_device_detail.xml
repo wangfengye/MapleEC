@@ -53,12 +53,13 @@
         android:layout_width="match_parent"
         android:layout_height="72dp">
 
-        <com.ascend.wangfeng.wifimanage.views.CircleImageView
+        <com.joanzapata.iconify.widget.IconTextView
+            android:gravity="center"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="16dp"
-            android:src="@drawable/phone"
-            circle:needBg="@color/colorAccent"/>
+            android:text="{fa-calendar}"
+            android:textSize="36sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"

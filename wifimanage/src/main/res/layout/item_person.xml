@@ -5,6 +5,7 @@
     android:layout_height="72dp"
     xmlns:circle="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_person"
     android:padding="4dp">
 
     <com.ascend.wangfeng.wifimanage.views.CircleImageView
@@ -41,5 +42,12 @@
         android:id="@+id/rb_choose"
         android:layout_width="72dp"
         android:layout_height="72dp"
+        android:visibility="gone"
         android:gravity="center"/>
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/it_right"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:gravity="center"
+        android:text="{fa-chevron-right}"/>
 </LinearLayout>

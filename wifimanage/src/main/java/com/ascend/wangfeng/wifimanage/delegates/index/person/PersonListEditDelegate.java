@@ -1,4 +1,4 @@
-package com.ascend.wangfeng.wifimanage.delegates.index;
+package com.ascend.wangfeng.wifimanage.delegates.index.person;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -30,7 +30,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * 人员列表,提供新增功能
  */
 
-public class PersonListDelegate extends LatteDelegate {
+public class PersonListEditDelegate extends LatteDelegate {
     @BindView(R.id.ic_back)
     IconTextView mIcBack;
     @BindView(R.id.toolbar_title)
@@ -46,9 +46,8 @@ public class PersonListDelegate extends LatteDelegate {
 
     @Override
     public Object setLayout() {
-        return R.layout.delegate_person_list;
+        return R.layout.delegate_person_list_edit;
     }
-
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
         mToolbarTitle.setText("成员列表");
@@ -56,29 +55,29 @@ public class PersonListDelegate extends LatteDelegate {
         mIcBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pop();
+                onBackPressedSupport();
             }
         });
         mLlAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // 进入成员信息编辑页面
-                start(PersonDetailDelegate.newInstance(null));
+                start(PersonEditDelegate.newInstance(null));
             }
         });
 
     }
 
     @Override
-    public void onResume() {
-        //initList();
-        super.onResume();
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         initList();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) initList();
     }
 
     private void initList() {
@@ -88,21 +87,29 @@ public class PersonListDelegate extends LatteDelegate {
         for (int i = 0; i < people.size(); i++) {
             mPeopleVo.add(PersonVo.get(people.get(i)));
         }
-        PersonAdapter adapter = new PersonAdapter(mPeopleVo);
+        PersonAdapter adapter = new PersonAdapter(mPeopleVo,this);
+        adapter.setEdit();
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());
         mRvPeople.setLayoutManager(manager);
         mRvPeople.setAdapter(adapter);
         mRvPeople.addItemDecoration(BaseDecoration.create(getResources()
                 .getColor(android.R.color.darker_gray), 1));
-        if (mPeopleVo.size()>0){
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("person",mPeopleVo.get(0));
-        setFragmentResult(1,bundle);}
     }
 
 
-
     public static ISupportFragment newInstance() {
-        return new PersonListDelegate();
+        return new PersonListEditDelegate();
+    }
+
+    @Override
+    public boolean onBackPressedSupport() {
+        // 返回上一页携带选中数据
+        Bundle bundle = new Bundle();
+        for (PersonVo p : mPeopleVo) {
+            if (p.isChecked()) bundle.putSerializable("person", p);
+            setFragmentResult(1, bundle);
+        }
+        pop();
+        return true;
     }
 }

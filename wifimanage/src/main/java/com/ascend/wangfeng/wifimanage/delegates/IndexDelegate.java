@@ -2,6 +2,7 @@ package com.ascend.wangfeng.wifimanage.delegates;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -16,6 +17,7 @@ import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.PersonDevicesMap;
 import com.ascend.wangfeng.wifimanage.delegates.index.NewDeviceDelegate;
+import com.ascend.wangfeng.wifimanage.delegates.index.person.PersonListDelegate;
 import com.ascend.wangfeng.wifimanage.greendao.DeviceDao;
 import com.ascend.wangfeng.wifimanage.greendao.PersonDao;
 import com.ascend.wangfeng.wifimanage.greendao.PersonDevicesMapDao;
@@ -34,6 +36,7 @@ import butterknife.OnClick;
 
 public class IndexDelegate extends BottomItemDelegate {
 
+    public static final String TAG = IndexDelegate.class.getSimpleName();
     @BindView(R.id.ll_new_device_content)
     LinearLayout mLlNewDeviceContent;
     @BindView(R.id.ll_new_device)
@@ -50,7 +53,7 @@ public class IndexDelegate extends BottomItemDelegate {
     @OnClick(R.id.ll_new_device)
     void clickLlNewDevice() {
         Bundle bundle = new Bundle();
-        bundle.putString("title","新设备");
+        bundle.putString("title", "新设备");
         bundle.putSerializable("new_device", mNewDevices);
         getParentDelegate().start(NewDeviceDelegate.newInstance(bundle));
     }
@@ -58,9 +61,16 @@ public class IndexDelegate extends BottomItemDelegate {
     @OnClick(R.id.ll_online_device)
     void clickLlOnlineDevice() {
         Bundle bundle = new Bundle();
-        bundle.putString("title","在线设备");
+        bundle.putString("title", "在线设备");
         bundle.putSerializable("new_device", mOnlineDevices);
         getParentDelegate().start(NewDeviceDelegate.newInstance(bundle));
+    }
+
+    @OnClick(R.id.ll_people)
+    void clickLlPeople() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("person", mPeople);
+        getParentDelegate().start(PersonListDelegate.newInstance(bundle));
     }
 
     ArrayList<Device> mNewDevices;//新发现设备
@@ -78,17 +88,12 @@ public class IndexDelegate extends BottomItemDelegate {
     }
 
     @Override
-    public void onEnterAnimationEnd(Bundle savedInstanceState) {
-        super.onEnterAnimationEnd(savedInstanceState);
-        initData();
-        resetView();
-    }
-
-    @Override
     public void onResume() {
+        Log.i(TAG, "onResume: ");
         super.onResume();
         // 重载数据
-      ;
+        initData();
+        resetView();
     }
 
     private void initData() {
@@ -133,9 +138,9 @@ public class IndexDelegate extends BottomItemDelegate {
             rD.setLasttime(System.currentTimeMillis());
             dao.update(rD);
             List<PersonDevicesMap> maps = mapDao.queryBuilder().where(PersonDevicesMapDao.Properties.DId.eq(rD.getId())).list();
-            if (maps.size()>0){
+            if (maps.size() > 0) {
                 mOnlineDevices.add(rD);
-            }else {
+            } else {
                 mNewDevices.add(rD);
             }
 
