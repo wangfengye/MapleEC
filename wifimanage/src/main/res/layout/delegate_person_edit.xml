@@ -14,7 +14,9 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             circle:online="true"
-            android:src="@drawable/test"/>
+            circle:icon="@mipmap/ic_computer"
+            circle:bg="@color/colorAccent"
+            android:src="@mipmap/p_2"/>
 
         <EditText
             android:id="@+id/et_name"

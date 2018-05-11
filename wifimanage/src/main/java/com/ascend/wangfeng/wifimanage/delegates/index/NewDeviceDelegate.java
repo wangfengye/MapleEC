@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 /**
  * Created by fengye on 2018/5/8.
@@ -25,6 +24,10 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  */
 
 public class NewDeviceDelegate extends LatteDelegate{
+    public static final String DEVICE_LIST="devices";
+    public static final String TITLE="title";
+    public static final int TITLE_NEW_DEVICE=0;
+    public static final int TITLE_ONLINE_DEVICE=1;
     @BindView(R.id.toolbar_title)
     TextView mToolbarTitle;
     @BindView(R.id.ic_back)
@@ -48,24 +51,39 @@ public class NewDeviceDelegate extends LatteDelegate{
 
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
-
-
-    }
-
-    @Override
-    public void onEnterAnimationEnd(Bundle savedInstanceState) {
-        // 在转场动画后加载数据,避免卡顿
-        super.onEnterAnimationEnd(savedInstanceState);
         mIcBack.setVisibility(View.VISIBLE);
         initData();
 
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden)initData();
+    }
+
     private void initData() {
         Bundle bundle = getArguments();
-        mToolbarTitle.setText(bundle.getString("title"));
-        mDevices= (ArrayList<Device>) bundle.getSerializable("new_device");
+        mToolbarTitle.setText(bundle.getInt(TITLE)==TITLE_NEW_DEVICE?"新设备":"在线设备");
+        mDevices= (ArrayList<Device>) bundle.getSerializable(DEVICE_LIST);
         NewDeviceAdapter adapter = new NewDeviceAdapter(mDevices,this);
+        adapter.setListener(new NewDeviceAdapter.OnClickListener() {
+            @Override
+            public void click(Device device) {
+                Bundle bundle = new Bundle();
+                switch (getArguments().getInt(TITLE)){
+                    case TITLE_NEW_DEVICE:
+                        bundle.putSerializable(DeviceEditDelegate.DEVICE,device);
+                        start(DeviceEditDelegate.newInstance(bundle));
+                        break;
+                    case TITLE_ONLINE_DEVICE:
+                        bundle.putSerializable(DeviceDetailDelegate.DEVICE,device);
+                        start(DeviceDetailDelegate.newInstance(bundle));
+                        break;
+                }
+
+            }
+        });
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());
         mRvDevices.setLayoutManager(manager);
 
@@ -74,8 +92,4 @@ public class NewDeviceDelegate extends LatteDelegate{
                 .getColor(android.R.color.darker_gray), 1));
     }
 
-    @Override
-    public void setFragmentAnimator(FragmentAnimator fragmentAnimator) {
-
-    }
 }

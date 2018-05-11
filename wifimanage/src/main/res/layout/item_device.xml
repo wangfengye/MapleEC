@@ -18,7 +18,8 @@
         android:layout_marginBottom="4dp"
         android:layout_marginRight="16dp"
         android:src="@drawable/phone"
-        circle:needBg="@color/colorOrange"
+        circle:srcType="1"
+        circle:bg="@color/textSec"
         circle:online="true"/>
 
     <LinearLayout

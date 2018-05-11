@@ -8,5 +8,4 @@
     android:layout_gravity="center_horizontal"
     android:layout_margin="8dp"
     android:layout_weight="1"
-    android:src="@drawable/phone"
     circle:online="true"/>

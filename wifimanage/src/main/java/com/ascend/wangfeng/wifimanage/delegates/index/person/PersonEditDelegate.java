@@ -11,6 +11,7 @@ import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.greendao.PersonDao;
+import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import butterknife.BindView;
@@ -22,17 +23,26 @@ import butterknife.OnClick;
  */
 
 public class PersonEditDelegate extends LatteDelegate {
+    public static final String PERSON = "person";
     @BindView(R.id.ic_back)
     IconTextView mIcBack;
     @BindView(R.id.toolbar_title)
     TextView mToolbarTitle;
+    @BindView(R.id.cimg_icon)
+    CircleImageView mCimgIcon;
+    @BindView(R.id.et_name)
     EditText mEtName;
+    private Person mPerson;
+
     @OnClick(R.id.btn_save)
-    void save(){
+    void save() {
+        mPerson.setName(mEtName.getText().toString());
         PersonDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();
-        Person person = new Person();
-        person.setName(mEtName.getText().toString());
-        dao.insert(person);
+        if (mPerson.getId() != null) {
+            dao.insert(mPerson);
+        } else {
+            dao.update(mPerson);
+        }
         pop();
     }
 
@@ -41,6 +51,7 @@ public class PersonEditDelegate extends LatteDelegate {
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public Object setLayout() {
         return R.layout.delegate_person_edit;
@@ -56,5 +67,17 @@ public class PersonEditDelegate extends LatteDelegate {
             }
         });
         mToolbarTitle.setText("成员编辑");
+        init();
+    }
+
+    public void init() {
+        mPerson = (Person) getArguments().getSerializable(PERSON);
+        if (mPerson != null) {
+            mCimgIcon.setImage(mPerson.getImgUrl());
+            mEtName.setText(mPerson.getName());
+        } else {
+            mPerson = new Person();
+            mPerson.setImgUrl(R.mipmap.p_2);
+        }
     }
 }

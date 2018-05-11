@@ -14,10 +14,10 @@ public class Person {
     @Id(autoincrement = true)
     private Long id;
     private String name;
-    private String imgUrl;
+    private int imgUrl;
     private boolean sex;//true;man,false:woman
-    @Generated(hash = 210280049)
-    public Person(Long id, String name, String imgUrl, boolean sex) {
+    @Generated(hash = 713721957)
+    public Person(Long id, String name, int imgUrl, boolean sex) {
         this.id = id;
         this.name = name;
         this.imgUrl = imgUrl;
@@ -38,10 +38,10 @@ public class Person {
     public void setName(String name) {
         this.name = name;
     }
-    public String getImgUrl() {
+    public int getImgUrl() {
         return this.imgUrl;
     }
-    public void setImgUrl(String imgUrl) {
+    public void setImgUrl(int imgUrl) {
         this.imgUrl = imgUrl;
     }
     public boolean getSex() {
@@ -50,5 +50,7 @@ public class Person {
     public void setSex(boolean sex) {
         this.sex = sex;
     }
+
+
 
 }

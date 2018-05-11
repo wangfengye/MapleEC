@@ -2,7 +2,6 @@ package com.ascend.wangfeng.wifimanage.delegates;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -16,6 +15,7 @@ import com.ascend.wangfeng.wifimanage.api.DemoApi;
 import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.PersonDevicesMap;
+import com.ascend.wangfeng.wifimanage.delegates.index.DeviceType;
 import com.ascend.wangfeng.wifimanage.delegates.index.NewDeviceDelegate;
 import com.ascend.wangfeng.wifimanage.delegates.index.person.PersonListDelegate;
 import com.ascend.wangfeng.wifimanage.greendao.DeviceDao;
@@ -53,16 +53,16 @@ public class IndexDelegate extends BottomItemDelegate {
     @OnClick(R.id.ll_new_device)
     void clickLlNewDevice() {
         Bundle bundle = new Bundle();
-        bundle.putString("title", "新设备");
-        bundle.putSerializable("new_device", mNewDevices);
+        bundle.putInt(NewDeviceDelegate.TITLE, NewDeviceDelegate.TITLE_NEW_DEVICE);
+        bundle.putSerializable(NewDeviceDelegate.DEVICE_LIST, mNewDevices);
         getParentDelegate().start(NewDeviceDelegate.newInstance(bundle));
     }
 
     @OnClick(R.id.ll_online_device)
     void clickLlOnlineDevice() {
         Bundle bundle = new Bundle();
-        bundle.putString("title", "在线设备");
-        bundle.putSerializable("new_device", mOnlineDevices);
+        bundle.putInt(NewDeviceDelegate.TITLE, NewDeviceDelegate.TITLE_ONLINE_DEVICE);
+        bundle.putSerializable(NewDeviceDelegate.DEVICE_LIST, mOnlineDevices);
         getParentDelegate().start(NewDeviceDelegate.newInstance(bundle));
     }
 
@@ -84,16 +84,18 @@ public class IndexDelegate extends BottomItemDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
-
+        initData();
+        resetView();
     }
 
     @Override
-    public void onResume() {
-        Log.i(TAG, "onResume: ");
-        super.onResume();
-        // 重载数据
-        initData();
-        resetView();
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        // 重载数据 ,当点击按钮时
+        if (!hidden) {
+            initData();
+            resetView();
+        }
     }
 
     private void initData() {
@@ -121,12 +123,19 @@ public class IndexDelegate extends BottomItemDelegate {
             List<PersonDevicesMap> maps = mapDao.queryBuilder().where(PersonDevicesMapDao.Properties.DId.eq(device.getId())).list();
             if (maps.size() > 0) {
                 PersonDevicesMap map = maps.get(0);
-                List<Person> people = personDao.queryBuilder().where(PersonDao.Properties.Id.eq(map.getPId())).list();
-                if (people.size() > 0) {
-                    mPeople.add(people.get(0));
+                Person person = personDao.queryBuilder().where(PersonDao.Properties.Id.eq(map.getPId())).unique();
+                if (person!=null&& !contain(person,mPeople)) {
+                    mPeople.add(person);
                 }
             }
         }
+    }
+
+    private boolean contain(Person person, ArrayList<Person> people1) {
+        for (Person p : people1) {
+            if (p.getId() ==person.getId())return true;
+        }
+        return false;
     }
 
     private void dispose(Device device) {
@@ -163,8 +172,9 @@ public class IndexDelegate extends BottomItemDelegate {
             if (i >= 6) break;
             LayoutInflater.from(getContext()).inflate(R.layout.item_circle_image, mLlNewDeviceContent);
             CircleImageView img = (CircleImageView) mLlNewDeviceContent.getChildAt(i);
-            img.setImage(getResources().getDrawable(R.drawable.phone));
-            img.setNeedBg(getResources().getColor(R.color.colorOrange));
+            img.setImage(DeviceType.getTypes().get(mNewDevices.get(i).getType()).getImgId());
+            img.setBg(getResources().getColor(R.color.colorOrange));
+            img.setSrcType(CircleImageView.TYPE_WHITE);
         }
         // 在线人员
         mLlPeopleContent.removeAllViews();
@@ -173,6 +183,7 @@ public class IndexDelegate extends BottomItemDelegate {
             LayoutInflater.from(getContext()).inflate(R.layout.item_circle_image, mLlPeopleContent);
             CircleImageView img = (CircleImageView) mLlPeopleContent.getChildAt(i);
             img.setImage(getResources().getDrawable(R.drawable.test));
+            img.setSrcType(CircleImageView.TYPE_FULL);
         }
         // 在线设备
         mLlOnlineDeviceContent.removeAllViews();
@@ -180,8 +191,9 @@ public class IndexDelegate extends BottomItemDelegate {
             if (i >= 5) break;
             LayoutInflater.from(getContext()).inflate(R.layout.item_circle_image, mLlOnlineDeviceContent);
             CircleImageView img = (CircleImageView) mLlOnlineDeviceContent.getChildAt(i);
-            img.setImage(getResources().getDrawable(R.drawable.phone));
-            img.setNeedBg(getResources().getColor(R.color.colorAccent));
+            img.setImage(DeviceType.getTypes().get(mOnlineDevices.get(i).getType()).getImgId());
+            img.setBg(getResources().getColor(R.color.colorAccent));
+            img.setSrcType(CircleImageView.TYPE_WHITE);
         }
     }
 

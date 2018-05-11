@@ -1,12 +1,12 @@
 package com.ascend.wangfeng.wifimanage.delegates.index;
 
-import android.os.Bundle;
 import android.view.View;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.latte.ui.recycler.MultipleViewHolder;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
+import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class NewDeviceAdapter extends BaseMultiItemQuickAdapter<Device,MultipleViewHolder> {
     private LatteDelegate mDelegate;
-
+    private OnClickListener mListener;
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
      * some initialization data.
@@ -30,6 +30,9 @@ public class NewDeviceAdapter extends BaseMultiItemQuickAdapter<Device,MultipleV
         this.mDelegate = delegate;
         addItemType(0, R.layout.item_device);
     }
+    public void setListener(OnClickListener listener){
+        mListener = listener;
+    }
 
     @Override
     protected void convert(MultipleViewHolder helper, final Device item) {
@@ -40,15 +43,17 @@ public class NewDeviceAdapter extends BaseMultiItemQuickAdapter<Device,MultipleV
         helper.setOnClickListener(R.id.ll_main, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("device",item);
-                mDelegate.start(DeviceDetailDelegate.newInstance(bundle));
+                if (mListener!=null)mListener.click(item);
             }
         });
+        CircleImageView cimg = helper.getView(R.id.cimg);
+        cimg.setImage(DeviceType.getTypes().get(item.getType()).getImgId());
     }
     @Override
     protected MultipleViewHolder createBaseViewHolder(View view) {
         return MultipleViewHolder.create(view);
     }
-
+    interface OnClickListener{
+        void click(Device device);
+    }
 }

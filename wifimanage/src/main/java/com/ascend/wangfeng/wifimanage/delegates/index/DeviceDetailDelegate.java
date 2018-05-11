@@ -13,7 +13,6 @@ import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.PersonDevicesMap;
-import com.ascend.wangfeng.wifimanage.delegates.index.person.PersonListEditDelegate;
 import com.ascend.wangfeng.wifimanage.greendao.PersonDao;
 import com.ascend.wangfeng.wifimanage.greendao.PersonDevicesMapDao;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
@@ -30,12 +29,15 @@ import butterknife.OnClick;
  */
 
 public class DeviceDetailDelegate extends LatteDelegate {
+    public static final String DEVICE = "device";
     @BindView(R.id.ic_back)
     IconTextView mIcBack;
     @BindView(R.id.toolbar_title)
     TextView mToolbarTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.ic_edit)
+    IconTextView mIcEdit;
     @BindView(R.id.cimg_icon)
     CircleImageView mCimgIcon;
     @BindView(R.id.tv_device_name)
@@ -66,6 +68,13 @@ public class DeviceDetailDelegate extends LatteDelegate {
         pop();
     }
 
+    @OnClick(R.id.ic_edit)
+    void clickIcEdit() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(DeviceEditDelegate.DEVICE, mDevice);
+        start(DeviceEditDelegate.newInstance(bundle));
+    }
+
     public static DeviceDetailDelegate newInstance(Bundle bundle) {
         DeviceDetailDelegate delegate = new DeviceDetailDelegate();
         delegate.setArguments(bundle);
@@ -80,12 +89,20 @@ public class DeviceDetailDelegate extends LatteDelegate {
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
         mIcBack.setVisibility(View.VISIBLE);
+        mIcEdit.setVisibility(View.VISIBLE);
         init();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (true)init();
     }
 
     private void init() {
         Bundle bundle = getArguments();
         mDevice = (Device) bundle.getSerializable("device");
+        mCimgIcon.setImage(DeviceType.getTypes().get(mDevice.getType()).getImgId());
         mTvDeviceName.setText(mDevice.getName());
         mTvLasttime.setText("最近更新时间: " + TimeUtil.format(mDevice.getLasttime()));
         mTvFirsttime.setText("首次出现时间: " + TimeUtil.format(mDevice.getFirsttime()));
@@ -95,13 +112,7 @@ public class DeviceDetailDelegate extends LatteDelegate {
         mTvDhcp.setText(mDevice.getDhcp());
         mTvNetbios.setText(mDevice.getNetbios());
         mTvOwner.setText(getOwner(mDevice));
-        //设置用户
-        mTvOwner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startForResult(PersonListEditDelegate.newInstance(), 1);
-            }
-        });
+
     }
 
     private String getOwner(Device device) {
@@ -117,17 +128,5 @@ public class DeviceDetailDelegate extends LatteDelegate {
         return "";
     }
 
-    @Override
-    public void onFragmentResult(int requestCode, int resultCode, Bundle data) {
 
-        Person person = (Person) data.getSerializable("person");
-        if (person != null) {
-            mTvOwner.setText(person.getName());
-            PersonDevicesMapDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDevicesMapDao();
-            PersonDevicesMap map = new PersonDevicesMap();
-            map.setDId(mDevice.getId());
-            map.setPId(person.getId());
-            dao.insert(map);
-        }
-    }
 }
