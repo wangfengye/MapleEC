@@ -2,6 +2,7 @@ package com.ascend.wangfeng.wifimanage.delegates.index.person;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -10,6 +11,7 @@ import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Person;
+import com.ascend.wangfeng.wifimanage.delegates.icon.IconChooseDelegate;
 import com.ascend.wangfeng.wifimanage.greendao.PersonDao;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.joanzapata.iconify.widget.IconTextView;
@@ -24,6 +26,7 @@ import butterknife.OnClick;
 
 public class PersonEditDelegate extends LatteDelegate {
     public static final String PERSON = "person";
+    public static final int REQUEST_CODE = 1;
     @BindView(R.id.ic_back)
     IconTextView mIcBack;
     @BindView(R.id.toolbar_title)
@@ -34,11 +37,16 @@ public class PersonEditDelegate extends LatteDelegate {
     EditText mEtName;
     private Person mPerson;
 
+    @OnClick(R.id.cimg_icon)
+    void clickCimgIcon() {
+        startForResult(IconChooseDelegate.newInstance(), REQUEST_CODE);
+    }
+
     @OnClick(R.id.btn_save)
     void save() {
         mPerson.setName(mEtName.getText().toString());
         PersonDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();
-        if (mPerson.getId() != null) {
+        if (mPerson.getId() == null||mPerson.getId()==0) {
             dao.insert(mPerson);
         } else {
             dao.update(mPerson);
@@ -79,5 +87,16 @@ public class PersonEditDelegate extends LatteDelegate {
             mPerson = new Person();
             mPerson.setImgUrl(R.mipmap.p_2);
         }
+    }
+
+    @Override
+    public void onFragmentResult(int requestCode, int resultCode, Bundle data) {
+        Log.i("TAG", "onFragmentResult: ");
+        if (data!=null){
+        int res = data.getInt(IconChooseDelegate.ICON);
+        if (res != 0) {
+            mPerson.setImgUrl(res);
+            mCimgIcon.setImage(res);
+        }}
     }
 }

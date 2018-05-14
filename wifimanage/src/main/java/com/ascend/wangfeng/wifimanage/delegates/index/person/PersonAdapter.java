@@ -47,7 +47,7 @@ public class PersonAdapter extends BaseMultiItemQuickAdapter<PersonVo, MultipleV
         helper.setText(R.id.tv_name, item.getName());
         helper.setText(R.id.tv_desc, "描述性信息");
         CircleImageView cimg = helper.getView(R.id.cimg_icon);
-        cimg.setImage(getImg(item.getItemType()));
+        cimg.setImage(item.getImgUrl());
         RadioButton button = helper.getView(R.id.rb_choose);
         if (mEdit) {
             button.setVisibility(View.VISIBLE);

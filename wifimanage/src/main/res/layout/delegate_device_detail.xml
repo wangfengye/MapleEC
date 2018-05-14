@@ -2,9 +2,9 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:circle="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <include
@@ -55,10 +55,10 @@
         android:layout_height="72dp">
 
         <com.joanzapata.iconify.widget.IconTextView
-            android:gravity="center"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="16dp"
+            android:gravity="center"
             android:text="{fa-calendar}"
             android:textSize="36sp"/>
 
@@ -88,112 +88,140 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <LinearLayout
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:layout_height="36dp"
+            android:layout_margin="16dp">
+
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textColor="@color/textFir"
-                android:text="拥有者"/>
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="拥有者"
+                android:textColor="@color/textFir"/>
+
+            <com.ascend.wangfeng.wifimanage.views.CircleImageView
+                android:id="@+id/cimg_owenr"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginRight="16dp"
+                android:layout_toLeftOf="@+id/tv_owner"
+                android:src="@mipmap/ic_add"
+                circle:bg="@color/colorAccent"
+                circle:srcType="0"/>
+
             <TextView
                 android:id="@+id/tv_owner"
-                android:gravity="end"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="choose"/>
-        </LinearLayout>
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                tools:text="王枫"/>
+        </RelativeLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp">
+
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textFir"
-                android:text="IP地址"/>
+                android:layout_weight="1"
+                android:text="IP地址"
+                android:textColor="@color/textFir"/>
+
             <TextView
                 android:id="@+id/tv_ip"
-                android:gravity="end"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
                 android:text="192.168.168.39"/>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp">
+
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textFir"
-                android:text="MAC地址"/>
+                android:layout_weight="1"
+                android:text="MAC地址"
+                android:textColor="@color/textFir"/>
+
             <TextView
                 android:id="@+id/tv_mac"
-                android:gravity="end"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
                 android:text="41:53:1a:56:72:91"/>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp">
+
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textFir"
-                android:text="设备产商"/>
+                android:layout_weight="1"
+                android:text="设备产商"
+                android:textColor="@color/textFir"/>
+
             <TextView
                 android:id="@+id/tv_brand"
-                android:gravity="end"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
                 android:text="APPLE"/>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp">
+
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textFir"
-                android:text="主机名"/>
+                android:layout_weight="1"
+                android:text="主机名"
+                android:textColor="@color/textFir"/>
+
             <TextView
                 android:id="@+id/tv_dhcp"
-                android:gravity="end"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
                 android:text="iPad Pro"/>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp">
+
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textFir"
-                android:text="NetBIOS名称"/>
+                android:layout_weight="1"
+                android:text="NetBIOS名称"
+                android:textColor="@color/textFir"/>
+
             <TextView
                 android:id="@+id/tv_netbios"
-                android:gravity="end"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
                 android:text=""/>
         </LinearLayout>
     </LinearLayout>

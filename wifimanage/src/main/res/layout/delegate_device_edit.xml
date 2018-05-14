@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:circle="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar"/>
@@ -36,32 +36,38 @@
             android:hint="请输入名称"
             android:inputType="number"/>
     </android.support.design.widget.TextInputLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:layout_margin="16dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:textColor="@color/textFir"
-            android:text="拥有者"/>
+            android:text="拥有者"
+            android:textColor="@color/textFir"/>
+
         <com.ascend.wangfeng.wifimanage.views.CircleImageView
             android:id="@+id/cimg_owenr"
-            android:layout_marginRight="16dp"
-            android:layout_toLeftOf="@+id/tv_owner"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:src="@android:drawable/btn_plus"
-            circle:online="true"/>
+            android:layout_marginRight="16dp"
+            android:layout_toLeftOf="@+id/tv_owner"
+            android:src="@mipmap/ic_add"
+            circle:bg="@color/colorAccent"
+            circle:srcType="1"/>
+
         <TextView
             android:id="@+id/tv_owner"
-            android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
             android:gravity="center"
             tools:text="王枫"/>
     </RelativeLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,10 +78,10 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_types"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"/>
 
     <Button
         android:id="@+id/btn_save"

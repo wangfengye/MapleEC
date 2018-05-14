@@ -168,7 +168,8 @@ public class DeviceEditDelegate extends LatteDelegate {
         // 拥有者关系
         Person person = getOwner(mDevice);
         if (person != null) {
-            // mCImgOwener.setImage(person.getImgUrl());
+            mCImgOwener.setSrcType(CircleImageView.TYPE_NORMAL);
+            mCImgOwener.setImage(person.getImgUrl());
             mTvOwner.setText(person.getName());
         }
     }
@@ -190,7 +191,8 @@ public class DeviceEditDelegate extends LatteDelegate {
     public void onFragmentResult(int requestCode, int resultCode, Bundle data) {
         mPerson = (Person) data.getSerializable("person");
         if (mPerson != null) {
-            // mCImgOwener.setImage(person.getImgUrl());
+            mCImgOwener.setSrcType(CircleImageView.TYPE_NORMAL);
+            mCImgOwener.setImage(mPerson.getImgUrl());
             mTvOwner.setText(mPerson.getName());
             PersonDevicesMapDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDevicesMapDao();
             PersonDevicesMap map = new PersonDevicesMap();

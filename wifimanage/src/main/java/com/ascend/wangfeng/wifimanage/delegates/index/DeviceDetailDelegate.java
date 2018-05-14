@@ -60,6 +60,8 @@ public class DeviceDetailDelegate extends LatteDelegate {
     TextView mTvDhcp;
     @BindView(R.id.tv_netbios)
     TextView mTvNetbios;
+    @BindView(R.id.cimg_owenr)
+    CircleImageView mCimgOwner;
 
     Device mDevice;
 
@@ -111,21 +113,25 @@ public class DeviceDetailDelegate extends LatteDelegate {
         mTvBrand.setText(mDevice.getBrand());
         mTvDhcp.setText(mDevice.getDhcp());
         mTvNetbios.setText(mDevice.getNetbios());
-        mTvOwner.setText(getOwner(mDevice));
+        Person p =getOwner(mDevice);
+        if (p!=null){
+            mTvOwner.setText(p.getName());
+            mCimgOwner.setImage(p.getImgUrl());
+        }
 
     }
 
-    private String getOwner(Device device) {
+    private Person getOwner(Device device) {
         PersonDevicesMapDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDevicesMapDao();
         PersonDao personDao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();
         List<PersonDevicesMap> maps = dao.queryBuilder().where(PersonDevicesMapDao.Properties.DId.eq(device.getId())).list();
         if (maps.size() > 0) {
             Person person = personDao.queryBuilder().where(PersonDao.Properties.Id.eq(maps.get(0).getPId())).unique();
             if (person != null) {
-                return person.getName();
+                return person;
             }
         }
-        return "";
+        return null;
     }
 
 

@@ -5,6 +5,7 @@ import android.view.View;
 import com.ascend.wangfeng.latte.ui.recycler.MultipleViewHolder;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
+import com.ascend.wangfeng.wifimanage.delegates.index.DeviceType;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class DeviceSquareAdapter extends BaseMultiItemQuickAdapter<Device,Multip
 
     @Override
     protected void convert(MultipleViewHolder helper, Device item) {
+        helper.setImageResource(R.id.img_icon, DeviceType.getTypes().get(item.getType()).getImgId());
         helper.setText(R.id.tv_name,item.getName());
     }
     @Override

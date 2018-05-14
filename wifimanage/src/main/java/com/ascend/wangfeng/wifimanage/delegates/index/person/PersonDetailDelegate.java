@@ -15,13 +15,21 @@ import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.PersonDevicesMap;
+import com.ascend.wangfeng.wifimanage.bean.vo.PersonVo;
 import com.ascend.wangfeng.wifimanage.greendao.DeviceDao;
+import com.ascend.wangfeng.wifimanage.greendao.PersonDao;
 import com.ascend.wangfeng.wifimanage.greendao.PersonDevicesMapDao;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
@@ -38,6 +46,8 @@ public class PersonDetailDelegate extends LatteDelegate {
 
     @BindView(R.id.ic_back)
     IconTextView mIcBack;
+    @BindView(R.id.ic_edit)
+    IconTextView mIcEdit;
     @BindView(R.id.toolbar_title)
     TextView mToolbarTitle;
     @BindView(R.id.toolbar)
@@ -52,6 +62,7 @@ public class PersonDetailDelegate extends LatteDelegate {
     RecyclerView mRvDevices;
     @BindView(R.id.bar_history)
     BarChart mBarChart;
+
     private Person mPerson;
 
 
@@ -75,6 +86,15 @@ public class PersonDetailDelegate extends LatteDelegate {
                 pop();
             }
         });
+        mIcEdit.setVisibility(View.VISIBLE);
+        mIcEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(PersonEditDelegate.PERSON, PersonVo.get(mPerson));
+                start(PersonEditDelegate.newInstance(bundle));
+            }
+        });
         mToolbarTitle.setText("成员详情");
         mPerson = (Person) getArguments().getSerializable("person");
         initPerson();
@@ -82,28 +102,112 @@ public class PersonDetailDelegate extends LatteDelegate {
         initHistory();
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden){
+            // 编辑人员后返回刷新内容
+            initPerson();
+        }
+    }
+
     private void initPerson() {
+        PersonDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();
+        mPerson = dao.queryBuilder().where(PersonDao.Properties.Id.eq(mPerson.getId())).unique();
         mTvName.setText(mPerson.getName());
+        mCimgIcon.setImage(mPerson.getImgUrl());
         //mTvDesc.setText();
     }
 
     private void initHistory() {
-        ArrayList<String> xValues = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            xValues.add(i+1 + "");
-        }
-        ArrayList<BarEntry> yValues = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            float value = (float) (Math.random() * 7) + 1;
-            yValues.add(new BarEntry(i,value));
-        }
-        BarDataSet barDataSet = new BarDataSet(yValues,"q");
-        ArrayList<BarDataSet> dataSets = new ArrayList<>();
-        dataSets.add(barDataSet);
+        initChart(mBarChart);
+       setData();
+    }
 
-        BarData barData = new BarData(barDataSet);
-        barData.setBarWidth(.5f);
-        mBarChart.setData(barData);
+    private void setData() {
+        ArrayList<Integer> colors = new ArrayList<>();
+        colors.add(getResources().getColor(R.color.colorAccent));
+        colors.add(getResources().getColor(R.color.colorOrange));
+        colors.add(getResources().getColor(R.color.colorBlue));
+        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+        for (int j = 0;j<2;j++){
+            ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+
+            for (int i = 1; i <7; i++) {
+                float mult = (24 + 1);
+                float val = (float) (Math.random() * mult);
+                yVals1.add(new BarEntry(i, val));
+
+            }
+            BarDataSet set1;
+            set1 = new BarDataSet(yVals1, "设备"+j);
+            set1.setDrawIcons(false);
+
+            set1.setColor(colors.get(j));
+            dataSets.add(set1);
+        }
+        BarData data = new BarData(dataSets);
+        data.setValueTextSize(10f);
+
+        float groupSpace = .2f;
+        float barWidth = (1f-.2f)/2*8/10;
+        float barSpace = (1f-.2f)/2*2/10;
+        data.setBarWidth(barWidth);
+        data.groupBars(.5f,groupSpace,barSpace);
+
+        mBarChart.setData(data);
+    }
+
+    private void initChart(BarChart chart) {
+        chart.setDrawBarShadow(false);
+        chart.setDrawValueAboveBar(true);
+        chart.setPinchZoom(false);
+        chart.setDrawGridBackground(false);
+        IAxisValueFormatter axisValueFormatter = new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                int days = 7- (int) value;
+                if (days ==0) {
+                    return "当天";
+                }else {
+                    return days+"天前";
+                }
+            }
+        };
+        XAxis xAxis = mBarChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1f); // only intervals of 1 day
+        xAxis.setLabelCount(7);
+        xAxis.setValueFormatter(axisValueFormatter);
+
+        IAxisValueFormatter custom = new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return (int)value + "h";
+            }
+        };
+
+        YAxis leftAxis = mBarChart.getAxisLeft();
+
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setLabelCount(8, false);
+        leftAxis.setValueFormatter(custom);
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        leftAxis.setSpaceTop(15f);
+        leftAxis.setSpaceBottom(0f);
+
+        mBarChart.getAxisRight().setEnabled(false);
+
+        Legend l = mBarChart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
+        l.setForm(Legend.LegendForm.SQUARE);
+        l.setFormSize(9f);
+        l.setTextSize(11f);
+        l.setXEntrySpace(4f);
     }
 
     private void initDevices() {

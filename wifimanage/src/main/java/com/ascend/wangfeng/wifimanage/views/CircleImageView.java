@@ -170,7 +170,7 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
         Drawable drawable = getDrawable();
         if (drawable != null) {
             bitmap = drawableToBitmap(drawable);
-            if (!mOnline) {
+            if (!mOnline && mShowOnline) {
                 ColorMatrix cm = new ColorMatrix();
                 cm.setSaturation(0);
                 ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
@@ -206,12 +206,7 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
     private void drawCircleWithBg(Bitmap bitmap, Canvas canvas) {
         BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         float scale = (mRadius * 2 / 4) * 2.0f / Math.min(bitmap.getHeight(), bitmap.getWidth());
-        // 矩阵移动缩放图片
-       /* Matrix matrix = new Matrix();
-        matrix.setTranslate(mRadius / 4, mRadius / 4);
-        matrix.preScale(scale, scale);
-        shader.setLocalMatrix(matrix);
-        mImgPaint.setShader(shader);*/
+
         // 绘制主圆
         canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius, mBgPaint);
         int left = (int) (mWidth / 2 - scale * bitmap.getWidth() / 2);

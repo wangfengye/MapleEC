@@ -13,9 +13,8 @@
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
-            circle:online="true"
-            circle:icon="@mipmap/ic_computer"
             circle:bg="@color/colorAccent"
+            circle:online="true"
             android:src="@mipmap/p_2"/>
 
         <EditText

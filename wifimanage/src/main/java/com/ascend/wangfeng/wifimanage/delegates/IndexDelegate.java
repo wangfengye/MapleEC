@@ -124,7 +124,7 @@ public class IndexDelegate extends BottomItemDelegate {
             if (maps.size() > 0) {
                 PersonDevicesMap map = maps.get(0);
                 Person person = personDao.queryBuilder().where(PersonDao.Properties.Id.eq(map.getPId())).unique();
-                if (person!=null&& !contain(person,mPeople)) {
+                if (person != null && !contain(person, mPeople)) {
                     mPeople.add(person);
                 }
             }
@@ -133,7 +133,7 @@ public class IndexDelegate extends BottomItemDelegate {
 
     private boolean contain(Person person, ArrayList<Person> people1) {
         for (Person p : people1) {
-            if (p.getId() ==person.getId())return true;
+            if (p.getId() == person.getId()) return true;
         }
         return false;
     }
@@ -182,8 +182,9 @@ public class IndexDelegate extends BottomItemDelegate {
             if (i >= 5) break;
             LayoutInflater.from(getContext()).inflate(R.layout.item_circle_image, mLlPeopleContent);
             CircleImageView img = (CircleImageView) mLlPeopleContent.getChildAt(i);
-            img.setImage(getResources().getDrawable(R.drawable.test));
-            img.setSrcType(CircleImageView.TYPE_FULL);
+            img.setImage(mPeople.get(i).getImgUrl());
+            img.setBg(getResources().getColor(R.color.colorAccent));
+            img.setSrcType(CircleImageView.TYPE_NORMAL);
         }
         // 在线设备
         mLlOnlineDeviceContent.removeAllViews();
