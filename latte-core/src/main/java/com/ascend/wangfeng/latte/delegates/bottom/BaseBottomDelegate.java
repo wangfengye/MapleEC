@@ -31,8 +31,8 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
     private final ArrayList<BottomItemDelegate> ITEM_DELEGATES = new ArrayList<>();
     private final ArrayList<BottomBean> TAB_BEANS = new ArrayList<>();
     private final LinkedHashMap<BottomBean, BottomItemDelegate> ITEMS = new LinkedHashMap<>();
-    private int mCurrentDelegate = 0;
-    private int mIndexDelegate = 0;
+    private int mCurrentDelegate = 0; // 正在展示的页面
+    private int mIndexDelegate = 0; // 初始页面
     private int mClickedColor = Color.RED;
 
     @BindView(R2.id.bottom_bar)
@@ -74,22 +74,22 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
 
         for (int i = 0; i < size; i++) {
             final BottomBean bean = TAB_BEANS.get(i);
-            switch (bean.getType()){
+            switch (bean.getType()) {
                 case BottomBean.TYPE_NORMAL:
-                    inflateIcon(bean,i);
+                    inflateIcon(bean, i);
                     break;
                 case BottomBean.TYPE_TOP:
-                    inflateTopIcon(bean,i);
+                    inflateTopIcon(bean, i);
                     break;
             }
 
         }
         final SupportFragment[] deleagates = ITEM_DELEGATES.toArray(new SupportFragment[size]);
         loadMultipleRootFragment(R.id.bottom_bar_delegate_container, mIndexDelegate, deleagates);
-
+        mCurrentDelegate = mIndexDelegate;
     }
 
-    private void inflateTopIcon(BottomBean bean, int i){
+    private void inflateTopIcon(BottomBean bean, int i) {
         LayoutInflater.from(getContext()).inflate(R.layout.bottom_item_icon_top_layout, mBottomBar);
         final RelativeLayout item = (RelativeLayout) mBottomBar.getChildAt(i);
         //设置每个item的点击事件
@@ -102,7 +102,7 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
         }
     }
 
-    public void inflateIcon(BottomBean bean,int i){
+    public void inflateIcon(BottomBean bean, int i) {
         LayoutInflater.from(getContext()).inflate(R.layout.bottom_item_icon_text_layout, mBottomBar);
         final RelativeLayout item = (RelativeLayout) mBottomBar.getChildAt(i);
         //设置每个item的点击事件
@@ -123,7 +123,7 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
         final RelativeLayout view = (RelativeLayout) mBottomBar.getChildAt(i);
         final int tag = (int) view.getTag();
         resetColor();
-        final RelativeLayout item =  view;
+        final RelativeLayout item = view;
         final IconTextView itemIcon = (IconTextView) item.getChildAt(0);
         final AppCompatTextView itemTitle = (AppCompatTextView) item.getChildAt(1);
         itemIcon.setTextColor(mClickedColor);
@@ -153,10 +153,10 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
         itemIcon.setTextColor(mClickedColor);
         itemTitle.setTextColor(mClickedColor);
         showHideFragment(ITEM_DELEGATES.get(tag), ITEM_DELEGATES.get(mCurrentDelegate));
-        if (TAB_BEANS.get(tag).getType() == BottomBean.TYPE_TOP){
-            ITEM_DELEGATES.get(mCurrentDelegate).onHiddenChanged(false);
+        if (TAB_BEANS.get(tag).getType() == BottomBean.TYPE_TOP) {
+            ITEM_DELEGATES.get(mCurrentDelegate).onResume();
         }
         mCurrentDelegate = tag;
     }
-    
+
 }

@@ -91,11 +91,14 @@ public class IndexDelegate extends BottomItemDelegate {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        // 重载数据 ,当点击按钮时
-        if (!hidden) {
-            initData();
-            resetView();
-        }
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
+        resetView();
     }
 
     private void initData() {

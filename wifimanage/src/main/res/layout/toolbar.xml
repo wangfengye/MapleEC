@@ -33,6 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:padding="8dp"
+                android:layout_marginRight="8dp"
                 android:textSize="28sp"
                 android:visibility="gone"
                 android:layout_alignParentRight="true"

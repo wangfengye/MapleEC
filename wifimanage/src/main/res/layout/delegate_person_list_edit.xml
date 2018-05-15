@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:circle="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar"/>
@@ -12,10 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:src="@android:drawable/ic_input_add"/>
+        <com.ascend.wangfeng.wifimanage.views.CircleImageView
+            android:layout_margin="8dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            circle:bg="@color/colorAccent"
+            circle:srcType="1"
+            android:src="@mipmap/ic_add"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -23,8 +27,6 @@
             android:gravity="center_vertical"
             android:text="新增成员"/>
     </LinearLayout>
-
-
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_people"

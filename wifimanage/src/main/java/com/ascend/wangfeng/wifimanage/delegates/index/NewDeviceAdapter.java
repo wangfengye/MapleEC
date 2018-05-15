@@ -53,7 +53,7 @@ public class NewDeviceAdapter extends BaseMultiItemQuickAdapter<Device,MultipleV
     protected MultipleViewHolder createBaseViewHolder(View view) {
         return MultipleViewHolder.create(view);
     }
-    interface OnClickListener{
+    public interface OnClickListener{
         void click(Device device);
     }
 }

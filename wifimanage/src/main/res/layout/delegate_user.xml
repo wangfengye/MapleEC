@@ -1,7 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:circle="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp">
 
-</android.support.constraint.ConstraintLayout>
+        <com.ascend.wangfeng.wifimanage.views.CircleImageView
+            android:id="@+id/cimg_icon"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_margin="16dp"
+            tools:src="@mipmap/p_2"
+            circle:bg="@color/colorAccent"
+            circle:online="true"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="王枫"
+                android:textColor="@color/textFir"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/tv_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="最近上线时间: 18:00"
+                android:textSize="14sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--设备表-->
+    <TextView
+        android:layout_margin="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="我的设备"
+        android:textColor="@color/textFir"
+        android:textSize="18sp"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_devices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <!--设备表-->
+    <TextView
+        android:layout_margin="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="最近一周使用"
+        android:textColor="@color/textFir"
+        android:textSize="18sp"/>
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/bar_history"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

@@ -4,9 +4,11 @@ import com.ascend.wangfeng.latte.delegates.bottom.BaseBottomDelegate;
 import com.ascend.wangfeng.latte.delegates.bottom.BottomBean;
 import com.ascend.wangfeng.latte.delegates.bottom.BottomItemDelegate;
 import com.ascend.wangfeng.latte.delegates.bottom.ItemBuilder;
-import com.ascend.wangfeng.wifimanage.*;
+import com.ascend.wangfeng.wifimanage.R;
+import com.ascend.wangfeng.wifimanage.delegates.history.HistoryDelegate;
+import com.ascend.wangfeng.wifimanage.delegates.me.SetDelegate;
+import com.ascend.wangfeng.wifimanage.delegates.plan.PlanDelegate;
 import com.ascend.wangfeng.wifimanage.delegates.user.UserDelegate;
-
 
 import java.util.LinkedHashMap;
 
@@ -22,13 +24,12 @@ public class MainDelegate extends BaseBottomDelegate{
     @Override
     public LinkedHashMap<BottomBean, BottomItemDelegate> setItems(ItemBuilder builder) {
         final LinkedHashMap<BottomBean,BottomItemDelegate> items = new LinkedHashMap<>();
-
-        items.put(new BottomBean("{fa-calendar}","时间线"),new UserDelegate());
-        items.put(new BottomBean("{fa-hourglass}","计划"),new UserDelegate());
+        items.put(new BottomBean("{fa-calendar}","动态"),new HistoryDelegate());
+        items.put(new BottomBean("{fa-hourglass}","监管"),new PlanDelegate());
         items.put(new BottomBean("{fa-heartbeat}","主页",BottomBean.TYPE_TOP),new IndexDelegate());
-        items.put(new BottomBean("{fa-star}","关注"),new UserDelegate());
-        items.put(new BottomBean("{fa-user}","我的"),new UserDelegate());
-        return  items;
+        items.put(new BottomBean("{fa-star}","关注"), UserDelegate.newInstance(null));
+        items.put(new BottomBean("{fa-user}","我的"),new SetDelegate());
+        return  builder.addItem(items).build();
     }
 
     @Override

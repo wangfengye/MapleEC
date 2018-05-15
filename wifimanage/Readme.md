@@ -18,3 +18,7 @@
  * 人员编辑
  * 人员详情
  
+ #### 5/15
+ * 人员计划
+ * bottomDelegatebug修复(mCurrentDelgeate未初始化,导致切换页面时原页面未隐藏)
+ 

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_reapeat"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tv_repeat_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="重复"
+            android:textColor="@color/textFir"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/tv_repeat_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_repeat_title"
+            android:text="每日"
+            android:textColor="@color/textThi"
+            android:textSize="12sp"
+            />
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="{fa-chevron-right}"
+            android:textSize="18sp"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/bgFir"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_start"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:gravity="center"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tv_start_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开始时间"
+            android:textColor="@color/textFir"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/tv_start_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_vertical"
+            android:drawablePadding="4dp"
+            android:drawableRight="@mipmap/ic_add"
+            android:text="09:00"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/bgFir"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_end"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:gravity="center"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tv_end_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="结束时间"
+            android:textColor="@color/textFir"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/tv_end_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_vertical"
+            android:drawablePadding="4dp"
+            android:drawableRight="@mipmap/ic_add"
+            android:text="18:00"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/bgFir"/>
+    <Button
+        android:id="@+id/btn_delete"
+        android:layout_margin="32dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="删除"
+        android:textSize="18sp"
+        android:background="@drawable/tv_round_red"/>
+</LinearLayout>
