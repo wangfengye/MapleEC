@@ -45,4 +45,6 @@ dependencies {
     // 数据库调试
     compile 'com.facebook.stetho:stetho:1.5.0'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    // 日历控件
+    compile 'com.haibin:calendarview:3.3.0'
 }

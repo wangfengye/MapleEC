@@ -98,7 +98,9 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
         mIcon = drawable;
         invalidate();
     }
-
+    public void setIcon(@DrawableRes int  id) {
+        setIcon(getResources().getDrawable(id));
+    }
     // 设置状态
     public void setState(boolean on) {
         mOnline = on;

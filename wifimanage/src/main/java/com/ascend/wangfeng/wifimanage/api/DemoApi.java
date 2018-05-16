@@ -78,7 +78,11 @@ public class DemoApi implements Api{
 
     @Override
     public void getEvents(Callback<List<Event>> callback) {
-
+        String jsonStr = FileUtil.getRawFile(R.raw.event_history);
+        JSONObject object = JSONObject.parseObject(jsonStr);
+        String array = object.getString("data");
+        List<Event> events = JSONArray.parseArray(array,Event.class);
+        callback.callback(events);
     }
 
     @Override

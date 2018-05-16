@@ -1,6 +1,5 @@
 package com.ascend.wangfeng.wifimanage;
 
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.StringRes;
 import android.support.multidex.MultiDexApplication;
@@ -18,20 +17,20 @@ import com.joanzapata.iconify.fonts.FontAwesomeModule;
  */
 
 public class MainApp extends MultiDexApplication {
-    private static Context mContext;
+    private static MainApp mContext;
     private DaoSession mDaoSession;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mContext = getApplicationContext();
+        mContext = this;
         Latte.init(this).withIcon(new FontAwesomeModule()).configure();
         initGreenDao();
         Stetho.initializeWithDefaults(this);
 
 
     }
-    public static Context getContent(){
+    public static MainApp getContent(){
         return mContext;
     }
     public static void toast(@StringRes int id){

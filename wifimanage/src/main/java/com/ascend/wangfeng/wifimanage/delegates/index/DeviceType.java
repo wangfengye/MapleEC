@@ -18,6 +18,10 @@ public class DeviceType implements MultiItemEntity {
     private boolean chose;
 
     public static ArrayList<DeviceType> getTypes() {
+        for (DeviceType t :
+                Build.sTypes) {
+            t.setChose(false);
+        }
         return Build.sTypes;
     }
 
