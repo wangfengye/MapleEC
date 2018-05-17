@@ -12,19 +12,27 @@ import java.util.ArrayList;
  * email 1040441325@qq.com
  */
 
-public class Icon implements MultiItemEntity{
-
+public class Icon implements MultiItemEntity {
     private int mIcon;
+    private int mIconUrl;
     private boolean mChose;
 
 
-    public static ArrayList<Icon> getList(){
-
+    public static ArrayList<Icon> getList() {
         return Build.sIcons;
     }
 
-    public Icon(@DrawableRes int icon) {
+    public static void addIcon(@DrawableRes int res) {
+        Build.sIcons.add(new Icon(Build.sIcons.size(), res));
+    }
+
+    public static int getImgUrl(int i) {
+        return Build.sIcons.get(i).mIconUrl;
+    }
+
+    public Icon(int icon, @DrawableRes int iconUrl) {
         this.mIcon = icon;
+        this.mIconUrl = iconUrl;
     }
 
     public int getIcon() {
@@ -39,6 +47,14 @@ public class Icon implements MultiItemEntity{
         return mChose;
     }
 
+    public int getIconUrl() {
+        return mIconUrl;
+    }
+
+    public void setIconUrl(int iconUrl) {
+        mIconUrl = iconUrl;
+    }
+
     public void setChose(boolean chose) {
         mChose = chose;
     }
@@ -47,15 +63,20 @@ public class Icon implements MultiItemEntity{
     public int getItemType() {
         return 0;
     }
-    private static class Build{
+
+    private static class Build {
         public static ArrayList<Icon> sIcons = new ArrayList<>();
         static {
-            sIcons.add(new Icon(R.mipmap.p_2));
-            sIcons.add(new Icon(R.mipmap.p_3));
-            sIcons.add(new Icon(R.mipmap.p_2));
-            sIcons.add(new Icon(R.mipmap.p_2));
-            sIcons.add(new Icon(R.mipmap.p_2));
-            sIcons.add(new Icon(R.mipmap.p_2));
+            Icon.addIcon(R.mipmap.p_boy_01);
+            Icon.addIcon(R.mipmap.p_boy_02);
+            Icon.addIcon(R.mipmap.p_boy_02);
+            Icon.addIcon(R.mipmap.p_dad_1);
+            Icon.addIcon(R.mipmap.p_dad_02);
+            Icon.addIcon(R.mipmap.p_dad_03);
+            Icon.addIcon(R.mipmap.p_girl);
+            Icon.addIcon(R.mipmap.p_grandmom_01);
+            Icon.addIcon(R.mipmap.p_grandmom_02);
+            Icon.addIcon(R.mipmap.p_grandmom_03);
         }
     }
 }

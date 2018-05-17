@@ -5,6 +5,7 @@ import android.view.View;
 import com.ascend.wangfeng.latte.ui.recycler.MultipleViewHolder;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.vo.EventVo;
+import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
 import com.ascend.wangfeng.wifimanage.delegates.index.DeviceType;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
@@ -32,7 +33,7 @@ public class EventAdapter extends BaseMultiItemQuickAdapter<EventVo, MultipleVie
     @Override
     protected void convert(MultipleViewHolder helper, EventVo item) {
         CircleImageView cimg = helper.getView(R.id.cimg_icon);
-        cimg.setImage(item.getPerson().getImgUrl());
+        cimg.setImage(Icon.getImgUrl(item.getPerson().getImgUrl()));
         cimg.setIcon(DeviceType.getTypes().get(item.getDevice().getType()).getImgId());
         cimg.setState(item.getEvent()==1);
         helper.setText(R.id.tv_name, item.getPerson().getName()+" [" + item.getDevice().getName() + "] ");

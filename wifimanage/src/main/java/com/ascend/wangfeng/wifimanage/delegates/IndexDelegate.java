@@ -15,6 +15,7 @@ import com.ascend.wangfeng.wifimanage.api.DemoApi;
 import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.PersonDevicesMap;
+import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
 import com.ascend.wangfeng.wifimanage.delegates.index.DeviceType;
 import com.ascend.wangfeng.wifimanage.delegates.index.NewDeviceDelegate;
 import com.ascend.wangfeng.wifimanage.delegates.index.person.PersonListDelegate;
@@ -185,7 +186,7 @@ public class IndexDelegate extends BottomItemDelegate {
             if (i >= 5) break;
             LayoutInflater.from(getContext()).inflate(R.layout.item_circle_image, mLlPeopleContent);
             CircleImageView img = (CircleImageView) mLlPeopleContent.getChildAt(i);
-            img.setImage(mPeople.get(i).getImgUrl());
+            img.setImage(Icon.getImgUrl(mPeople.get(i).getImgUrl()));
             img.setBg(getResources().getColor(R.color.colorAccent));
             img.setSrcType(CircleImageView.TYPE_NORMAL);
         }

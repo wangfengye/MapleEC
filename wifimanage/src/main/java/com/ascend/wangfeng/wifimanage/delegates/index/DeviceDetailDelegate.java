@@ -18,6 +18,7 @@ import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.PersonDevicesMap;
 import com.ascend.wangfeng.wifimanage.bean.Plan;
 import com.ascend.wangfeng.wifimanage.bean.vo.PlanVo;
+import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
 import com.ascend.wangfeng.wifimanage.delegates.plan.PlanAdapter;
 import com.ascend.wangfeng.wifimanage.delegates.plan.PlanDetailDelegate;
 import com.ascend.wangfeng.wifimanage.greendao.PersonDao;
@@ -130,7 +131,7 @@ public class DeviceDetailDelegate extends LatteDelegate {
         Person p = getOwner(mDevice);
         if (p != null) {
             mTvOwner.setText(p.getName());
-            mCimgOwner.setImage(p.getImgUrl());
+            mCimgOwner.setImage(Icon.getImgUrl(p.getImgUrl()));
         }
         initPlan();
     }

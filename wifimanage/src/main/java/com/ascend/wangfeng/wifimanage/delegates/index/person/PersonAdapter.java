@@ -9,6 +9,7 @@ import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.latte.ui.recycler.MultipleViewHolder;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.vo.PersonVo;
+import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 
@@ -47,7 +48,7 @@ public class PersonAdapter extends BaseMultiItemQuickAdapter<PersonVo, MultipleV
         helper.setText(R.id.tv_name, item.getName());
         helper.setText(R.id.tv_desc, "描述性信息");
         CircleImageView cimg = helper.getView(R.id.cimg_icon);
-        cimg.setImage(item.getImgUrl());
+        cimg.setImage(Icon.getImgUrl(item.getImgUrl()));
         RadioButton button = helper.getView(R.id.rb_choose);
         if (mEdit) {
             button.setVisibility(View.VISIBLE);

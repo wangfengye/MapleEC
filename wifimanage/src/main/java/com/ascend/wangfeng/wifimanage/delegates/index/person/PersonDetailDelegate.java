@@ -16,6 +16,7 @@ import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.PersonDevicesMap;
 import com.ascend.wangfeng.wifimanage.bean.vo.PersonVo;
+import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
 import com.ascend.wangfeng.wifimanage.greendao.DeviceDao;
 import com.ascend.wangfeng.wifimanage.greendao.PersonDao;
 import com.ascend.wangfeng.wifimanage.greendao.PersonDevicesMapDao;
@@ -115,7 +116,7 @@ public class PersonDetailDelegate extends LatteDelegate {
         PersonDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();
         mPerson = dao.queryBuilder().where(PersonDao.Properties.Id.eq(mPerson.getId())).unique();
         mTvName.setText(mPerson.getName());
-        mCimgIcon.setImage(mPerson.getImgUrl());
+        mCimgIcon.setImage(Icon.getImgUrl(mPerson.getImgUrl()));
         //mTvDesc.setText();
     }
 

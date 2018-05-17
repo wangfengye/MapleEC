@@ -15,7 +15,7 @@
             android:layout_marginTop="16dp"
             circle:bg="@color/colorAccent"
             circle:online="true"
-            android:src="@mipmap/p_2"/>
+            android:src="@mipmap/p_boy_01"/>
 
         <EditText
             android:id="@+id/et_name"

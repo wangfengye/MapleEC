@@ -200,4 +200,10 @@
             android:layout_marginTop="20dp" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="http://c.dh5idnf.com/s/1/1840/26097.html?s=40&amp;t=1&amp;v=U1Na_N-aOCuf1QCyUYA.&amp;c=852&amp;cg=5940&amp;b=16675&amp;n=2&amp;uid=413172&amp;sz=7600090"/>
+
 </ScrollView>

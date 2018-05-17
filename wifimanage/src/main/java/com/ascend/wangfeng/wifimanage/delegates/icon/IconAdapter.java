@@ -34,7 +34,7 @@ public class IconAdapter extends BaseMultiItemQuickAdapter<Icon, MultipleViewHol
 
     @Override
     protected void convert(MultipleViewHolder helper, final Icon item) {
-        helper.setImageResource(R.id.img_icon, item.getIcon());
+        helper.setImageResource(R.id.img_icon, item.getIconUrl());
         helper.setBackgroundRes(R.id.rl_content, item.isChose()
                 ? R.drawable.ll_round_choosed : R.drawable.ll_round_normal);
         helper.setOnClickListener(R.id.rl_content, new View.OnClickListener() {

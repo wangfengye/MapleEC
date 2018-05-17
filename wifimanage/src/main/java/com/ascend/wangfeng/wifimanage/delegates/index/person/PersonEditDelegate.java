@@ -11,6 +11,7 @@ import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Person;
+import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
 import com.ascend.wangfeng.wifimanage.delegates.icon.IconChooseDelegate;
 import com.ascend.wangfeng.wifimanage.greendao.PersonDao;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
@@ -81,11 +82,11 @@ public class PersonEditDelegate extends LatteDelegate {
     public void init() {
         mPerson = (Person) getArguments().getSerializable(PERSON);
         if (mPerson != null) {
-            mCimgIcon.setImage(mPerson.getImgUrl());
+            mCimgIcon.setImage(Icon.getImgUrl(mPerson.getImgUrl()));
             mEtName.setText(mPerson.getName());
         } else {
             mPerson = new Person();
-            mPerson.setImgUrl(R.mipmap.p_2);
+            mPerson.setImgUrl(0);
         }
     }
 
@@ -96,7 +97,7 @@ public class PersonEditDelegate extends LatteDelegate {
         int res = data.getInt(IconChooseDelegate.ICON);
         if (res != 0) {
             mPerson.setImgUrl(res);
-            mCimgIcon.setImage(res);
+            mCimgIcon.setImage(Icon.getImgUrl(res));
         }}
     }
 }

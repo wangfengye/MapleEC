@@ -14,6 +14,7 @@ import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.PersonDevicesMap;
+import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
 import com.ascend.wangfeng.wifimanage.delegates.index.person.DeviceSquareAdapter;
 import com.ascend.wangfeng.wifimanage.greendao.DeviceDao;
 import com.ascend.wangfeng.wifimanage.greendao.PersonDao;
@@ -77,7 +78,7 @@ public class UserDelegate extends BottomItemDelegate{
         mPerson = dao.queryBuilder().where(PersonDao.Properties.Id.eq(1)).unique();
         if (mPerson!=null){
         mTvName.setText(mPerson.getName());
-        mCimgIcon.setImage(mPerson.getImgUrl());}
+        mCimgIcon.setImage(Icon.getImgUrl(mPerson.getImgUrl()));}
         //mTvDesc.setText();
     }
 

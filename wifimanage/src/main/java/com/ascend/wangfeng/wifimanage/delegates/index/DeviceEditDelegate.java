@@ -20,6 +20,7 @@ import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.PersonDevicesMap;
+import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
 import com.ascend.wangfeng.wifimanage.delegates.index.person.PersonListEditDelegate;
 import com.ascend.wangfeng.wifimanage.greendao.DeviceDao;
 import com.ascend.wangfeng.wifimanage.greendao.PersonDao;
@@ -169,7 +170,7 @@ public class DeviceEditDelegate extends LatteDelegate {
         Person person = getOwner(mDevice);
         if (person != null) {
             mCImgOwener.setSrcType(CircleImageView.TYPE_NORMAL);
-            mCImgOwener.setImage(person.getImgUrl());
+            mCImgOwener.setImage(Icon.getImgUrl(person.getImgUrl()));
             mTvOwner.setText(person.getName());
         }
     }
@@ -192,7 +193,7 @@ public class DeviceEditDelegate extends LatteDelegate {
         mPerson = (Person) data.getSerializable("person");
         if (mPerson != null) {
             mCImgOwener.setSrcType(CircleImageView.TYPE_NORMAL);
-            mCImgOwener.setImage(mPerson.getImgUrl());
+            mCImgOwener.setImage(Icon.getImgUrl(mPerson.getImgUrl()));
             mTvOwner.setText(mPerson.getName());
             PersonDevicesMapDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDevicesMapDao();
             PersonDevicesMap map = new PersonDevicesMap();
