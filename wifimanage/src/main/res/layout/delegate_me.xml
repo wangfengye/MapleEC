@@ -61,7 +61,7 @@
                 android:textColor="@color/textFir"
                 android:drawableLeft="@mipmap/ic_notice"
                 android:drawablePadding="16dp"
-                android:drawableTint="@color/textSec"
+                android:drawableTint="@color/colorBlue"
                 android:text="通知"/>
             <View
                 android:layout_width="16dp"
@@ -79,7 +79,7 @@
                 android:textColor="@color/textFir"
                 android:drawableLeft="@mipmap/ic_buy"
                 android:drawablePadding="16dp"
-                android:drawableTint="@color/textSec"
+                android:drawableTint="@color/colorBlue"
                 android:text="购买"/>
             <View
                 android:layout_width="16dp"
@@ -97,7 +97,7 @@
                 android:textColor="@color/textFir"
                 android:drawableLeft="@mipmap/ic_share"
                 android:drawablePadding="16dp"
-                android:drawableTint="@color/textSec"
+                android:drawableTint="@color/colorBlue"
                 android:text="推荐分享"/>
             <View
                 android:layout_width="16dp"
@@ -115,7 +115,7 @@
                 android:textColor="@color/textFir"
                 android:drawableLeft="@mipmap/ic_feedback"
                 android:drawablePadding="16dp"
-                android:drawableTint="@color/textSec"
+                android:drawableTint="@color/colorBlue"
                 android:text="反馈"/>
             <TextView
                 android:layout_marginTop="16dp"
@@ -130,7 +130,7 @@
                 android:textColor="@color/textFir"
                 android:drawableLeft="@mipmap/ic_about_us"
                 android:drawablePadding="16dp"
-                android:drawableTint="@color/textSec"
+                android:drawableTint="@color/colorBlue"
                 android:text="关于我们"/>
         </LinearLayout>
     </ScrollView>

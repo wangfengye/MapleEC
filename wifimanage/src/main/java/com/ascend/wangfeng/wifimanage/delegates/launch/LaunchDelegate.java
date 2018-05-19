@@ -29,7 +29,10 @@ public class LaunchDelegate extends LatteDelegate{
     @OnClick(R.id.btn_demo)
     void clickDemo(){
         startWithPop(MainDelegate.newInstance());
-
+    }
+    @OnClick(R.id.btn_start)
+    void clickStart(){
+        startWithPop(new ScanDelegate());
     }
     @Override
     public Object setLayout() {
@@ -39,15 +42,16 @@ public class LaunchDelegate extends LatteDelegate{
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
         ArrayList<Integer> mImages = new ArrayList<>();
-        mImages.add(R.drawable.test);
-        mImages.add(R.drawable.phone);
+        mImages.add(R.mipmap.lanunch_1);
+        mImages.add(R.mipmap.launch_2);
+        mImages.add(R.mipmap.lanunch_1);
         mBannerLaunch.setPages(new CBViewHolderCreator<LocalImageHolderView>() {
             @Override
             public LocalImageHolderView createHolder() {
                 return new LocalImageHolderView();
             }
         },mImages).setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
-        .startTurning(2*1000);
+        .startTurning(5*1000);
     }
 
     @Override
@@ -69,7 +73,7 @@ public class LaunchDelegate extends LatteDelegate{
         @Override
         public View createView(Context context) {
             mImageView = new ImageView(context);
-            mImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            mImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             return mImageView;
         }
 

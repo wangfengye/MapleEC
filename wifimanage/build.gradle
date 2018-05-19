@@ -23,16 +23,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
+    sourceSets{
+        main{
+            jniLibs.srcDir 'libs'
+            //说明so的路径为该libs路径，关联所有地图SDK的so文件
+        }
+    }
 }
 greendao{
     schemaVersion 1;
     daoPackage 'com.ascend.wangfeng.wifimanage.greendao'
     targetGenDir 'src/main/java'
 }
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
 
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support.constraint:constraint-layout:1.1.0'
     testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test.espresso:espresso-core:3.0.1', {
@@ -47,4 +52,5 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     // 日历控件
     compile 'com.haibin:calendarview:3.3.0'
+    compile files('libs/BaiduLBS_Android.jar')
 }

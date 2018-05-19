@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="scan_error_reasons">
+        <item>1.请确认设备是否连接到路由器</item>
+        <item>2.设备电源是否连接正常</item>
+        <item>3.设备指示灯是常亮</item>
+    </string-array>
+</resources>

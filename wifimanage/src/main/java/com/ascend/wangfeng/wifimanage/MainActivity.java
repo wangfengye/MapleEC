@@ -8,7 +8,7 @@ import android.support.v7.app.ActionBar;
 import com.ascend.wangfeng.latte.activities.ProxyActivity;
 import com.ascend.wangfeng.latte.app.Latte;
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
-import com.ascend.wangfeng.wifimanage.delegates.MainDelegate;
+import com.ascend.wangfeng.wifimanage.delegates.launch.LaunchDelegate;
 
 import qiu.niorgai.StatusBarCompat;
 
@@ -26,7 +26,7 @@ public class MainActivity extends ProxyActivity {
 
     @Override
     public LatteDelegate setRootDelegate() {
-        // return new PlanDetailDelegate();
-        return new MainDelegate();
+         return new LaunchDelegate();
+        // return new LaunchDelegate();
     }
 }
