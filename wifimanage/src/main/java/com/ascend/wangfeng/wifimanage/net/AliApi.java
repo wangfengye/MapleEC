@@ -1,10 +1,7 @@
 package com.ascend.wangfeng.wifimanage.net;
 
-
-
-
+import io.reactivex.Observable;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.GET;
 
 /**
@@ -14,5 +11,5 @@ import retrofit2.http.GET;
 
 public interface AliApi {
     @GET("data")
-    Call<ResponseBody> getData();
+    Observable<ResponseBody> getData();
 }

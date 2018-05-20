@@ -13,6 +13,9 @@ import com.ascend.wangfeng.wifimanage.delegates.launch.LaunchDelegate;
 import qiu.niorgai.StatusBarCompat;
 
 public class MainActivity extends ProxyActivity {
+
+    public static final String TAG = MainActivity.class.getSimpleName();
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
@@ -26,7 +29,7 @@ public class MainActivity extends ProxyActivity {
 
     @Override
     public LatteDelegate setRootDelegate() {
+         //return new TestDelegate();
          return new LaunchDelegate();
-        // return new LaunchDelegate();
     }
 }

@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.wifimanage.R;
+import com.ascend.wangfeng.wifimanage.delegates.MainDelegate;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
@@ -20,6 +21,7 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by fengye on 2018/5/19.
@@ -37,6 +39,11 @@ public class RegisterDelegate extends LatteDelegate {
     private LocationClient mLocationClient;
     private BitmapDescriptor marker;
 
+    @OnClick(R.id.btn_login)
+    void clickBtnLogin(){
+        pop();
+        start(new MainDelegate());
+    }
     @Override
     public Object setLayout() {
         return R.layout.delegate_register;
@@ -92,8 +99,9 @@ public class RegisterDelegate extends LatteDelegate {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-       // mMap.onDestroy();
+
         mLocationClient.stop();
+        super.onDestroyView();
+
     }
 }

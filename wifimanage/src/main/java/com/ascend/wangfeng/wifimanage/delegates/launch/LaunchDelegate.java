@@ -3,20 +3,27 @@ package com.ascend.wangfeng.wifimanage.delegates.launch;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
+import com.ascend.wangfeng.latte.net.rx.BaseObserver;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.delegates.MainDelegate;
+import com.ascend.wangfeng.wifimanage.net.Client;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 /**
  * Created by fengye on 2018/5/5.
@@ -24,6 +31,7 @@ import butterknife.OnClick;
  */
 
 public class LaunchDelegate extends LatteDelegate{
+    public static final String TAG = LaunchDelegate.class.getSimpleName();
     @BindView(R.id.banner_launch)
     ConvenientBanner mBannerLaunch;
     @OnClick(R.id.btn_demo)
@@ -52,6 +60,25 @@ public class LaunchDelegate extends LatteDelegate{
             }
         },mImages).setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
         .startTurning(5*1000);
+        Client.getInstance().getData()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new BaseObserver<ResponseBody>() {
+                    @Override
+                    public void onNext(ResponseBody s) {
+                        try {
+                            Log.i(TAG, "onNext: "+s.string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: ",e );
+                    }
+                });
+
     }
 
     @Override

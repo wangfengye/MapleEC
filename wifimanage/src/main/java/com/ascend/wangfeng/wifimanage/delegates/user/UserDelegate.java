@@ -20,6 +20,7 @@ import com.ascend.wangfeng.wifimanage.greendao.DeviceDao;
 import com.ascend.wangfeng.wifimanage.greendao.PersonDao;
 import com.ascend.wangfeng.wifimanage.greendao.PersonDevicesMapDao;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
+import com.ascend.wangfeng.wifimanage.views.GithubActivityView;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
@@ -51,8 +52,10 @@ public class UserDelegate extends BottomItemDelegate{
     TextView mTvDesc;
     @BindView(R.id.rv_devices)
     RecyclerView mRvDevices;
-    @BindView(R.id.bar_history)
+    //@BindView(R.id.bar_history)
     BarChart mBarChart;
+    @BindView(R.id.github)
+    GithubActivityView mGithub;
 
     private Person mPerson;
     public static UserDelegate newInstance(Bundle args) {
@@ -71,7 +74,17 @@ public class UserDelegate extends BottomItemDelegate{
         mPerson = (Person) getArguments().getSerializable("person");
         initPerson();
         initDevices();
-        initHistory();
+        //initHistory();
+        Integer[][] data = new Integer[7][];
+        //构造假数据
+        for(int i = 0;i <7; i++){
+            Integer[] column = new Integer[24];
+            for(int j= 0;j <24; j++){
+                column[j] = (int)(Math.random()*4);
+            }
+            data[i] = column;
+        }
+        mGithub.setData(data);
     }
     private void initPerson() {
         PersonDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();

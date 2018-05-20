@@ -41,7 +41,7 @@ public class WaveProgressView extends View {
     private int mMaxProgress = 100;//最大进度
     private int mCurrentProgress = 0;
     private float mCurY;// 当前高度
-    private int mSeconds; // 高度变化时间
+    private int mSeconds = 10; // 高度变化时间
 
     private float mDistance = 0;//浪花右移距离
 

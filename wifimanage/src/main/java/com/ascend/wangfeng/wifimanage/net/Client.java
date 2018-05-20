@@ -11,6 +11,7 @@ import javax.net.ssl.X509TrustManager;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 /**
  * Created by fengye on 2018/5/18.
@@ -18,7 +19,7 @@ import retrofit2.Retrofit;
  */
 
 public class Client {
-    private static final String url = "https://csbianjian.cn:7097";
+    private static final String url = "https://123.57.175.155:7097";
 
     public static AliApi getInstance() {
         return Build.mAliApi;
@@ -32,6 +33,7 @@ public class Client {
             Retrofit retrofit = new Retrofit.Builder()
                     .client(getUnsafeOkHttpClient())
                     .baseUrl(url)
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
             mAliApi = retrofit.create(AliApi.class);
         }
