@@ -72,9 +72,12 @@ public class DeviceType implements MultiItemEntity {
         private static ArrayList<DeviceType> sTypes = new ArrayList<>();
 
         static {
-            sTypes.add(new DeviceType(0, "手机", R.mipmap.ic_mobile));
-            sTypes.add(new DeviceType(1, "电脑", R.mipmap.ic_computer));
-            sTypes.add(new DeviceType(2, "电视", R.mipmap.ic_media_player));
+            sTypes.add(new DeviceType(0, "Android", R.mipmap.ic_android));
+            sTypes.add(new DeviceType(1, "iPhone", R.mipmap.ic_iphone));
+            sTypes.add(new DeviceType(2, "平板", R.mipmap.ic_pad));
+            sTypes.add(new DeviceType(3, "电脑", R.mipmap.ic_pc));
+            sTypes.add(new DeviceType(4, "笔记本", R.mipmap.ic_pcbook));
+            sTypes.add(new DeviceType(5, "电视", R.mipmap.ic_vedio));
         }
     }
 }

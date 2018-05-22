@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -35,6 +36,7 @@ import butterknife.BindView;
  */
 
 public class HistoryDelegate extends BottomItemDelegate {
+    public static final String TAG = HistoryDelegate.class.getSimpleName();
     @BindView(R.id.tv_month_day)
     TextView mTvMonthDay;
     @BindView(R.id.tv_year)
@@ -72,7 +74,14 @@ public class HistoryDelegate extends BottomItemDelegate {
         initData(mCalendarView.getCurYear(),mCalendarView.getCurMonth(),mCalendarView.getCurDay());
     }
 
-    private void initData(int year,int month,int day) {
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        initData(mCalendarView.getCurYear(),mCalendarView.getCurMonth(),mCalendarView.getCurDay());
+        Log.i(TAG, "onSupportVisible: ");
+    }
+
+    private void initData(int year, int month, int day) {
         Api api = new DemoApi();
         LatteLoader.showLoading(getActivity());
         api.getEvents(new Callback<List<Event>>() {

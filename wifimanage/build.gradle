@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'com.jakewharton.butterknife'
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
 
     defaultConfig {
         applicationId "com.ascend.wangfeng.wifimanage"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -53,4 +53,8 @@ dependencies {
     // 日历控件
     compile 'com.haibin:calendarview:3.3.0'
     compile files('libs/BaiduLBS_Android.jar')
+    compile('com.yanzhenjie:permission:2.0.0-rc5') {
+        exclude module: "support-v13"
+    }
+    compile 'com.android.support:support-fragment:27.1.1'
 }

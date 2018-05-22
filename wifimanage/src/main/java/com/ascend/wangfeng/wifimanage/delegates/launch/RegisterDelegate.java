@@ -3,6 +3,7 @@ package com.ascend.wangfeng.wifimanage.delegates.launch;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Toast;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.wifimanage.R;
@@ -19,6 +20,11 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -41,8 +47,8 @@ public class RegisterDelegate extends LatteDelegate {
 
     @OnClick(R.id.btn_login)
     void clickBtnLogin(){
-        pop();
-        start(new MainDelegate());
+
+        startWithPop(MainDelegate.newInstance());
     }
     @Override
     public Object setLayout() {
@@ -51,8 +57,23 @@ public class RegisterDelegate extends LatteDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
-        initMap();
-        initLocation();
+        AndPermission.with(getContext())
+                .runtime()
+                .permission(Permission.WRITE_EXTERNAL_STORAGE,Permission.READ_PHONE_STATE,Permission.ACCESS_COARSE_LOCATION)
+                .onGranted(new Action<List<String>>() {
+                    @Override
+                    public void onAction(List<String> data) {
+                        initMap();
+                        initLocation();
+                    }
+                })
+                .onDenied(new Action<List<String>>() {
+                    @Override
+                    public void onAction(List<String> data) {
+                        Toast.makeText(getActivity(), "无权限", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .start();
     }
 
     private void initLocation() {
@@ -99,8 +120,7 @@ public class RegisterDelegate extends LatteDelegate {
 
     @Override
     public void onDestroyView() {
-
-        mLocationClient.stop();
+        if (mLocationClient!=null) mLocationClient.stop();
         super.onDestroyView();
 
     }
