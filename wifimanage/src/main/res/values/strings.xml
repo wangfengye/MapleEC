@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">家小盒</string>
+    <string name="demo_hint">体验版,数据无法修改</string>
 </resources>

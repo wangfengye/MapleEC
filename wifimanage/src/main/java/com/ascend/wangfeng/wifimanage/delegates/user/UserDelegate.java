@@ -2,23 +2,13 @@ package com.ascend.wangfeng.wifimanage.delegates.user;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.ascend.wangfeng.latte.delegates.bottom.BottomItemDelegate;
-import com.ascend.wangfeng.latte.ui.recycler.BaseDecoration;
-import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.R;
-import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Person;
-import com.ascend.wangfeng.wifimanage.bean.PersonDevicesMap;
-import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
-import com.ascend.wangfeng.wifimanage.delegates.index.person.DeviceSquareAdapter;
-import com.ascend.wangfeng.wifimanage.greendao.DeviceDao;
-import com.ascend.wangfeng.wifimanage.greendao.PersonDao;
-import com.ascend.wangfeng.wifimanage.greendao.PersonDevicesMapDao;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.ascend.wangfeng.wifimanage.views.GithubActivityView;
 import com.github.mikephil.charting.charts.BarChart;
@@ -33,7 +23,6 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 
@@ -87,11 +76,11 @@ public class UserDelegate extends BottomItemDelegate{
         mGithub.setData(data);
     }
     private void initPerson() {
-        PersonDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();
+    /*    PersonDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();
         mPerson = dao.queryBuilder().where(PersonDao.Properties.Id.eq(1)).unique();
         if (mPerson!=null){
         mTvName.setText(mPerson.getName());
-        mCimgIcon.setImage(Icon.getImgUrl(mPerson.getImgUrl()));}
+        mCimgIcon.setImage(Icon.getImgUrl(mPerson.getImgUrl()));}*/
         //mTvDesc.setText();
     }
 
@@ -187,7 +176,7 @@ public class UserDelegate extends BottomItemDelegate{
     }
 
     private void initDevices() {
-        if (mPerson != null) {
+        /*if (mPerson != null) {
             // 通过人员id 获取关联设备
             PersonDevicesMapDao mapDao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDevicesMapDao();
             List<PersonDevicesMap> maps = mapDao.queryBuilder().where(PersonDevicesMapDao.Properties.PId.eq(mPerson.getId())).list();
@@ -204,6 +193,6 @@ public class UserDelegate extends BottomItemDelegate{
             mRvDevices.setAdapter(adapter);
             mRvDevices.addItemDecoration(BaseDecoration.create(getResources()
                     .getColor(android.R.color.white), 3));
-        }
+        }*/
     }
 }

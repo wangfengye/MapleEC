@@ -2,7 +2,6 @@ package com.ascend.wangfeng.wifimanage.delegates.index.person;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -10,15 +9,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
-import com.ascend.wangfeng.latte.ui.recycler.BaseDecoration;
-import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.R;
-import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.vo.PersonVo;
-import com.ascend.wangfeng.wifimanage.greendao.PersonDao;
 import com.joanzapata.iconify.widget.IconTextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -81,7 +75,7 @@ public class PersonListEditDelegate extends LatteDelegate {
     }
 
     private void initList() {
-        PersonDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();
+       /* PersonDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();
         List<Person> people = dao.loadAll();
         mPeopleVo = new ArrayList<>();
         for (int i = 0; i < people.size(); i++) {
@@ -93,7 +87,7 @@ public class PersonListEditDelegate extends LatteDelegate {
         mRvPeople.setLayoutManager(manager);
         mRvPeople.setAdapter(adapter);
         mRvPeople.addItemDecoration(BaseDecoration.create(getResources()
-                .getColor(android.R.color.darker_gray), 1));
+                .getColor(android.R.color.darker_gray), 1));*/
     }
 
 

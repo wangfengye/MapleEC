@@ -2,7 +2,6 @@ package com.ascend.wangfeng.wifimanage.delegates.index;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -11,29 +10,15 @@ import android.widget.TextView;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.latte.util.TimeUtil;
-import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Person;
-import com.ascend.wangfeng.wifimanage.bean.PersonDevicesMap;
-import com.ascend.wangfeng.wifimanage.bean.Plan;
-import com.ascend.wangfeng.wifimanage.bean.vo.PlanVo;
 import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
-import com.ascend.wangfeng.wifimanage.delegates.plan.PlanAdapter;
-import com.ascend.wangfeng.wifimanage.delegates.plan.PlanDetailDelegate;
-import com.ascend.wangfeng.wifimanage.greendao.PersonDao;
-import com.ascend.wangfeng.wifimanage.greendao.PersonDevicesMapDao;
-import com.ascend.wangfeng.wifimanage.greendao.PlanDao;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.joanzapata.iconify.widget.IconTextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static com.ascend.wangfeng.wifimanage.utils.TimeUtil.getTime;
 
 /**
  * Created by fengye on 2018/5/8.
@@ -137,7 +122,7 @@ public class DeviceDetailDelegate extends LatteDelegate {
     }
 
     private void initPlan() {
-        PlanDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPlanDao();
+       /* PlanDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPlanDao();
         final List<Plan> plans = dao.queryBuilder().where(PlanDao.Properties.Did.eq(mDevice.getId())).list();
         ArrayList<PlanVo> planVos = new ArrayList<>();
         for (int i = 0; i < plans.size(); i++) {
@@ -156,8 +141,8 @@ public class DeviceDetailDelegate extends LatteDelegate {
         mRvPlans.setAdapter(adapter);
         mRvPlans.setLayoutManager(manager);
         // 分割线暂不添加
-    /*    mRvPlans.addItemDecoration(BaseDecoration.create(getResources()
-                .getColor(R.color.textThi), 1));*/
+    *//*    mRvPlans.addItemDecoration(BaseDecoration.create(getResources()
+                .getColor(R.color.textThi), 1));*//*
 
         mLlAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,11 +157,11 @@ public class DeviceDetailDelegate extends LatteDelegate {
                 bundle.putSerializable(PlanDetailDelegate.PLAN, plan);
                 start(PlanDetailDelegate.newInstance(bundle));
             }
-        });
+        });*/
     }
 
     private Person getOwner(Device device) {
-        PersonDevicesMapDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDevicesMapDao();
+        /*PersonDevicesMapDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDevicesMapDao();
         PersonDao personDao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();
         List<PersonDevicesMap> maps = dao.queryBuilder().where(PersonDevicesMapDao.Properties.DId.eq(device.getId())).list();
         if (maps.size() > 0) {
@@ -184,7 +169,7 @@ public class DeviceDetailDelegate extends LatteDelegate {
             if (person != null) {
                 return person;
             }
-        }
+        }*/
         return null;
     }
 

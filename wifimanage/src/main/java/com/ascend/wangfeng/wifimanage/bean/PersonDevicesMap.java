@@ -1,7 +1,5 @@
 package com.ascend.wangfeng.wifimanage.bean;
 
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 
 /**
@@ -9,21 +7,13 @@ import org.greenrobot.greendao.annotation.Generated;
  * email 1040441325@qq.com
  * 人员 设备s 映射表
  */
-@Entity
+
 public class PersonDevicesMap {
-    @Id(autoincrement = true)
+
     private Long id;
     private long pId;//人员id;
     private long dId;//设备id;
-    @Generated(hash = 37060736)
-    public PersonDevicesMap(Long id, long pId, long dId) {
-        this.id = id;
-        this.pId = pId;
-        this.dId = dId;
-    }
-    @Generated(hash = 1504450817)
-    public PersonDevicesMap() {
-    }
+
     public Long getId() {
         return this.id;
     }

@@ -20,12 +20,15 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 public class Client {
     private static final String url = "https://123.57.175.155:7097";
+    private static boolean test = true;
 
     public static AliApi getInstance() {
+        if(test)return Build.mDemo;
         return Build.mAliApi;
     }
 
     private static class Build {
+        public static DemoApi mDemo = new DemoApi();
         public static AliApi mAliApi;
 
         static {

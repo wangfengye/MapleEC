@@ -2,10 +2,14 @@ package com.ascend.wangfeng.wifimanage.api;
 
 import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Event;
+import com.ascend.wangfeng.wifimanage.bean.Liveness;
 import com.ascend.wangfeng.wifimanage.bean.Person;
+import com.ascend.wangfeng.wifimanage.bean.Plan;
+import com.ascend.wangfeng.wifimanage.bean.Response;
 import com.ascend.wangfeng.wifimanage.bean.User;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by fengye on 2018/5/5.
@@ -18,15 +22,14 @@ public interface Api {
      *  创建账号
      * @param callback 是否创建成功
      */
-    void createAccount(User user,Callback<Boolean> callback);
+    void createAccount(User user,Callback<Response<User>> callback);
 
     /**
      * 登录
-     * @param dId 设备id
-     * @param password 密码
+     * @param user 用户
      * @param callback user信息;
      */
-    void login(String dId,String password,Callback<User> callback);
+    void login(User user,Callback<Response<User>> callback);
 
     /**
      * 上传设备信息;
@@ -49,7 +52,7 @@ public interface Api {
     void getDevices(Callback<List<Device>> callback);
     /**
      *  从设备获取设备信息
-     * @param callback 设备列表
+     * @return 设备列表
      */
     void getCurrentDevices(Callback<List<Device>> callback);
 
@@ -65,7 +68,9 @@ public interface Api {
      * @param person 人员信息
      * @param callback 是否成功
      */
-    void updatePersion(Person person,Callback<Boolean> callback);
+    void updatePerson(Person person,Callback<Boolean> callback);
+
+    void getPersons(Set<Long> i, Callback<List<Person>> callback);
 
     /**
      *  新增人员-设备关联
@@ -95,11 +100,9 @@ public interface Api {
 
     /**
      * 网路限制设置
-     * @param id 目标设备 id
-     * @param starttime 开始时间
-     * @param endtime 结束时间
-     * @param cycle 周期
      * @param callback 是否设置成功
      */
-    void setBlock(long id, long starttime,long endtime,int[] cycle,Callback<Boolean> callback);
+    void setBlock(Plan plan, Callback<Boolean> callback);
+
+    void getActivities(long dId, long startDate, long endDate, Callback<List<Liveness>> callback);
 }

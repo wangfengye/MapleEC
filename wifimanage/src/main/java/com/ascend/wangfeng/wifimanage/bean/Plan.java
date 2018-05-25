@@ -1,10 +1,5 @@
 package com.ascend.wangfeng.wifimanage.bean;
 
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Transient;
-
 import java.io.Serializable;
 
 /**
@@ -12,27 +7,17 @@ import java.io.Serializable;
  * email 1040441325@qq.com
  * 时间规划
  */
-@Entity
+
 public class Plan implements Serializable{
-    @Transient
+
     private static final long serialVersionUID = -1314258825409184663L;
-    @Id(autoincrement = true)
+
     private Long id;
     private Long Did;
     private int type;// 规划类型,即每周哪几天执行
     private Long starttime;
     private Long endtime;
-    @Generated(hash = 928908224)
-    public Plan(Long id, Long Did, int type, Long starttime, Long endtime) {
-        this.id = id;
-        this.Did = Did;
-        this.type = type;
-        this.starttime = starttime;
-        this.endtime = endtime;
-    }
-    @Generated(hash = 592612124)
-    public Plan() {
-    }
+
     public Long getId() {
         return this.id;
     }

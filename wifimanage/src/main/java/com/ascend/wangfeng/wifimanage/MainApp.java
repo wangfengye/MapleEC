@@ -1,13 +1,12 @@
 package com.ascend.wangfeng.wifimanage;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.StringRes;
 import android.support.multidex.MultiDexApplication;
 import android.widget.Toast;
 
 import com.ascend.wangfeng.latte.app.Latte;
-import com.ascend.wangfeng.wifimanage.greendao.DaoMaster;
-import com.ascend.wangfeng.wifimanage.greendao.DaoSession;
+import com.ascend.wangfeng.wifimanage.api.Api;
+import com.ascend.wangfeng.wifimanage.api.DemoApi;
 import com.baidu.mapapi.SDKInitializer;
 import com.facebook.stetho.Stetho;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
@@ -19,16 +18,17 @@ import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 public class MainApp extends MultiDexApplication {
     private static MainApp mContext;
-    private DaoSession mDaoSession;
+    private static Api sApi;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mContext = this;
         Latte.init(this).withIcon(new FontAwesomeModule()).configure();
-        initGreenDao();
         Stetho.initializeWithDefaults(this);
-        SDKInitializer.initialize(getApplicationContext());
+        SDKInitializer.initialize(this);
+        //初始化sApi;
+        sApi = new DemoApi();
     }
     public static MainApp getContent(){
         return mContext;
@@ -36,14 +36,8 @@ public class MainApp extends MultiDexApplication {
     public static void toast(@StringRes int id){
         Toast.makeText(mContext,id,Toast.LENGTH_SHORT).show();
     }
-    private void initGreenDao(){
-        // fing.db 自己命名数据库名称
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this,"fing.db");
-        SQLiteDatabase db = helper.getWritableDatabase();
-        DaoMaster master = new DaoMaster(db);
-        mDaoSession = master.newSession();
-    }
-    public DaoSession getDaoSession(){
-        return mDaoSession;
+
+    public static Api getApi() {
+        return sApi;
     }
 }

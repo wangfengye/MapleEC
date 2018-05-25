@@ -2,7 +2,6 @@ package com.ascend.wangfeng.wifimanage.delegates.index;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,21 +14,15 @@ import android.widget.TextView;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.latte.ui.recycler.BaseDecoration;
-import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Person;
-import com.ascend.wangfeng.wifimanage.bean.PersonDevicesMap;
 import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
 import com.ascend.wangfeng.wifimanage.delegates.index.person.PersonListEditDelegate;
-import com.ascend.wangfeng.wifimanage.greendao.DeviceDao;
-import com.ascend.wangfeng.wifimanage.greendao.PersonDao;
-import com.ascend.wangfeng.wifimanage.greendao.PersonDevicesMapDao;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -73,7 +66,7 @@ public class DeviceEditDelegate extends LatteDelegate {
     @OnClick(R.id.btn_save)
     void clickBtnSave() {
         // 更新device
-        DeviceDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getDeviceDao();
+      /*  DeviceDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getDeviceDao();
         dao.update(mDevice);
         // 更新从属关系
         if (mPerson != null) {
@@ -93,7 +86,7 @@ public class DeviceEditDelegate extends LatteDelegate {
         Bundle bundle = new Bundle();
         bundle.putSerializable(DeviceEditDelegate.DEVICE, mDevice);
         pop();
-        start(DeviceDetailDelegate.newInstance(bundle), SINGLETASK);
+        start(DeviceDetailDelegate.newInstance(bundle), SINGLETASK);*/
     }
 
     public static DeviceEditDelegate newInstance(Bundle args) {
@@ -176,7 +169,7 @@ public class DeviceEditDelegate extends LatteDelegate {
     }
 
     private Person getOwner(Device device) {
-        PersonDevicesMapDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDevicesMapDao();
+       /* PersonDevicesMapDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDevicesMapDao();
         PersonDao personDao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();
         List<PersonDevicesMap> maps = dao.queryBuilder().where(PersonDevicesMapDao.Properties.DId.eq(device.getId())).list();
         if (maps.size() > 0) {
@@ -184,13 +177,13 @@ public class DeviceEditDelegate extends LatteDelegate {
             if (person != null) {
                 return person;
             }
-        }
+        }*/
         return null;
     }
 
     @Override
     public void onFragmentResult(int requestCode, int resultCode, Bundle data) {
-        mPerson = (Person) data.getSerializable("person");
+      /*  mPerson = (Person) data.getSerializable("person");
         if (mPerson != null) {
             mCImgOwener.setSrcType(CircleImageView.TYPE_NORMAL);
             mCImgOwener.setImage(Icon.getImgUrl(mPerson.getImgUrl()));
@@ -200,7 +193,7 @@ public class DeviceEditDelegate extends LatteDelegate {
             map.setDId(mDevice.getId());
             map.setPId(mPerson.getId());
             dao.insert(map);
-        }
+        }*/
     }
 
 }

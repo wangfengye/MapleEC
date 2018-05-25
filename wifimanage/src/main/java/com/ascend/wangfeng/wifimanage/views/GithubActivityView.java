@@ -100,7 +100,7 @@ public class GithubActivityView extends View {
         }
         // 绘制标注
         mPaint.setTextAlign(Paint.Align.RIGHT);
-        mPaint.setColor(getResources().getColor(R.color.textSec));
+        mPaint.setColor(getColor(0));
         canvas.drawText("最少",mRowTitleWidth - mSpaceWidth,8* (radius + mSpaceWidth)-mSpaceWidth + radius + mColumnTitleHeight,mPaint);
         for(int i=0; i<5;i++){
             Path path = new Path();

@@ -2,22 +2,13 @@ package com.ascend.wangfeng.wifimanage.delegates.plan;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.ascend.wangfeng.latte.delegates.bottom.BottomItemDelegate;
-import com.ascend.wangfeng.latte.ui.recycler.BaseDecoration;
-import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
-import com.ascend.wangfeng.wifimanage.bean.Plan;
-import com.ascend.wangfeng.wifimanage.delegates.index.DeviceDetailDelegate;
-import com.ascend.wangfeng.wifimanage.delegates.index.NewDeviceAdapter;
-import com.ascend.wangfeng.wifimanage.greendao.DeviceDao;
-import com.ascend.wangfeng.wifimanage.greendao.PlanDao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,7 +33,7 @@ public class PlanDelegate extends BottomItemDelegate{
     }
 
     private void initRv() {
-        PlanDao planDao = ((MainApp)getActivity().getApplication()).getDaoSession().getPlanDao();
+       /* PlanDao planDao = ((MainApp)getActivity().getApplication()).getDaoSession().getPlanDao();
         List<Plan> plans = planDao.loadAll();
         DeviceDao deviceDao = ((MainApp)getActivity().getApplication()).getDaoSession().getDeviceDao();
         List<Device> devices = new ArrayList<>();
@@ -63,7 +54,7 @@ public class PlanDelegate extends BottomItemDelegate{
         mRvDevices.setLayoutManager(manager);
         mRvDevices.setAdapter(adapter);
         mRvDevices.addItemDecoration(BaseDecoration.create(getResources()
-                .getColor(R.color.textThi), 1));
+                .getColor(R.color.textThi), 1));*/
     }
 
     private boolean contain(Device device, List<Device> devices) {

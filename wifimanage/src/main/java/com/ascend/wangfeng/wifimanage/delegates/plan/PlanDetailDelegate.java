@@ -11,16 +11,17 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
-import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Plan;
-import com.ascend.wangfeng.wifimanage.greendao.PlanDao;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.ascend.wangfeng.wifimanage.utils.TimeUtil.*;
+import static com.ascend.wangfeng.wifimanage.utils.TimeUtil.getHour;
+import static com.ascend.wangfeng.wifimanage.utils.TimeUtil.getMinute;
+import static com.ascend.wangfeng.wifimanage.utils.TimeUtil.getTime;
+import static com.ascend.wangfeng.wifimanage.utils.TimeUtil.time2Str;
 
 /**
  * Created by fengye on 2018/5/15.
@@ -68,11 +69,11 @@ public class PlanDetailDelegate extends LatteDelegate {
     @OnClick(R.id.btn_delete)
     void clickBtnDelete() {
         // 删除计划
-        PlanDao dao = ((MainApp) (getActivity().getApplication())).getDaoSession().getPlanDao();
+      /*  PlanDao dao = ((MainApp) (getActivity().getApplication())).getDaoSession().getPlanDao();
         if (mPlan.getId() != null && mPlan.getId() != 0) {
             dao.delete(mPlan);
         }
-        pop();
+        pop();*/
     }
 
     public static PlanDetailDelegate newInstance(Bundle args) {
@@ -101,13 +102,13 @@ public class PlanDetailDelegate extends LatteDelegate {
         mIcEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PlanDao dao = ((MainApp) (getActivity().getApplication())).getDaoSession().getPlanDao();
+           /*     PlanDao dao = ((MainApp) (getActivity().getApplication())).getDaoSession().getPlanDao();
                 if (mPlan.getId() != null && mPlan.getId() != 0) {
                     dao.update(mPlan);
                 } else {
                     dao.insert(mPlan);
                 }
-                pop();
+                pop();*/
             }
         });
         initData();

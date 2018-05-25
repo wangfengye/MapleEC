@@ -2,11 +2,6 @@ package com.ascend.wangfeng.wifimanage.bean;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Transient;
-
 import java.io.Serializable;
 
 /**
@@ -14,12 +9,12 @@ import java.io.Serializable;
  * email 1040441325@qq.com
  * 设备
  */
-@Entity
 public class Device implements MultiItemEntity,Serializable {
-    @Transient
+
     private static final long serialVersionUID = -1251039796477336552L;
-    @Id(autoincrement = true)
+
     private Long id;
+    private Long pId;
     private String name;//设备名称
     private int type;// 设备类型
     private String mac;//mac地址
@@ -34,32 +29,17 @@ public class Device implements MultiItemEntity,Serializable {
     private int status; //活跃状态
     private String apBssid;//归属网络
 
-
-    @Generated(hash = 122497461)
-    public Device(Long id, String name, int type, String mac, String ip,
-            String dhcp, String bonjour, String netbios, String brand, String model,
-            long firsttime, long lasttime, int status, String apBssid) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-        this.mac = mac;
-        this.ip = ip;
-        this.dhcp = dhcp;
-        this.bonjour = bonjour;
-        this.netbios = netbios;
-        this.brand = brand;
-        this.model = model;
-        this.firsttime = firsttime;
-        this.lasttime = lasttime;
-        this.status = status;
-        this.apBssid = apBssid;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-
-    @Generated(hash = 1469582394)
-    public Device() {
+    public Long getpId() {
+        return pId;
     }
 
+    public void setpId(Long pId) {
+        this.pId = pId;
+    }
 
     @Override
     public int getItemType() {

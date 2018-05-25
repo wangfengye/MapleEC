@@ -8,12 +8,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
-import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
 import com.ascend.wangfeng.wifimanage.delegates.icon.IconChooseDelegate;
-import com.ascend.wangfeng.wifimanage.greendao.PersonDao;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.joanzapata.iconify.widget.IconTextView;
 
@@ -45,14 +43,14 @@ public class PersonEditDelegate extends LatteDelegate {
 
     @OnClick(R.id.btn_save)
     void save() {
-        mPerson.setName(mEtName.getText().toString());
+      /*  mPerson.setName(mEtName.getText().toString());
         PersonDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();
         if (mPerson.getId() == null||mPerson.getId()==0) {
             dao.insert(mPerson);
         } else {
             dao.update(mPerson);
         }
-        pop();
+        pop();*/
     }
 
     public static PersonEditDelegate newInstance(Bundle args) {

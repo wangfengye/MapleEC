@@ -2,6 +2,7 @@ package com.ascend.wangfeng.wifimanage.delegates.launch;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,9 +18,9 @@ import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.TextureMapView;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
@@ -37,7 +38,7 @@ import butterknife.OnClick;
 public class RegisterDelegate extends LatteDelegate {
     public static final String TAG = RegisterDelegate.class.getSimpleName();
     @BindView(R.id.map)
-    MapView mMap;
+    TextureMapView mMap;
 
     BaiduMap mBaiduMap;
     private MyLocationConfiguration.LocationMode mCurrentMode
@@ -77,8 +78,14 @@ public class RegisterDelegate extends LatteDelegate {
     }
 
     private void initLocation() {
-        mLocationClient = new LocationClient(getActivity().getApplicationContext());
+        mLocationClient = new LocationClient(getActivity());
         BDAbstractLocationListener listener = new BDAbstractLocationListener() {
+            @Override
+            public void onLocDiagnosticMessage(int i, int i1, String s) {
+                super.onLocDiagnosticMessage(i, i1, s);
+                Log.i(TAG, "onLocDiagnosticMessage: " +s);
+            }
+
             @Override
             public void onReceiveLocation(BDLocation location) {
                 MyLocationData locData = new MyLocationData.Builder()
@@ -91,6 +98,7 @@ public class RegisterDelegate extends LatteDelegate {
             }
         };
         mLocationClient.registerLocationListener(listener);
+
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         option.setCoorType("bd09ll");
@@ -114,6 +122,7 @@ public class RegisterDelegate extends LatteDelegate {
         mBaiduMap.setMyLocationConfiguration(new MyLocationConfiguration(mCurrentMode, true
                 , marker, accuracyCircleFillColor, accuracyCircleStrokeColor));
         mBaiduMap.setMyLocationEnabled(true);
+        mBaiduMap.setCompassEnable(false);
         MyLocationConfiguration config = new MyLocationConfiguration(mCurrentMode, true, marker);
         mBaiduMap.setMyLocationConfiguration(config);
     }

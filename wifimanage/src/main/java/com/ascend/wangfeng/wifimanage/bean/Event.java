@@ -9,25 +9,15 @@ import org.greenrobot.greendao.annotation.Generated;
  * email 1040441325@qq.com
  * 事件表
  */
-@Entity
+
 public class Event {
-    @Id(autoincrement = true)
+
     private Long id;
     private long time;
     private long pId;//人员id
     private long dId;//设备id
     private int event;//事件
-    @Generated(hash = 1876606629)
-    public Event(Long id, long time, long pId, long dId, int event) {
-        this.id = id;
-        this.time = time;
-        this.pId = pId;
-        this.dId = dId;
-        this.event = event;
-    }
-    @Generated(hash = 344677835)
-    public Event() {
-    }
+
     public Long getId() {
         return this.id;
     }

@@ -7,28 +7,31 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.ascend.wangfeng.latte.delegates.bottom.BottomItemDelegate;
+import com.ascend.wangfeng.latte.net.rx.BaseObserver;
 import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.api.Api;
-import com.ascend.wangfeng.wifimanage.api.Callback;
-import com.ascend.wangfeng.wifimanage.api.DemoApi;
 import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Person;
-import com.ascend.wangfeng.wifimanage.bean.PersonDevicesMap;
+import com.ascend.wangfeng.wifimanage.bean.Response;
 import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
 import com.ascend.wangfeng.wifimanage.delegates.index.DeviceType;
 import com.ascend.wangfeng.wifimanage.delegates.index.NewDeviceDelegate;
 import com.ascend.wangfeng.wifimanage.delegates.index.person.PersonListDelegate;
-import com.ascend.wangfeng.wifimanage.greendao.DeviceDao;
-import com.ascend.wangfeng.wifimanage.greendao.PersonDao;
-import com.ascend.wangfeng.wifimanage.greendao.PersonDevicesMapDao;
+import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by fengye on 2018/4/25.
@@ -76,7 +79,10 @@ public class IndexDelegate extends BottomItemDelegate {
 
     ArrayList<Device> mNewDevices;//新发现设备
     ArrayList<Person> mPeople; // 在线人员
+    LinkedHashSet<Long> mPIds; // 在线人员
     ArrayList<Device> mOnlineDevices; // 在线设备
+    Api mApi = MainApp.getApi();
+    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     @Override
     public Object setLayout() {
@@ -85,8 +91,6 @@ public class IndexDelegate extends BottomItemDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
-        initData();
-        resetView();
     }
 
     @Override
@@ -96,75 +100,62 @@ public class IndexDelegate extends BottomItemDelegate {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onSupportVisible() {
+        super.onSupportVisible();
         initData();
-        resetView();
+    }
+
+    @Override
+    public void onSupportInvisible() {
+        super.onSupportInvisible();
+        mCompositeDisposable.clear();
     }
 
     private void initData() {
         mNewDevices = new ArrayList<>();
         mPeople = new ArrayList<>();
         mOnlineDevices = new ArrayList<>();
-
-        Api api = new DemoApi();
-        api.getCurrentDevices(new Callback<List<Device>>() {
+        mPIds = new LinkedHashSet<>();
+        // 数据源
+        Observable<Response<List<Device>>> observable = Client.getInstance().getCurrentDevices()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        observable.subscribe(new Consumer<Response<List<Device>>>() {
             @Override
-            public void callback(List<Device> devices) {
-                for (Device device : devices) {
-                    dispose(device);
+            public void accept(Response<List<Device>> response) throws Exception {
+                for (Device d : response.getData()) {
+                    if (d.getpId() != null && d.getpId() != 0) {
+                        mOnlineDevices.add(d);
+                        mPIds.add(d.getpId());
+
+                    } else {
+                        mNewDevices.add(d);
+                    }
                 }
-                disposePeople();
-                resetView();
+                getPersons(mPIds);
             }
         });
+
+
     }
 
-    private void disposePeople() {
-        PersonDao personDao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();
-        PersonDevicesMapDao mapDao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDevicesMapDao();
-        for (Device device : mOnlineDevices) {
-            List<PersonDevicesMap> maps = mapDao.queryBuilder().where(PersonDevicesMapDao.Properties.DId.eq(device.getId())).list();
-            if (maps.size() > 0) {
-                PersonDevicesMap map = maps.get(0);
-                Person person = personDao.queryBuilder().where(PersonDao.Properties.Id.eq(map.getPId())).unique();
-                if (person != null && !contain(person, mPeople)) {
-                    mPeople.add(person);
-                }
-            }
-        }
-    }
-
-    private boolean contain(Person person, ArrayList<Person> people1) {
-        for (Person p : people1) {
-            if (p.getId() == person.getId()) return true;
-        }
-        return false;
-    }
-
-    private void dispose(Device device) {
-        DeviceDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getDeviceDao();
-        PersonDevicesMapDao mapDao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDevicesMapDao();
-        List<Device> result = dao.queryBuilder().where(DeviceDao.Properties.Mac.eq(device.getMac())).list();
-        if (result.size() > 0) {
-            Device rD = result.get(0);
-            rD.setLasttime(System.currentTimeMillis());
-            dao.update(rD);
-            List<PersonDevicesMap> maps = mapDao.queryBuilder().where(PersonDevicesMapDao.Properties.DId.eq(rD.getId())).list();
-            if (maps.size() > 0) {
-                mOnlineDevices.add(rD);
-            } else {
-                mNewDevices.add(rD);
-            }
-
-        } else {
-
-            device.setFirsttime(System.currentTimeMillis());
-            device.setLasttime(System.currentTimeMillis());
-            dao.insert(device);
-            List<Device> devices = dao.queryBuilder().where(DeviceDao.Properties.Mac.eq(device.getMac())).list();
-            mNewDevices.add(devices.get(0));
-        }
+    public void getPersons(LinkedHashSet<Long> ids) {
+        Observable.fromIterable(ids)
+                .subscribe(new BaseObserver<Long>() {
+                    @Override
+                    public void onNext(Long aLong) {
+                        Client.getInstance().getPersonsById(aLong)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Consumer<Response<Person>>() {
+                                    @Override
+                                    public void accept(Response<Person> response) throws Exception {
+                                        mPeople.add(response.getData());
+                                        resetView();
+                                    }
+                                });
+                    }
+                });
 
     }
 
@@ -202,4 +193,9 @@ public class IndexDelegate extends BottomItemDelegate {
         }
     }
 
+    @Override
+    public void onDestroyView() {
+
+        super.onDestroyView();
+    }
 }

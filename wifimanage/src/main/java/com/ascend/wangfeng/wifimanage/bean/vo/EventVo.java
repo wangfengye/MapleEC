@@ -1,12 +1,9 @@
 package com.ascend.wangfeng.wifimanage.bean.vo;
 
 import com.alibaba.fastjson.JSON;
-import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Event;
 import com.ascend.wangfeng.wifimanage.bean.Person;
-import com.ascend.wangfeng.wifimanage.greendao.DeviceDao;
-import com.ascend.wangfeng.wifimanage.greendao.PersonDao;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 
 /**
@@ -19,18 +16,18 @@ public class EventVo extends Event implements MultiItemEntity {
     private Device mDevice;
 
     public Person getPerson() {
-        if (mPerson == null) {
+      /*  if (mPerson == null) {
             PersonDao dao = MainApp.getContent().getDaoSession().getPersonDao();
             mPerson = dao.load(getPId());
-        }
+        }*/
         return mPerson;
     }
 
     public Device getDevice() {
-        if (mDevice == null) {
+    /*    if (mDevice == null) {
             DeviceDao dao = MainApp.getContent().getDaoSession().getDeviceDao();
             mDevice = dao.load(getDId());
-        }
+        }*/
         return mDevice;
     }
 

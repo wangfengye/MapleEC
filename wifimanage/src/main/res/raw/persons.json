@@ -1,0 +1,18 @@
+{
+  "message":"success",
+  "code":200,
+  "data":[
+    {
+      "id": 1,
+      "bid": 1,
+      "name": "白羊",
+      "imgUrl":0
+    },
+    {
+      "id": 2,
+      "bid": 1,
+      "name": "摩羯",
+      "imgUrl":1
+    }
+  ]
+}
