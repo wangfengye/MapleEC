@@ -8,9 +8,7 @@ import android.widget.LinearLayout;
 
 import com.ascend.wangfeng.latte.delegates.bottom.BottomItemDelegate;
 import com.ascend.wangfeng.latte.net.rx.BaseObserver;
-import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.R;
-import com.ascend.wangfeng.wifimanage.api.Api;
 import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.Response;
@@ -81,7 +79,6 @@ public class IndexDelegate extends BottomItemDelegate {
     ArrayList<Person> mPeople; // 在线人员
     LinkedHashSet<Long> mPIds; // 在线人员
     ArrayList<Device> mOnlineDevices; // 在线设备
-    Api mApi = MainApp.getApi();
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     @Override
@@ -127,7 +124,6 @@ public class IndexDelegate extends BottomItemDelegate {
                     if (d.getpId() != null && d.getpId() != 0) {
                         mOnlineDevices.add(d);
                         mPIds.add(d.getpId());
-
                     } else {
                         mNewDevices.add(d);
                     }
@@ -144,7 +140,7 @@ public class IndexDelegate extends BottomItemDelegate {
                 .subscribe(new BaseObserver<Long>() {
                     @Override
                     public void onNext(Long aLong) {
-                        Client.getInstance().getPersonsById(aLong)
+                        Client.getInstance().getPersonById(aLong)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new Consumer<Response<Person>>() {

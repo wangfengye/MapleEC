@@ -15,6 +15,7 @@ import butterknife.BindView;
  */
 
 public class TestDelegate extends LatteDelegate{
+    private static final String TAG = "sss";
     @BindView(R.id.github)
     GithubActivityView mGithub;
     @Override

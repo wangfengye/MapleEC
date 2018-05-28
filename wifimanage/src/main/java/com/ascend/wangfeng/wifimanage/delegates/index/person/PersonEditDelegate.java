@@ -6,17 +6,23 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Person;
+import com.ascend.wangfeng.wifimanage.bean.Response;
 import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
 import com.ascend.wangfeng.wifimanage.delegates.icon.IconChooseDelegate;
+import com.ascend.wangfeng.wifimanage.net.Client;
+import com.ascend.wangfeng.wifimanage.net.MyObserver;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by fengye on 2018/5/10.
@@ -26,6 +32,7 @@ import butterknife.OnClick;
 public class PersonEditDelegate extends LatteDelegate {
     public static final String PERSON = "person";
     public static final int REQUEST_CODE = 1;
+    public static final String TAG = PersonEditDelegate.class.getSimpleName();
     @BindView(R.id.ic_back)
     IconTextView mIcBack;
     @BindView(R.id.toolbar_title)
@@ -43,14 +50,31 @@ public class PersonEditDelegate extends LatteDelegate {
 
     @OnClick(R.id.btn_save)
     void save() {
-      /*  mPerson.setName(mEtName.getText().toString());
-        PersonDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();
-        if (mPerson.getId() == null||mPerson.getId()==0) {
-            dao.insert(mPerson);
+        mPerson.setName(mEtName.getText().toString());
+        if (mPerson.getId() == null || mPerson.getId() == 0) {
+            Client.getInstance().addPerson(mPerson)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new MyObserver<Response<Person>>() {
+                        @Override
+                        public void onNext(Response<Person> response) {
+                            Toast.makeText(getActivity(), R.string.add_success, Toast.LENGTH_SHORT).show();
+                            pop();
+                        }
+                    });
         } else {
-            dao.update(mPerson);
+            Client.getInstance().updatePerson(mPerson)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new MyObserver<Response<Person>>() {
+                        @Override
+                        public void onNext(Response<Person> response) {
+                            Toast.makeText(getActivity(), R.string.update_success, Toast.LENGTH_SHORT).show();
+                            pop();
+                        }
+                    });
         }
-        pop();*/
+
     }
 
     public static PersonEditDelegate newInstance(Bundle args) {
@@ -91,11 +115,12 @@ public class PersonEditDelegate extends LatteDelegate {
     @Override
     public void onFragmentResult(int requestCode, int resultCode, Bundle data) {
         Log.i("TAG", "onFragmentResult: ");
-        if (data!=null){
-        int res = data.getInt(IconChooseDelegate.ICON);
-        if (res != 0) {
-            mPerson.setImgUrl(res);
-            mCimgIcon.setImage(Icon.getImgUrl(res));
-        }}
+        if (data != null) {
+            int res = data.getInt(IconChooseDelegate.ICON);
+            if (res != 0) {
+                mPerson.setImgUrl(res);
+                mCimgIcon.setImage(Icon.getImgUrl(res));
+            }
+        }
     }
 }

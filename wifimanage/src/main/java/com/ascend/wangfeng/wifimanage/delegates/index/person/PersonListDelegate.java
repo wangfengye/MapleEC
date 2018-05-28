@@ -2,19 +2,27 @@ package com.ascend.wangfeng.wifimanage.delegates.index.person;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
+import com.ascend.wangfeng.latte.ui.recycler.BaseDecoration;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Person;
+import com.ascend.wangfeng.wifimanage.bean.Response;
+import com.ascend.wangfeng.wifimanage.net.Client;
 import com.joanzapata.iconify.widget.IconTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by fengye on 2018/5/10.
@@ -30,6 +38,8 @@ public class PersonListDelegate extends LatteDelegate {
     Toolbar mToolbar;
     @BindView(R.id.rv_people)
     RecyclerView mRvPeople;
+    private ArrayList<Person> mPeople;
+    private PersonAdapter mAdapter;
 
     public static PersonListDelegate newInstance( Bundle args) {
         PersonListDelegate fragment = new PersonListDelegate();
@@ -54,38 +64,32 @@ public class PersonListDelegate extends LatteDelegate {
         initRv();
     }
 
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        Client.getInstance().getPersons()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Response<List<Person>>>() {
+                    @Override
+                    public void accept(Response<List<Person>> response) throws Exception {
+                        mPeople.clear();
+                        mPeople.addAll(response.getData());
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+    }
+
     private void initRv() {
-      /*  PersonDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();
-        List<Person> people = dao.loadAll();
-        List<Person> onLinePeople= (List<Person>) getArguments().getSerializable("person");
-        ArrayList<PersonVo> personVos = new ArrayList<>();
-        for (int i = 0; i < onLinePeople.size(); i++) {
-            PersonVo personVo = PersonVo.get(onLinePeople.get(i));
-            personVo.setOnline(true);
-            personVos.add(personVo);
-        }
-        for (int i = 0; i< people.size();i++){
-            if (!contain(people.get(i),onLinePeople)){
-                PersonVo personVo = PersonVo.get(people.get(i));
-                personVo.setOnline(false);
-                personVos.add(personVo);
-            }
-        }
-        PersonAdapter adapter = new PersonAdapter(personVos,this);
+        mPeople = new ArrayList<>();
+        mAdapter = new PersonAdapter(mPeople,this);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
-        mRvPeople.setAdapter(adapter);
+        mRvPeople.setAdapter(mAdapter);
         mRvPeople.setLayoutManager(manager);
         mRvPeople.addItemDecoration(BaseDecoration.create(getResources()
-                .getColor(android.R.color.darker_gray), 1));*/
+                .getColor(android.R.color.darker_gray), 1));
     }
-    private boolean contain(Person p,List<Person> people){
-        for (Person p1:people) {
-            if (p.getId() == p1.getId()){
-                return true;
-            }
-        }
-        return false;
-    }
+
 
     @Override
     public boolean onBackPressedSupport() {

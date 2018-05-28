@@ -8,7 +8,7 @@ import android.widget.RadioButton;
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.latte.ui.recycler.MultipleViewHolder;
 import com.ascend.wangfeng.wifimanage.R;
-import com.ascend.wangfeng.wifimanage.bean.vo.PersonVo;
+import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
@@ -20,7 +20,7 @@ import java.util.List;
  * email 1040441325@qq.com
  */
 
-public class PersonAdapter extends BaseMultiItemQuickAdapter<PersonVo, MultipleViewHolder> {
+public class PersonAdapter extends BaseMultiItemQuickAdapter<Person, MultipleViewHolder> {
     private boolean mEdit;
     private LatteDelegate mDelegate;
 
@@ -30,7 +30,7 @@ public class PersonAdapter extends BaseMultiItemQuickAdapter<PersonVo, MultipleV
      *
      * @param data A new list is created out of this one to avoid mutable list
      */
-    public PersonAdapter(List<PersonVo> data, LatteDelegate delegate) {
+    public PersonAdapter(List<Person> data, LatteDelegate delegate) {
         super(data);
         addItemType(0, R.layout.item_person);
         mDelegate = delegate;
@@ -44,23 +44,24 @@ public class PersonAdapter extends BaseMultiItemQuickAdapter<PersonVo, MultipleV
     }
 
     @Override
-    protected void convert(MultipleViewHolder helper, final PersonVo item) {
+    protected void convert(MultipleViewHolder helper, final Person item) {
         helper.setText(R.id.tv_name, item.getName());
         helper.setText(R.id.tv_desc, "描述性信息");
         CircleImageView cimg = helper.getView(R.id.cimg_icon);
         cimg.setImage(Icon.getImgUrl(item.getImgUrl()));
+        cimg.setState(item.isOnline());
         RadioButton button = helper.getView(R.id.rb_choose);
         if (mEdit) {
             button.setVisibility(View.VISIBLE);
             helper.setVisible(R.id.it_right, false);
-            button.setChecked(item.isChecked());
+            button.setChecked(item.isChosed());
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     for (int i = 0; i < getData().size(); i++) {
-                        if (getData().get(i).isChecked()) getData().get(i).setChecked(false);
+                        if (getData().get(i).isChosed()) getData().get(i).setChosed(false);
                     }
-                    item.setChecked(true);
+                    item.setChosed(true);
                     // 通过消息机制,避免绘制时触发更新
                     Handler handler = new Handler();
                     handler.post(new Runnable() {
@@ -80,15 +81,11 @@ public class PersonAdapter extends BaseMultiItemQuickAdapter<PersonVo, MultipleV
                 public void onClick(View view) {
                     // 进入成员详情;
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("person",item);
+                    bundle.putSerializable("person", item);
                     mDelegate.start(PersonDetailDelegate.newInstance(bundle));
                 }
             });
         }
-    }
-
-    private int getImg(int type) {
-        return R.drawable.test;
     }
 
     @Override

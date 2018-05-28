@@ -2,6 +2,7 @@ package com.ascend.wangfeng.wifimanage.delegates.index.person;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -9,13 +10,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
+import com.ascend.wangfeng.latte.ui.recycler.BaseDecoration;
 import com.ascend.wangfeng.wifimanage.R;
-import com.ascend.wangfeng.wifimanage.bean.vo.PersonVo;
+import com.ascend.wangfeng.wifimanage.bean.Person;
+import com.ascend.wangfeng.wifimanage.bean.Response;
+import com.ascend.wangfeng.wifimanage.net.Client;
 import com.joanzapata.iconify.widget.IconTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.functions.Consumer;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
@@ -35,7 +41,7 @@ public class PersonListEditDelegate extends LatteDelegate {
     LinearLayout mLlAdd;
     @BindView(R.id.rv_people)
     RecyclerView mRvPeople;
-    private List<PersonVo> mPeopleVo;
+    private ArrayList<Person> mPeople;
 
 
     @Override
@@ -75,19 +81,23 @@ public class PersonListEditDelegate extends LatteDelegate {
     }
 
     private void initList() {
-       /* PersonDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();
-        List<Person> people = dao.loadAll();
-        mPeopleVo = new ArrayList<>();
-        for (int i = 0; i < people.size(); i++) {
-            mPeopleVo.add(PersonVo.get(people.get(i)));
-        }
-        PersonAdapter adapter = new PersonAdapter(mPeopleVo,this);
+        mPeople = new ArrayList<>();
+        final PersonAdapter adapter = new PersonAdapter(mPeople,this);
         adapter.setEdit();
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());
         mRvPeople.setLayoutManager(manager);
         mRvPeople.setAdapter(adapter);
         mRvPeople.addItemDecoration(BaseDecoration.create(getResources()
-                .getColor(android.R.color.darker_gray), 1));*/
+                .getColor(android.R.color.darker_gray), 1));
+        Client.getInstance().getPersons()
+                .subscribe(new Consumer<Response<List<Person>>>() {
+                    @Override
+                    public void accept(Response<List<Person>> response) throws Exception {
+                        mPeople.addAll(response.getData());
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+
     }
 
 
@@ -99,8 +109,8 @@ public class PersonListEditDelegate extends LatteDelegate {
     public boolean onBackPressedSupport() {
         // 返回上一页携带选中数据
         Bundle bundle = new Bundle();
-        for (PersonVo p : mPeopleVo) {
-            if (p.isChecked()) bundle.putSerializable("person", p);
+        for (Person p : mPeople) {
+            if (p.isChosed()) bundle.putSerializable("person", p);
             setFragmentResult(1, bundle);
         }
         pop();

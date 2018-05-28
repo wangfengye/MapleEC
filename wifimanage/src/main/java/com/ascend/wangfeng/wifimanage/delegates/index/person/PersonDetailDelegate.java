@@ -2,31 +2,32 @@ package com.ascend.wangfeng.wifimanage.delegates.index.person;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
+import com.ascend.wangfeng.latte.ui.recycler.BaseDecoration;
 import com.ascend.wangfeng.wifimanage.R;
+import com.ascend.wangfeng.wifimanage.bean.Device;
+import com.ascend.wangfeng.wifimanage.bean.Liveness;
 import com.ascend.wangfeng.wifimanage.bean.Person;
-import com.ascend.wangfeng.wifimanage.bean.vo.PersonVo;
+import com.ascend.wangfeng.wifimanage.bean.Response;
+import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
+import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
+import com.ascend.wangfeng.wifimanage.views.GithubActivityView;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.joanzapata.iconify.widget.IconTextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by fengye on 2018/5/9.
@@ -51,8 +52,8 @@ public class PersonDetailDelegate extends LatteDelegate {
     TextView mTvDesc;
     @BindView(R.id.rv_devices)
     RecyclerView mRvDevices;
-    @BindView(R.id.bar_history)
-    BarChart mBarChart;
+    @BindView(R.id.gt_history)
+    GithubActivityView mGtHistory;
 
     private Person mPerson;
 
@@ -82,7 +83,7 @@ public class PersonDetailDelegate extends LatteDelegate {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(PersonEditDelegate.PERSON, PersonVo.get(mPerson));
+                bundle.putSerializable(PersonEditDelegate.PERSON, mPerson);
                 start(PersonEditDelegate.newInstance(bundle));
             }
         });
@@ -96,61 +97,85 @@ public class PersonDetailDelegate extends LatteDelegate {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden){
+        if (!hidden) {
             // 编辑人员后返回刷新内容
             initPerson();
         }
     }
 
     private void initPerson() {
-       /* PersonDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();
-        mPerson = dao.queryBuilder().where(PersonDao.Properties.Id.eq(mPerson.getId())).unique();
         mTvName.setText(mPerson.getName());
-        mCimgIcon.setImage(Icon.getImgUrl(mPerson.getImgUrl()));*/
+        mCimgIcon.setImage(Icon.getImgUrl(mPerson.getImgUrl()));
         //mTvDesc.setText();
     }
 
     private void initHistory() {
-        initChart(mBarChart);
-       setData();
+        /*柱状图列表*/
+        //initChart(mBarChart);
+        //setData();
+        initGithubView();
+    }
+
+    private void initGithubView() {
+        Client.getInstance().getLivenessesByPId(mPerson.getId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Response<List<Liveness>>>() {
+                    @Override
+                    public void accept(Response<List<Liveness>> response) throws Exception {
+                        Integer[][] data = new Integer[7][];
+                        //构造假数据
+                        for(int i = 0;i <7; i++){
+                            Integer[] column = new Integer[24];
+                            for(int j= 0;j <24; j++){
+                                int index  =i*7+j;
+                                if (response.getData().size()>index)
+                                column[j] = response.getData().get(index).getAvalue() ;
+                                else column[j] = response.getData().get(0).getAvalue() ;
+                            }
+                            data[i] = column;
+                        }
+                        mGtHistory.setData(data);
+                    }
+                });
     }
 
     private void setData() {
-        ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(getResources().getColor(R.color.colorAccent));
-        colors.add(getResources().getColor(R.color.colorOrange));
-        colors.add(getResources().getColor(R.color.colorBlue));
-        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-        for (int j = 0;j<2;j++){
-            ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
-
-            for (int i = 1; i <7; i++) {
-                float mult = (24 + 1);
-                float val = (float) (Math.random() * mult);
-                yVals1.add(new BarEntry(i, val));
-
-            }
-            BarDataSet set1;
-            set1 = new BarDataSet(yVals1, "设备"+j);
-            set1.setDrawIcons(false);
-
-            set1.setColor(colors.get(j));
-            dataSets.add(set1);
-        }
-        BarData data = new BarData(dataSets);
-        data.setValueTextSize(10f);
-
-        float groupSpace = .2f;
-        float barWidth = (1f-.2f)/2*8/10;
-        float barSpace = (1f-.2f)/2*2/10;
-        data.setBarWidth(barWidth);
-        data.groupBars(.5f,groupSpace,barSpace);
-
-        mBarChart.setData(data);
+//        ArrayList<Integer> colors = new ArrayList<>();
+//        colors.add(getResources().getColor(R.color.colorAccent));
+//        colors.add(getResources().getColor(R.color.colorOrange));
+//        colors.add(getResources().getColor(R.color.colorBlue));
+//        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+//        for (int j = 0;j<2;j++){
+//            ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+//
+//            for (int i = 1; i <7; i++) {
+//                float mult = (24 + 1);
+//                float val = (float) (Math.random() * mult);
+//                yVals1.add(new BarEntry(i, val));
+//
+//            }
+//            BarDataSet set1;
+//            set1 = new BarDataSet(yVals1, "设备"+j);
+//            set1.setDrawIcons(false);
+//
+//            set1.setColor(colors.get(j));
+//            dataSets.add(set1);
+//        }
+//        BarData data = new BarData(dataSets);
+//        data.setValueTextSize(10f);
+//
+//        float groupSpace = .2f;
+//        float barWidth = (1f-.2f)/2*8/10;
+//        float barSpace = (1f-.2f)/2*2/10;
+//        data.setBarWidth(barWidth);
+//        data.groupBars(.5f,groupSpace,barSpace);
+//
+//        mBarChart.setData(data);
     }
 
     private void initChart(BarChart chart) {
-        chart.setDrawBarShadow(false);
+       /* chart.setDrawBarShadow(false);
         chart.setDrawValueAboveBar(true);
         chart.setPinchZoom(false);
         chart.setDrawGridBackground(false);
@@ -198,28 +223,22 @@ public class PersonDetailDelegate extends LatteDelegate {
         l.setForm(Legend.LegendForm.SQUARE);
         l.setFormSize(9f);
         l.setTextSize(11f);
-        l.setXEntrySpace(4f);
+        l.setXEntrySpace(4f);*/
     }
 
     private void initDevices() {
-       /* if (mPerson != null) {
-            // 通过人员id 获取关联设备
-            PersonDevicesMapDao mapDao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDevicesMapDao();
-            List<PersonDevicesMap> maps = mapDao.queryBuilder().where(PersonDevicesMapDao.Properties.PId.eq(mPerson.getId())).list();
-            DeviceDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getDeviceDao();
-            ArrayList<Device> devices = new ArrayList<>();
-            for (PersonDevicesMap map : maps) {
-                Device devcice = dao.queryBuilder().where(DeviceDao.Properties.Id.eq(map.getDId())).unique();
-                devices.add(devcice);
-            }
+        Client.getInstance().getDevicesByPId(mPerson.getId())
+                .subscribe(new Consumer<Response<List<Device>>>() {
+                    @Override
+                    public void accept(Response<List<Device>> response) throws Exception {
+                        DeviceSquareAdapter adapter = new DeviceSquareAdapter(response.getData());
+                        GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
+                        mRvDevices.setLayoutManager(manager);
+                        mRvDevices.setAdapter(adapter);
+                        mRvDevices.addItemDecoration(BaseDecoration.create(getResources()
+                                .getColor(android.R.color.white), 3));
+                    }
+                });
 
-            DeviceSquareAdapter adapter = new DeviceSquareAdapter(devices);
-            GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
-            mRvDevices.setLayoutManager(manager);
-            mRvDevices.setAdapter(adapter);
-            mRvDevices.addItemDecoration(BaseDecoration.create(getResources()
-                    .getColor(android.R.color.white), 3));
-        }*/
     }
-
 }

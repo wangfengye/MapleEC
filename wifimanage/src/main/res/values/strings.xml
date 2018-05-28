@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">家小盒</string>
     <string name="demo_hint">体验版,数据无法修改</string>
+    <string name="update_success">更新成功</string>
+    <string name="add_success">新增成功</string>
+    <string name="error">请求失败</string>
 </resources>

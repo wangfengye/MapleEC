@@ -19,7 +19,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
  */
 
 public class Client {
-    private static final String url = "https://123.57.175.155:7097";
+    private static final String url = "http://192.168.168.61:8080";
     private static boolean test = true;
 
     public static AliApi getInstance() {

@@ -6,7 +6,8 @@
       "id": 1,
       "bid": 1,
       "name": "白羊",
-      "imgUrl":0
+      "imgUrl":0,
+      "online": true
     },
     {
       "id": 2,

@@ -2,13 +2,20 @@ package com.ascend.wangfeng.wifimanage.delegates.user;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.ascend.wangfeng.latte.delegates.bottom.BottomItemDelegate;
+import com.ascend.wangfeng.latte.ui.recycler.BaseDecoration;
 import com.ascend.wangfeng.wifimanage.R;
+import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Person;
+import com.ascend.wangfeng.wifimanage.bean.Response;
+import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
+import com.ascend.wangfeng.wifimanage.delegates.index.person.DeviceSquareAdapter;
+import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.ascend.wangfeng.wifimanage.views.GithubActivityView;
 import com.github.mikephil.charting.charts.BarChart;
@@ -23,8 +30,10 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by fengye on 2018/4/25.
@@ -59,11 +68,23 @@ public class UserDelegate extends BottomItemDelegate{
 
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
-
-        mPerson = (Person) getArguments().getSerializable("person");
-        initPerson();
-        initDevices();
+        //mPerson
+        //initPerson();
+        //initDevices();
         //initHistory();
+
+    }
+    private void initPerson() {
+
+        if (mPerson!=null){
+        mTvName.setText(mPerson.getName());
+        mCimgIcon.setImage(Icon.getImgUrl(mPerson.getImgUrl()));}
+       // mTvDesc.setText();
+    }
+
+    private void initHistory() {
+       /* initChart(mBarChart);
+        setData();*/
         Integer[][] data = new Integer[7][];
         //构造假数据
         for(int i = 0;i <7; i++){
@@ -74,19 +95,7 @@ public class UserDelegate extends BottomItemDelegate{
             data[i] = column;
         }
         mGithub.setData(data);
-    }
-    private void initPerson() {
-    /*    PersonDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();
-        mPerson = dao.queryBuilder().where(PersonDao.Properties.Id.eq(1)).unique();
-        if (mPerson!=null){
-        mTvName.setText(mPerson.getName());
-        mCimgIcon.setImage(Icon.getImgUrl(mPerson.getImgUrl()));}*/
-        //mTvDesc.setText();
-    }
 
-    private void initHistory() {
-        initChart(mBarChart);
-        setData();
     }
 
     private void setData() {
@@ -176,23 +185,17 @@ public class UserDelegate extends BottomItemDelegate{
     }
 
     private void initDevices() {
-        /*if (mPerson != null) {
-            // 通过人员id 获取关联设备
-            PersonDevicesMapDao mapDao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDevicesMapDao();
-            List<PersonDevicesMap> maps = mapDao.queryBuilder().where(PersonDevicesMapDao.Properties.PId.eq(mPerson.getId())).list();
-            DeviceDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getDeviceDao();
-            ArrayList<Device> devices = new ArrayList<>();
-            for (PersonDevicesMap map : maps) {
-                Device devcice = dao.queryBuilder().where(DeviceDao.Properties.Id.eq(map.getDId())).unique();
-                devices.add(devcice);
-            }
-
-            DeviceSquareAdapter adapter = new DeviceSquareAdapter(devices);
-            GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
-            mRvDevices.setLayoutManager(manager);
-            mRvDevices.setAdapter(adapter);
-            mRvDevices.addItemDecoration(BaseDecoration.create(getResources()
-                    .getColor(android.R.color.white), 3));
-        }*/
+        Client.getInstance().getDevicesByPId(mPerson.getId())
+                .subscribe(new Consumer<Response<List<Device>>>() {
+                    @Override
+                    public void accept(Response<List<Device>> response) throws Exception {
+                        DeviceSquareAdapter adapter = new DeviceSquareAdapter(response.getData());
+                        GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
+                        mRvDevices.setLayoutManager(manager);
+                        mRvDevices.setAdapter(adapter);
+                        mRvDevices.addItemDecoration(BaseDecoration.create(getResources()
+                                .getColor(android.R.color.white), 3));
+                    }
+                });
     }
 }

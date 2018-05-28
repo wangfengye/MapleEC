@@ -72,8 +72,12 @@
         android:textColor="@color/textFir"
         android:textSize="18sp"/>
 
-    <com.github.mikephil.charting.charts.BarChart
+    <!--<com.github.mikephil.charting.charts.BarChart
         android:id="@+id/bar_history"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"/>-->
+    <com.ascend.wangfeng.wifimanage.views.GithubActivityView
+        android:id="@+id/gt_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

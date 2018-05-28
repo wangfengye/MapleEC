@@ -53,7 +53,6 @@ public class LaunchDelegate extends LatteDelegate{
             }
         },mImages).setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
         .startTurning(5*1000);
-
     }
 
     @Override

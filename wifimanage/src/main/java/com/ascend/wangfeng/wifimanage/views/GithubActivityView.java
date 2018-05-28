@@ -22,6 +22,7 @@ public class GithubActivityView extends View {
     private Paint mPaint;
     private float mColumnTitleHeight;
     private float mRowTitleWidth;
+    private int mSpeed = 12;
 
 
     private float mSpaceWidth = 5f;
@@ -83,7 +84,7 @@ public class GithubActivityView extends View {
         mPaint.setTextAlign(Paint.Align.RIGHT);
         for (int i = 0; i < row; i++) {
             // y坐标多减 一个mSpaceWidth 为了text视觉效果
-            canvas.drawText(getWeek(i), mRowTitleWidth - mSpaceWidth, i * (radius + mSpaceWidth) + radius + mColumnTitleHeight - mSpaceWidth, mPaint);
+            canvas.drawText(String.valueOf(i - 6), mRowTitleWidth - mSpaceWidth, i * (radius + mSpaceWidth) + radius + mColumnTitleHeight - mSpaceWidth, mPaint);
             canvas.save();
         }
         for (int i = 0; i < row; i++) {
@@ -101,22 +102,23 @@ public class GithubActivityView extends View {
         // 绘制标注
         mPaint.setTextAlign(Paint.Align.RIGHT);
         mPaint.setColor(getColor(0));
-        canvas.drawText("最少",mRowTitleWidth - mSpaceWidth,8* (radius + mSpaceWidth)-mSpaceWidth + radius + mColumnTitleHeight,mPaint);
-        for(int i=0; i<5;i++){
+        canvas.drawText("最少", mRowTitleWidth - mSpaceWidth, 8 * (radius + mSpaceWidth) - mSpaceWidth + radius + mColumnTitleHeight, mPaint);
+        for (int i = 0; i < 5; i++) {
             Path path = new Path();
-            path.moveTo(mRowTitleWidth + i* (radius + mSpaceWidth), mColumnTitleHeight + 8* (radius + mSpaceWidth) );
-            path.lineTo(mRowTitleWidth  + i * (radius + mSpaceWidth), mColumnTitleHeight +8* (radius + mSpaceWidth) + radius);
-            path.lineTo(mRowTitleWidth + i * (radius + mSpaceWidth) + radius, mColumnTitleHeight +8* (radius + mSpaceWidth)+ radius);
-            path.lineTo(mRowTitleWidth + i * (radius + mSpaceWidth) + radius, mColumnTitleHeight +8* (radius + mSpaceWidth));
-            mPaint.setColor(getColor(i));
+            path.moveTo(mRowTitleWidth + i * (radius + mSpaceWidth), mColumnTitleHeight + 8 * (radius + mSpaceWidth));
+            path.lineTo(mRowTitleWidth + i * (radius + mSpaceWidth), mColumnTitleHeight + 8 * (radius + mSpaceWidth) + radius);
+            path.lineTo(mRowTitleWidth + i * (radius + mSpaceWidth) + radius, mColumnTitleHeight + 8 * (radius + mSpaceWidth) + radius);
+            path.lineTo(mRowTitleWidth + i * (radius + mSpaceWidth) + radius, mColumnTitleHeight + 8 * (radius + mSpaceWidth));
+            mPaint.setColor(getColor(i * mSpeed));
             canvas.drawPath(path, mPaint);
         }
         mPaint.setTextAlign(Paint.Align.LEFT);
-        getResources().getColor(R.color.textSec);
-        canvas.drawText("最多",mRowTitleWidth + 5 * (radius + mSpaceWidth) ,8* (radius + mSpaceWidth) + radius-mSpaceWidth + mColumnTitleHeight,mPaint);
+        mPaint.setColor(getColor(4 * mSpeed));
+        canvas.drawText("最多", mRowTitleWidth + 5 * (radius + mSpaceWidth), 8 * (radius + mSpaceWidth) + radius - mSpaceWidth + mColumnTitleHeight, mPaint);
     }
 
     public int getColor(int i) {
+        i = i / mSpeed;
         switch (i) {
             case 0:
                 return Color.parseColor("#eeeeee");
@@ -129,7 +131,7 @@ public class GithubActivityView extends View {
             case 4:
                 return Color.parseColor("#196127");
             default:
-                return Color.parseColor("#eeeeee");
+                return Color.parseColor("#196127");
         }
     }
 
