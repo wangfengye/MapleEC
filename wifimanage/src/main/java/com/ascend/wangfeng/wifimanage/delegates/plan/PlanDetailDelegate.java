@@ -11,12 +11,19 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
+import com.ascend.wangfeng.latte.net.rx.BaseObserver;
+import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Plan;
+import com.ascend.wangfeng.wifimanage.bean.Response;
+import com.ascend.wangfeng.wifimanage.net.Client;
+import com.ascend.wangfeng.wifimanage.net.MyObserver;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.ascend.wangfeng.wifimanage.utils.TimeUtil.getHour;
 import static com.ascend.wangfeng.wifimanage.utils.TimeUtil.getMinute;
@@ -69,11 +76,16 @@ public class PlanDetailDelegate extends LatteDelegate {
     @OnClick(R.id.btn_delete)
     void clickBtnDelete() {
         // 删除计划
-      /*  PlanDao dao = ((MainApp) (getActivity().getApplication())).getDaoSession().getPlanDao();
-        if (mPlan.getId() != null && mPlan.getId() != 0) {
-            dao.delete(mPlan);
-        }
-        pop();*/
+        Client.getInstance().deletePlan(mPlan)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MyObserver<Response<String>>() {
+                    @Override
+                    public void onNext(Response<String> response) {
+                        MainApp.toast(R.string.delete_success);
+                        pop();
+                    }
+                });
     }
 
     public static PlanDetailDelegate newInstance(Bundle args) {
@@ -102,13 +114,33 @@ public class PlanDetailDelegate extends LatteDelegate {
         mIcEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-           /*     PlanDao dao = ((MainApp) (getActivity().getApplication())).getDaoSession().getPlanDao();
+                // 保存计划
                 if (mPlan.getId() != null && mPlan.getId() != 0) {
-                    dao.update(mPlan);
+                    // update
+                    Client.getInstance().updatePlan(mPlan)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new BaseObserver<Response<Plan>>() {
+                                @Override
+                                public void onNext(Response<Plan> response) {
+                                    MainApp.toast(R.string.update_success);
+                                    pop();
+                                }
+                            });
                 } else {
-                    dao.insert(mPlan);
+                    // add
+                    Client.getInstance().addPlan(mPlan)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new BaseObserver<Response<Plan>>() {
+                                @Override
+                                public void onNext(Response<Plan> response) {
+                                    MainApp.toast(R.string.add_success);
+                                    pop();
+                                }
+                            });
                 }
-                pop();*/
+                pop();
             }
         });
         initData();
@@ -135,7 +167,6 @@ public class PlanDetailDelegate extends LatteDelegate {
 
     // 重复规划
     private void initRepeat() {
-
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override

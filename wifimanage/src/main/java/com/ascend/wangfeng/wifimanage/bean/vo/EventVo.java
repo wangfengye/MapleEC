@@ -31,16 +31,7 @@ public class EventVo extends Event implements MultiItemEntity {
         return mDevice;
     }
 
-    public String getEventStr() {
-        switch (getEvent()) {
-            case 1:
-                return "上线";
-            case 0:
-                return "下线";
-            default:
-                return "未知";
-        }
-    }
+
 
     @Override
     public int getItemType() {

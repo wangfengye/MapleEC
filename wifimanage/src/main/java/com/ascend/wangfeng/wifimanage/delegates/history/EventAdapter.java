@@ -4,7 +4,8 @@ import android.view.View;
 
 import com.ascend.wangfeng.latte.ui.recycler.MultipleViewHolder;
 import com.ascend.wangfeng.wifimanage.R;
-import com.ascend.wangfeng.wifimanage.bean.vo.EventVo;
+import com.ascend.wangfeng.wifimanage.bean.Event;
+import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
 import com.ascend.wangfeng.wifimanage.delegates.index.DeviceType;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
@@ -17,31 +18,37 @@ import java.util.List;
  * email 1040441325@qq.com
  */
 
-public class EventAdapter extends BaseMultiItemQuickAdapter<EventVo, MultipleViewHolder> {
+public class EventAdapter extends BaseMultiItemQuickAdapter<Event, MultipleViewHolder> {
+    OnClickListener mClickListener;
 
-    /**
-     * Same as QuickAdapter#QuickAdapter(Context,int) but with
-     * some initialization data.
-     *
-     * @param data A new list is created out of this one to avoid mutable list
-     */
-    public EventAdapter(List<EventVo> data) {
+    public EventAdapter(List<Event> data) {
         super(data);
         addItemType(0, R.layout.item_history);
     }
-
+    public void setClickListener(OnClickListener listener){
+        this.mClickListener = listener;
+    }
     @Override
-    protected void convert(MultipleViewHolder helper, EventVo item) {
+    protected void convert(MultipleViewHolder helper, final Event item) {
         CircleImageView cimg = helper.getView(R.id.cimg_icon);
         cimg.setImage(Icon.getImgUrl(item.getPerson().getImgUrl()));
         cimg.setIcon(DeviceType.getTypes().get(item.getDevice().getType()).getImgId());
         cimg.setState(item.getEvent()==1);
         helper.setText(R.id.tv_name, item.getPerson().getName()+" [" + item.getDevice().getName() + "] ");
         helper.setText(R.id.tv_desc,com.ascend.wangfeng.latte.util.TimeUtil.format(item.getTime(),"HH:mm")+ item.getEventStr());
+        cimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mClickListener!=null)mClickListener.Click(item.getPerson());
+            }
+        });
     }
 
     @Override
     protected MultipleViewHolder createBaseViewHolder(View view) {
         return MultipleViewHolder.create(view);
+    }
+    interface OnClickListener{
+        void Click(Person person);
     }
 }

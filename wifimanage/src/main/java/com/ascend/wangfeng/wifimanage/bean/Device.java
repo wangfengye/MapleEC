@@ -9,7 +9,7 @@ import java.io.Serializable;
  * email 1040441325@qq.com
  * 设备
  */
-public class Device implements MultiItemEntity,Serializable {
+public class Device implements MultiItemEntity, Serializable {
 
     private static final long serialVersionUID = -1251039796477336552L;
 
@@ -29,9 +29,6 @@ public class Device implements MultiItemEntity,Serializable {
     private int status; //活跃状态
     private String apBssid;//归属网络
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
 
     public Long getpId() {
         return pId;

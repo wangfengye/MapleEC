@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MapleEC.iml" filepath="$PROJECT_DIR$/MapleEC.iml" />
-      <module fileurl="file://$PROJECT_DIR$/calendarview/calendarview.iml" filepath="$PROJECT_DIR$/calendarview/calendarview.iml" />
       <module fileurl="file://$PROJECT_DIR$/example/example.iml" filepath="$PROJECT_DIR$/example/example.iml" />
       <module fileurl="file://$PROJECT_DIR$/latte-annotations/latte-annotations.iml" filepath="$PROJECT_DIR$/latte-annotations/latte-annotations.iml" />
       <module fileurl="file://$PROJECT_DIR$/latte-compiler/latte-compiler.iml" filepath="$PROJECT_DIR$/latte-compiler/latte-compiler.iml" />

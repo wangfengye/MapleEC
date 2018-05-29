@@ -17,6 +17,7 @@ import com.ascend.wangfeng.wifimanage.delegates.index.DeviceType;
 import com.ascend.wangfeng.wifimanage.delegates.index.NewDeviceDelegate;
 import com.ascend.wangfeng.wifimanage.delegates.index.person.PersonListDelegate;
 import com.ascend.wangfeng.wifimanage.net.Client;
+import com.ascend.wangfeng.wifimanage.net.MyObserver;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 
 import java.util.ArrayList;
@@ -28,7 +29,6 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -117,9 +117,9 @@ public class IndexDelegate extends BottomItemDelegate {
         Observable<Response<List<Device>>> observable = Client.getInstance().getCurrentDevices()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-        observable.subscribe(new Consumer<Response<List<Device>>>() {
+        observable.subscribe(new MyObserver<Response<List<Device>>>() {
             @Override
-            public void accept(Response<List<Device>> response) throws Exception {
+            public void onNext(Response<List<Device>> response) {
                 for (Device d : response.getData()) {
                     if (d.getpId() != null && d.getpId() != 0) {
                         mOnlineDevices.add(d);
@@ -143,9 +143,9 @@ public class IndexDelegate extends BottomItemDelegate {
                         Client.getInstance().getPersonById(aLong)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Consumer<Response<Person>>() {
+                                .subscribe(new MyObserver<Response<Person>>() {
                                     @Override
-                                    public void accept(Response<Person> response) throws Exception {
+                                    public void onNext(Response<Person> response) {
                                         mPeople.add(response.getData());
                                         resetView();
                                     }

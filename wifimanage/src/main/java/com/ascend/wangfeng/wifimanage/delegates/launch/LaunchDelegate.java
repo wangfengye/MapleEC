@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
+import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.delegates.MainDelegate;
 import com.bigkoo.convenientbanner.ConvenientBanner;
@@ -23,18 +24,23 @@ import butterknife.OnClick;
  * email 1040441325@qq.com
  */
 
-public class LaunchDelegate extends LatteDelegate{
+public class LaunchDelegate extends LatteDelegate {
     public static final String TAG = LaunchDelegate.class.getSimpleName();
     @BindView(R.id.banner_launch)
     ConvenientBanner mBannerLaunch;
+
     @OnClick(R.id.btn_demo)
-    void clickDemo(){
+    void clickDemo() {
+        MainApp.showDemo();
         startWithPop(MainDelegate.newInstance());
     }
+
     @OnClick(R.id.btn_start)
-    void clickStart(){
+    void clickStart() {
+        MainApp.showRelease();
         startWithPop(new ScanDelegate());
     }
+
     @Override
     public Object setLayout() {
         return R.layout.delegate_launch;
@@ -51,15 +57,14 @@ public class LaunchDelegate extends LatteDelegate{
             public LocalImageHolderView createHolder() {
                 return new LocalImageHolderView();
             }
-        },mImages).setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
-        .startTurning(5*1000);
+        }, mImages).setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
+                .startTurning(5 * 1000);
     }
 
     @Override
     public void onPause() {
         mBannerLaunch.stopTurning();
         mBannerLaunch.destroyDrawingCache();
-
         super.onPause();
     }
 
@@ -71,6 +76,7 @@ public class LaunchDelegate extends LatteDelegate{
 
     class LocalImageHolderView implements Holder<Integer> {
         private ImageView mImageView;
+
         @Override
         public View createView(Context context) {
             mImageView = new ImageView(context);

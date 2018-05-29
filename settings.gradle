@@ -1,1 +1,1 @@
-include ':example', ':latte-compiler', ':latte-annotations', ':latte-core', ':latte-ec', ':latte-ui', ':wifimap', ':locationby4g', ':wifimanage', ':calendarview'
+include ':example', ':latte-compiler', ':latte-annotations', ':latte-core', ':latte-ec', ':latte-ui', ':wifimap', ':locationby4g', ':wifimanage'

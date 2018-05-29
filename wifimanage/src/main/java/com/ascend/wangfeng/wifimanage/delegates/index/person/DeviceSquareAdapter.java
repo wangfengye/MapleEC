@@ -17,24 +17,33 @@ import java.util.List;
 
 public class DeviceSquareAdapter extends BaseMultiItemQuickAdapter<Device,MultipleViewHolder> {
 
-    /**
-     * Same as QuickAdapter#QuickAdapter(Context,int) but with
-     * some initialization data.
-     *
-     * @param data A new list is created out of this one to avoid mutable list
-     */
+    private OnClickListener mListener;
+    public void setListener(OnClickListener listener){
+        this.mListener = listener;
+    }
     public DeviceSquareAdapter(List<Device> data) {
         super(data);
         addItemType(0,R.layout.item_device_square);
     }
 
     @Override
-    protected void convert(MultipleViewHolder helper, Device item) {
+    protected void convert(MultipleViewHolder helper, final Device item) {
         helper.setImageResource(R.id.img_icon, DeviceType.getTypes().get(item.getType()).getImgId());
         helper.setText(R.id.tv_name,item.getName());
+        if (mListener!=null){
+            helper.setOnClickListener(R.id.rl_content, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.click(item);
+                }
+            });
+        }
     }
     @Override
     protected MultipleViewHolder createBaseViewHolder(View view) {
         return MultipleViewHolder.create(view);
+    }
+    public interface OnClickListener{
+        void click(Device device);
     }
 }

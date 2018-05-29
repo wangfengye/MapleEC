@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.butterknife'
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
     dexOptions {
         jumboMode true
     }
@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId "com.ascend.wangfeng.locationby4g"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         multiDexEnabled true

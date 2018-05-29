@@ -22,7 +22,12 @@ public abstract class MyObserver<T> implements Observer<T> {
 
     @Override
     public void onError(Throwable e) {
-      MainApp.toast(R.string.error);
+        if (MainApp.mDemo){
+            MainApp.toast(R.string.demo_hint);
+        }else {
+            MainApp.toast(R.string.error);
+        }
+
     }
 
     @Override

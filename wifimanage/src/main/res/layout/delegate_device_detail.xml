@@ -116,7 +116,6 @@
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     circle:bg="@color/colorAccent"
-                    circle:srcType="1"
                     android:src="@mipmap/ic_add"/>
                 <TextView
                     android:layout_width="wrap_content"

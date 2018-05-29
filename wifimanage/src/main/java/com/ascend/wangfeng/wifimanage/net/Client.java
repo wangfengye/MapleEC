@@ -1,5 +1,7 @@
 package com.ascend.wangfeng.wifimanage.net;
 
+import com.ascend.wangfeng.wifimanage.MainApp;
+
 import java.security.cert.CertificateException;
 
 import javax.net.ssl.HostnameVerifier;
@@ -23,7 +25,7 @@ public class Client {
     private static boolean test = true;
 
     public static AliApi getInstance() {
-        if(test)return Build.mDemo;
+        if(MainApp.mDemo)return Build.mDemo;
         return Build.mAliApi;
     }
 

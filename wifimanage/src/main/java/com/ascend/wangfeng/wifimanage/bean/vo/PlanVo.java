@@ -11,7 +11,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 
 public class PlanVo extends Plan implements MultiItemEntity{
     private static final long serialVersionUID = -6961579058656610140L;
-    final String[] items = {"每日", "工作日(周一至周五)", "假日(周末)"};
+
     @Override
     public int getItemType() {
         return 0;
@@ -21,7 +21,5 @@ public class PlanVo extends Plan implements MultiItemEntity{
         PlanVo personVo = JSON.parseObject(json,PlanVo.class);
         return personVo;
     }
-    public String getTypeStr(){
-        return items[getType()];
-    }
+
 }

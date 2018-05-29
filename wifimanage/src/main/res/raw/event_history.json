@@ -1,5 +1,5 @@
 {
-  "message":"成功",
+  "message": "成功",
   "code": 200,
   "data": [
     {
@@ -7,35 +7,23 @@
       "pId": 1,
       "dId": 1,
       "event": 1,
-      "time": 1525925359
-    },
-    {
-      "id": 2,
-      "pId": 1,
-      "dId": 1,
-      "event": 0,
-      "time": 1525924359
-    },
-    {
-      "id": 3,
-      "pId": 1,
-      "dId": 1,
-      "event": 1,
-      "time": 1525923359
-    },
-    {
-      "id": 4,
-      "pId": 1,
-      "dId": 1,
-      "event": 0,
-      "time": 1525922359
-    },
-    {
-      "id": 5,
-      "pId": 1,
-      "dId": 1,
-      "event": 0,
-      "time": 1525921359
+      "time": 1525925359,
+      "person": {
+        "id": 1,
+        "bid": 1,
+        "name": "白羊",
+        "imgUrl": 0,
+        "online": true
+      },
+      "device": {
+        "id": 1,
+        "name": "lyd-win7",
+        "type": 0,
+        "pId": 1,
+        "mac": "41:53:1a:56:72:91",
+        "ip": "192.168.168.15",
+        "brand": "Lenovo"
+      }
     }
   ]
 }

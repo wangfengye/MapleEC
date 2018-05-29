@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -12,14 +11,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ascend.wangfeng.latte.delegates.bottom.BottomItemDelegate;
-import com.ascend.wangfeng.latte.ui.loader.LatteLoader;
 import com.ascend.wangfeng.latte.ui.recycler.BaseDecoration;
 import com.ascend.wangfeng.wifimanage.R;
-import com.ascend.wangfeng.wifimanage.api.Api;
-import com.ascend.wangfeng.wifimanage.api.Callback;
-import com.ascend.wangfeng.wifimanage.api.DemoApi;
 import com.ascend.wangfeng.wifimanage.bean.Event;
-import com.ascend.wangfeng.wifimanage.bean.vo.EventVo;
+import com.ascend.wangfeng.wifimanage.bean.Person;
+import com.ascend.wangfeng.wifimanage.bean.Response;
+import com.ascend.wangfeng.wifimanage.delegates.index.person.PersonDetailDelegate;
+import com.ascend.wangfeng.wifimanage.net.Client;
+import com.ascend.wangfeng.wifimanage.net.MyObserver;
+import com.ascend.wangfeng.wifimanage.utils.TimeUtil;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by fengye on 2018/5/15.
@@ -59,7 +61,7 @@ public class HistoryDelegate extends BottomItemDelegate {
     RecyclerView mRvHistory;
 
     private int mYear;
-    private List<EventVo> mVos;
+    private List<Event> mEvents;
     private EventAdapter mAdapter;
 
     @Override
@@ -71,36 +73,42 @@ public class HistoryDelegate extends BottomItemDelegate {
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
         initDate();
         initRv();
-        initData(mCalendarView.getCurYear(),mCalendarView.getCurMonth(),mCalendarView.getCurDay());
     }
 
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        initData(mCalendarView.getCurYear(),mCalendarView.getCurMonth(),mCalendarView.getCurDay());
-        Log.i(TAG, "onSupportVisible: ");
+        initData(mCalendarView.getSelectedCalendar());
     }
 
-    private void initData(int year, int month, int day) {
-        Api api = new DemoApi();
-        LatteLoader.showLoading(getActivity());
-        api.getEvents(new Callback<List<Event>>() {
-            @Override
-            public void callback(List<Event> events) {
-                mVos.clear();
-                for (Event e : events) {
-                    mVos.add(EventVo.getVo(e));
-                }
-                mAdapter.notifyDataSetChanged();
-                LatteLoader.stopLoading();
-            }
-        });
+    private void initData(Calendar calendar) {
+        long time = TimeUtil.getTime(calendar.getYear(), calendar.getLeapMonth(), calendar.getDay());
+        mCalendarView.getSelectedCalendar();
+        Client.getInstance().getEvents(time)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MyObserver<Response<List<Event>>>() {
+                    @Override
+                    public void onNext(Response<List<Event>> response) {
+                        mEvents.clear();
+                        mEvents.addAll(response.getData());
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
     }
 
     private void initRv() {
-        mVos = new ArrayList<>();
+        mEvents = new ArrayList<>();
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
-        mAdapter = new EventAdapter(mVos);
+        mAdapter = new EventAdapter(mEvents);
+        mAdapter.setClickListener(new EventAdapter.OnClickListener() {
+            @Override
+            public void Click(Person person) {
+                Bundle args = new Bundle();
+                args.putSerializable(PersonDetailDelegate.PERSON, person);
+                getParentDelegate().start(PersonDetailDelegate.newInstance(args));
+            }
+        });
         mRvHistory.setAdapter(mAdapter);
         mRvHistory.setLayoutManager(manager);
         mRvHistory.addItemDecoration(BaseDecoration.create(getResources().getColor(R.color.textFour), 1));
@@ -121,7 +129,8 @@ public class HistoryDelegate extends BottomItemDelegate {
                 mTvLunar.setText(calendar.getLunar());
                 mTvCurrentDay.setText(String.valueOf(calendar.getDay()));
                 mYear = calendar.getYear();
-                if (mAdapter!=null&& mVos!=null) initData(calendar.getYear(),calendar.getMonth(),calendar.getDay());
+                if (mAdapter != null && mEvents != null)
+                    initData(calendar);
             }
         });
         mCalendarView.setOnYearChangeListener(new CalendarView.OnYearChangeListener() {

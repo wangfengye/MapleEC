@@ -5,8 +5,6 @@ import android.support.multidex.MultiDexApplication;
 import android.widget.Toast;
 
 import com.ascend.wangfeng.latte.app.Latte;
-import com.ascend.wangfeng.wifimanage.api.Api;
-import com.ascend.wangfeng.wifimanage.api.DemoApi;
 import com.baidu.mapapi.SDKInitializer;
 import com.facebook.stetho.Stetho;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
@@ -18,7 +16,7 @@ import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 public class MainApp extends MultiDexApplication {
     private static MainApp mContext;
-    private static Api sApi;
+    public static Boolean mDemo = false;
 
     @Override
     public void onCreate() {
@@ -27,8 +25,6 @@ public class MainApp extends MultiDexApplication {
         Latte.init(this).withIcon(new FontAwesomeModule()).configure();
         Stetho.initializeWithDefaults(this);
         SDKInitializer.initialize(this);
-        //初始化sApi;
-        sApi = new DemoApi();
     }
     public static MainApp getContent(){
         return mContext;
@@ -36,8 +32,10 @@ public class MainApp extends MultiDexApplication {
     public static void toast(@StringRes int id){
         Toast.makeText(mContext,id,Toast.LENGTH_SHORT).show();
     }
-
-    public static Api getApi() {
-        return sApi;
+    public static void showDemo(){
+        mDemo = true;
+    }
+    public static void showRelease(){
+        mDemo = false;
     }
 }

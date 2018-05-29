@@ -9,7 +9,6 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/calendarview" />
             <option value="$PROJECT_DIR$/example" />
             <option value="$PROJECT_DIR$/latte-annotations" />
             <option value="$PROJECT_DIR$/latte-compiler" />

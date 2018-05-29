@@ -14,11 +14,15 @@ import android.widget.TextView;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.latte.ui.recycler.BaseDecoration;
+import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Person;
+import com.ascend.wangfeng.wifimanage.bean.Response;
 import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
 import com.ascend.wangfeng.wifimanage.delegates.index.person.PersonListEditDelegate;
+import com.ascend.wangfeng.wifimanage.net.Client;
+import com.ascend.wangfeng.wifimanage.net.MyObserver;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.joanzapata.iconify.widget.IconTextView;
 
@@ -26,6 +30,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by fengye on 2018/5/11.
@@ -65,28 +71,39 @@ public class DeviceEditDelegate extends LatteDelegate {
 
     @OnClick(R.id.btn_save)
     void clickBtnSave() {
-        // 更新device
-      /*  DeviceDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getDeviceDao();
-        dao.update(mDevice);
-        // 更新从属关系
-        if (mPerson != null) {
-            PersonDevicesMapDao mapDao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDevicesMapDao();
-            PersonDevicesMap map = mapDao.queryBuilder().where(PersonDevicesMapDao.Properties.DId.eq(mDevice.getId())).unique();
-            if (map != null) {
-                map.setPId(mPerson.getId());
-                mapDao.update(map);
-            } else {
-                map = new PersonDevicesMap();
-                map.setPId(mPerson.getId());
-                map.setDId(mDevice.getId());
-                mapDao.insert(map);
-            }
+
+        if (mDevice.getId() != null && mDevice.getId() != 0) {
+            // 更新
+            Client.getInstance().updateDevice(mDevice)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new MyObserver<Response<Device>>() {
+                        @Override
+                        public void onNext(Response<Device> response) {
+                            MainApp.toast(R.string.update_success);
+                            goDeviceDetail();
+                        }
+                    });
+        } else {
+            //新增
+            Client.getInstance().addDevice(mDevice)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new MyObserver<Response<Device>>() {
+                        @Override
+                        public void onNext(Response<Device> response) {
+                            MainApp.toast(R.string.add_success);
+                            goDeviceDetail();
+                        }
+                    });
         }
-        Snackbar.make(mToolbar, "保存成功", Snackbar.LENGTH_SHORT).show();
+    }
+
+    private void goDeviceDetail() {
         Bundle bundle = new Bundle();
         bundle.putSerializable(DeviceEditDelegate.DEVICE, mDevice);
         pop();
-        start(DeviceDetailDelegate.newInstance(bundle), SINGLETASK);*/
+        start(DeviceDetailDelegate.newInstance(bundle), SINGLETASK);
     }
 
     public static DeviceEditDelegate newInstance(Bundle args) {
@@ -160,40 +177,32 @@ public class DeviceEditDelegate extends LatteDelegate {
         mTypes.get(mDevice.getType()).setChose(true);
         mAdapter.notifyDataSetChanged();
         // 拥有者关系
-        Person person = getOwner(mDevice);
-        if (person != null) {
-            mCImgOwener.setSrcType(CircleImageView.TYPE_NORMAL);
-            mCImgOwener.setImage(Icon.getImgUrl(person.getImgUrl()));
-            mTvOwner.setText(person.getName());
-        }
+        reViewOwner(mDevice.getId());
     }
 
-    private Person getOwner(Device device) {
-       /* PersonDevicesMapDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDevicesMapDao();
-        PersonDao personDao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDao();
-        List<PersonDevicesMap> maps = dao.queryBuilder().where(PersonDevicesMapDao.Properties.DId.eq(device.getId())).list();
-        if (maps.size() > 0) {
-            Person person = personDao.queryBuilder().where(PersonDao.Properties.Id.eq(maps.get(0).getPId())).unique();
-            if (person != null) {
-                return person;
-            }
-        }*/
-        return null;
+    private void reViewOwner(Long id) {
+        Client.getInstance().getPersonById(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MyObserver<Response<Person>>() {
+                    @Override
+                    public void onNext(Response<Person> response) {
+                        mCImgOwener.setSrcType(CircleImageView.TYPE_NORMAL);
+                        mCImgOwener.setImage(Icon.getImgUrl(response.getData().getImgUrl()));
+                        mTvOwner.setText(response.getData().getName());
+                    }
+                });
     }
 
     @Override
     public void onFragmentResult(int requestCode, int resultCode, Bundle data) {
-      /*  mPerson = (Person) data.getSerializable("person");
+        mPerson = (Person) data.getSerializable("person");
         if (mPerson != null) {
+            mDevice.setpId(mPerson.getId());
             mCImgOwener.setSrcType(CircleImageView.TYPE_NORMAL);
             mCImgOwener.setImage(Icon.getImgUrl(mPerson.getImgUrl()));
             mTvOwner.setText(mPerson.getName());
-            PersonDevicesMapDao dao = ((MainApp) getActivity().getApplication()).getDaoSession().getPersonDevicesMapDao();
-            PersonDevicesMap map = new PersonDevicesMap();
-            map.setDId(mDevice.getId());
-            map.setPId(mPerson.getId());
-            dao.insert(map);
-        }*/
+        }
     }
 
 }

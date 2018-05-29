@@ -16,12 +16,15 @@ import com.ascend.wangfeng.wifimanage.bean.Liveness;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.Response;
 import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
+import com.ascend.wangfeng.wifimanage.delegates.index.DeviceDetailDelegate;
 import com.ascend.wangfeng.wifimanage.net.Client;
+import com.ascend.wangfeng.wifimanage.net.MyObserver;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.ascend.wangfeng.wifimanage.views.GithubActivityView;
 import com.github.mikephil.charting.charts.BarChart;
 import com.joanzapata.iconify.widget.IconTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,6 +39,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class PersonDetailDelegate extends LatteDelegate {
 
+    public static final String PERSON = "person";
     @BindView(R.id.ic_back)
     IconTextView mIcBack;
     @BindView(R.id.ic_edit)
@@ -56,6 +60,8 @@ public class PersonDetailDelegate extends LatteDelegate {
     GithubActivityView mGtHistory;
 
     private Person mPerson;
+    private DeviceSquareAdapter mDeviceAdapter;
+    private ArrayList<Device> mDevices;
 
 
     public static PersonDetailDelegate newInstance(Bundle args) {
@@ -88,19 +94,31 @@ public class PersonDetailDelegate extends LatteDelegate {
             }
         });
         mToolbarTitle.setText("成员详情");
-        mPerson = (Person) getArguments().getSerializable("person");
-        initPerson();
-        initDevices();
-        initHistory();
+        mPerson = (Person) getArguments().getSerializable(PERSON);
+        mDevices = new ArrayList<>();
+        mDeviceAdapter = new DeviceSquareAdapter(mDevices);
+        mDeviceAdapter.setListener(new DeviceSquareAdapter.OnClickListener() {
+            @Override
+            public void click(Device device) {
+                Bundle args = new Bundle();
+                args.putSerializable(DeviceDetailDelegate.DEVICE,device);
+                start(DeviceDetailDelegate.newInstance(args),SINGLETASK);
+            }
+        });
+        GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
+        mRvDevices.setLayoutManager(manager);
+        mRvDevices.setAdapter(mDeviceAdapter);
+        mRvDevices.addItemDecoration(BaseDecoration.create(getResources()
+                .getColor(android.R.color.white), 3));
     }
 
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            // 编辑人员后返回刷新内容
-            initPerson();
-        }
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        initPerson();
+        initDevices();
+        initHistory();
+
     }
 
     private void initPerson() {
@@ -228,15 +246,12 @@ public class PersonDetailDelegate extends LatteDelegate {
 
     private void initDevices() {
         Client.getInstance().getDevicesByPId(mPerson.getId())
-                .subscribe(new Consumer<Response<List<Device>>>() {
+                .subscribe(new MyObserver<Response<List<Device>>>() {
                     @Override
-                    public void accept(Response<List<Device>> response) throws Exception {
-                        DeviceSquareAdapter adapter = new DeviceSquareAdapter(response.getData());
-                        GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
-                        mRvDevices.setLayoutManager(manager);
-                        mRvDevices.setAdapter(adapter);
-                        mRvDevices.addItemDecoration(BaseDecoration.create(getResources()
-                                .getColor(android.R.color.white), 3));
+                    public void onNext(Response<List<Device>> response) {
+                        mDevices.clear();
+                        mDevices.addAll(response.getData());
+                        mDeviceAdapter.notifyDataSetChanged();
                     }
                 });
 
