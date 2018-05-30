@@ -12,7 +12,11 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -50,8 +54,10 @@ public interface AliApi {
 
     /**
      * 有监管计划的所有设备
+     *
      * @return
      */
+    @GET("plans")
     Observable<Response<List<Device>>> getDeviecseWithPlan();
 
     /**
@@ -64,7 +70,8 @@ public interface AliApi {
     Observable<Response<List<Device>>> getDevicesByPId(@Query("id") Long id);
 
     /**
-     *  新增设备
+     * 新增设备
+     *
      * @param device
      * @return
      */
@@ -72,7 +79,8 @@ public interface AliApi {
     Observable<Response<Device>> addDevice(@Body Device device);
 
     /**
-     *  更新设备
+     * 更新设备
+     *
      * @param device
      * @return
      */
@@ -125,12 +133,16 @@ public interface AliApi {
 
     /**
      * 查询所有plan
+     *
      * @return
      */
+
     @GET("plans")
     Observable<Response<List<Plan>>> getPlans();
+
     /**
      * 查询某设备相关plans
+     *
      * @param DId: 设备id
      * @return
      */
@@ -139,6 +151,7 @@ public interface AliApi {
 
     /**
      * 新增plan
+     *
      * @param plan
      * @return
      */
@@ -147,13 +160,16 @@ public interface AliApi {
 
     /**
      * 更新plan
+     *
      * @param plan
      * @return
      */
     @PUT("plans")
     Observable<Response<Plan>> updatePlan(@Body Plan plan);
+
     /**
      * 删除 plan
+     *
      * @param plan
      * @return
      */
@@ -161,27 +177,31 @@ public interface AliApi {
     Observable<Response<String>> deletePlan(@Body Plan plan);
 
     /**
-     *  获取当天的日志
+     * 获取当天的日志
+     *
      * @param time 当天凌晨的时间戳(秒级)
      * @return
      */
     @GET("events")
-    Observable<Response<List<Event>>> getEvents(Long time);
+    Observable<Response<List<Event>>> getEvents(@Query("time") Long time);
 
     /**
-     *  登录
-     * @param user
+     * 登录
+     *
      * @return
      */
+    @FormUrlEncoded
     @POST("login")
-    Observable<Response<String>> login(@Body User user);
+    Observable<Response<String>> login(@Field("mac") String mac, @Field("password") String password);
 
     /**
      * 创建用户
-     * @param user
+     *
      * @return
      */
+    @FormUrlEncoded
     @POST("user")
-    Observable<Response<User>> createUser(@Body User user);
+    Observable<Response<User>> createUser(@Field("mac") String mac,@Field("password") String password
+            , @Field("longitude") double longitude, @Field("latitude") double latitude);
 
 }

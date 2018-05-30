@@ -101,7 +101,7 @@ public class DeviceEditDelegate extends LatteDelegate {
 
     private void goDeviceDetail() {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(DeviceEditDelegate.DEVICE, mDevice);
+        bundle.putSerializable(DeviceDetailDelegate.DEVICE, mDevice);
         pop();
         start(DeviceDetailDelegate.newInstance(bundle), SINGLETASK);
     }
@@ -136,12 +136,9 @@ public class DeviceEditDelegate extends LatteDelegate {
         GridLayoutManager manager = new GridLayoutManager(getContext(), 5);
         mTypes = DeviceType.getTypes();
         mAdapter = new DeviceTypeAdapter(mTypes);
-        mAdapter.setListener(new DeviceTypeAdapter.OnClickListener() {
-            @Override
-            public void click(DeviceType deviceType) {
+        mAdapter.setListener(deviceType-> {
                 // 设置设备类型;
                 mDevice.setType(deviceType.getId());
-            }
         });
         mRvTypes.setAdapter(mAdapter);
         mRvTypes.setLayoutManager(manager);

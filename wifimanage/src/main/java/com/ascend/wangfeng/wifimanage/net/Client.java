@@ -1,8 +1,12 @@
 package com.ascend.wangfeng.wifimanage.net;
 
+import com.ascend.wangfeng.latte.util.storage.LattePreference;
 import com.ascend.wangfeng.wifimanage.MainApp;
+import com.ascend.wangfeng.wifimanage.net.converter.FastJsonConverterFactory;
+import com.ascend.wangfeng.wifimanage.utils.SpKey;
 
 import java.security.cert.CertificateException;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -21,12 +25,29 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
  */
 
 public class Client {
-    private static final String url = "http://192.168.168.61:8080";
-    private static boolean test = true;
+    private static final String BASE_URL = "http://192.168.168.61:8080";
 
     public static AliApi getInstance() {
-        if(MainApp.mDemo)return Build.mDemo;
+        if (MainApp.mDemo) return Build.mDemo;
         return Build.mAliApi;
+    }
+
+    public static LocalApi getLocalApi() {
+        return Build.mLocalApi;
+    }
+
+    public static void resetLocalApi() {
+        String url = LattePreference.getAppPreference().getString(SpKey.LOCAL_URL, "");
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(2, TimeUnit.SECONDS)
+                .build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(url)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(FastJsonConverterFactory.create())
+                .build();
+        Build.mLocalApi = retrofit.create(LocalApi.class);
     }
 
     private static class Build {
@@ -34,14 +55,35 @@ public class Client {
         public static AliApi mAliApi;
 
         static {
-
             Retrofit retrofit = new Retrofit.Builder()
                     .client(getUnsafeOkHttpClient())
-                    .baseUrl(url)
+                    .baseUrl(BASE_URL)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addConverterFactory(FastJsonConverterFactory.create())
                     .build();
             mAliApi = retrofit.create(AliApi.class);
         }
+
+        public static LocalApi mLocalApi;
+
+        static {
+            String url = LattePreference.getAppPreference().getString(SpKey.LOCAL_URL, "192.168.168.112");
+            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
+                    .connectTimeout(2, TimeUnit.SECONDS);
+            Retrofit retrofit = new Retrofit.Builder()
+                    .client(clientBuilder.build())
+                    .baseUrl(url)
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addConverterFactory(FastJsonConverterFactory.create())
+                    .build();
+            mLocalApi = retrofit.create(LocalApi.class);
+        }
+
+        /**
+         * 跳过https证书认证
+         *
+         * @return
+         */
         private static OkHttpClient getUnsafeOkHttpClient() {
             try {
                 // Create a trust manager that does not validate certificate chains

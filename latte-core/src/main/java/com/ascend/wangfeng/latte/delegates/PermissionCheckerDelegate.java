@@ -1,99 +1,36 @@
 package com.ascend.wangfeng.latte.delegates;
 
-import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
 import com.ascend.wangfeng.latte.R;
 import com.ascend.wangfeng.latte.ui.camera.CameraImageBean;
 import com.ascend.wangfeng.latte.ui.camera.LatteCamera;
 import com.ascend.wangfeng.latte.ui.camera.RequestCodes;
-import com.ascend.wangfeng.latte.ui.scanner.ScannerDelegate;
 import com.ascend.wangfeng.latte.util.callback.CallbackManager;
 import com.ascend.wangfeng.latte.util.callback.CallbackType;
 import com.ascend.wangfeng.latte.util.callback.IGlobalCallback;
 import com.yalantis.ucrop.UCrop;
 
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.OnNeverAskAgain;
-import permissions.dispatcher.OnPermissionDenied;
-import permissions.dispatcher.OnShowRationale;
-import permissions.dispatcher.PermissionRequest;
-import permissions.dispatcher.RuntimePermissions;
+
 
 /**
  * Created by fengye on 2017/8/15.
  * email 1040441325@qq.com
  */
-@RuntimePermissions
+
 public abstract class PermissionCheckerDelegate extends BaseDelegate {
-    //不是直接调用方法
-    @NeedsPermission(Manifest.permission.CAMERA)
-    void startCamera() {
-        LatteCamera.start(this);
-    }
-    @NeedsPermission(Manifest.permission.CAMERA)
-    void startScan(BaseDelegate delegate){
-        delegate.getSupportDelegate().startForResult(new ScannerDelegate(),RequestCodes.SCAN);
-    }
 
-    public void startCameraWithCheck() {
-        PermissionCheckerDelegatePermissionsDispatcher.startCameraWithCheck(this);
-    }
-    public void startScanWithCheck(BaseDelegate delegate){
-        PermissionCheckerDelegatePermissionsDispatcher.startScanWithCheck(this,delegate);
-    }
-
-    @OnPermissionDenied(Manifest.permission.CAMERA)
-    void onCameraDenied() {
-        Toast.makeText(getContext(), R.string.camera_refuse, Toast.LENGTH_SHORT).show();
-    }
-
-    @OnNeverAskAgain(Manifest.permission.CAMERA)
-    void onCameraNever() {
-        Toast.makeText(getContext(), R.string.permission_refuse_never, Toast.LENGTH_LONG).show();
-    }
-
-    @OnShowRationale(Manifest.permission.CAMERA)
-    void onCameraRationale(PermissionRequest request) {
-        showDialog(request);
-    }
-
-    void showDialog(final PermissionRequest request) {
-        new AlertDialog.Builder(getContext())
-                .setPositiveButton(R.string.agree, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        request.proceed();
-                    }
-                })
-                .setNegativeButton(R.string.disagree, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        request.cancel();
-                    }
-                })
-                .setCancelable(false)
-                .setMessage("权限管理")
-                .show();
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PermissionCheckerDelegatePermissionsDispatcher
-                .onRequestPermissionsResult(this, requestCode, grantResults);
+
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {

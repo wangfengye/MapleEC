@@ -52,4 +52,15 @@ public class User {
     public void setbId(Long bId) {
         this.bId = bId;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", icon='" + icon + '\'' +
+                ", bId=" + bId +
+                '}';
+    }
 }

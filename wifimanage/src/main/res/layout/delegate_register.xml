@@ -35,22 +35,6 @@
             android:background="@drawable/edit_round_bead"
             android:enabled="false"
             android:hint="设备编号"
-            android:padding="12dp"
-            android:text="swwwwwwwww"/>
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/et_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edit_round_bead"
-            android:hint="设备名称 "
             android:padding="12dp"/>
     </android.support.design.widget.TextInputLayout>
 
@@ -64,9 +48,8 @@
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:background="@drawable/edit_round_bead"
-            android:hint="设备密码 "
+            android:hint="密码 "
             android:inputType="textPassword"
             android:padding="12dp"/>
     </android.support.design.widget.TextInputLayout>
@@ -77,6 +60,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:background="@drawable/tv_round_green"
-        android:text="登录"
+        android:text="注册"
         android:textColor="@android:color/white"/>
 </LinearLayout>

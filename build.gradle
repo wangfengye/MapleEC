@@ -1,10 +1,11 @@
 buildscript {
     repositories {
         jcenter()
-        maven { url "https://jitpack.io" }
+        maven {
+            url "https://jitpack.io"
+        }
         maven {
             url 'https://maven.google.com/'
-            name 'Google'
         }
     }
     dependencies {
@@ -18,10 +19,11 @@ allprojects {
     repositories {
         jcenter()
         mavenCentral()
-        maven { url "https://jitpack.io" }
+        maven {
+            url "https://jitpack.io"
+        }
         maven {
             url 'https://maven.google.com/'
-            name 'Google'
         }
     }
 }
@@ -29,6 +31,6 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-task showMeCache <<{
-    Configurations.compile.each{println it}
+task showMeCache << {
+    Configurations.compile.each { println it }
 }

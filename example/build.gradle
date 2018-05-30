@@ -31,13 +31,10 @@ android {
     }
     productFlavors {
     }
+
 }
 
 dependencies {
-    testCompile 'junit:junit:4.12'
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':latte-ec')
     annotationProcessor project(':latte-compiler')

@@ -114,10 +114,10 @@ public class IndexDelegate extends BottomItemDelegate {
         mOnlineDevices = new ArrayList<>();
         mPIds = new LinkedHashSet<>();
         // 数据源
-        Observable<Response<List<Device>>> observable = Client.getInstance().getCurrentDevices()
+        Client.getInstance().getCurrentDevices()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-        observable.subscribe(new MyObserver<Response<List<Device>>>() {
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MyObserver<Response<List<Device>>>() {
             @Override
             public void onNext(Response<List<Device>> response) {
                 for (Device d : response.getData()) {

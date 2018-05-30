@@ -40,11 +40,8 @@ public class NewDeviceAdapter extends BaseMultiItemQuickAdapter<Device,MultipleV
         helper.setText(R.id.tv_ip,item.getIp());
         helper.setText(R.id.tv_brand,item.getBrand());
         helper.setText(R.id.tv_mac,item.getMac());
-        helper.setOnClickListener(R.id.ll_main, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        helper.setOnClickListener(R.id.ll_main, view-> {
                 if (mListener!=null)mListener.click(item);
-            }
         });
         CircleImageView cimg = helper.getView(R.id.cimg);
         cimg.setImage(DeviceType.getTypes().get(item.getType()).getImgId());

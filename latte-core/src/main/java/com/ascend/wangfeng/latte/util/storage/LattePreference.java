@@ -7,6 +7,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ascend.wangfeng.latte.app.Latte;
 
+import java.lang.reflect.Type;
+
 /**
  * Created by fengye on 2017/8/21.
  * email 1040441325@qq.com
@@ -24,7 +26,7 @@ public class LattePreference {
             PreferenceManager.getDefaultSharedPreferences(Latte.getApplicationContext());
     private static final String APP_PREFERENCES_KEY = "profile";
 
-    private static SharedPreferences getAppPreference() {
+    public static SharedPreferences getAppPreference() {
         return PREFERENCES;
     }
     public static void setAppProfile(String val){
@@ -62,5 +64,15 @@ public class LattePreference {
     }
     public static String getCustomAppProfile(String key) {
         return getAppPreference().getString(key, "");
+    }
+    public static boolean setJson(String key,Object object){
+        String json = JSON.toJSONString(object);
+        return getAppPreference().edit()
+                .putString(key,json)
+                .commit();
+    }
+    public static Object getJson(String key, Type type){
+        String json = getAppPreference().getString(key,"");
+        return JSON.parseObject(json,type);
     }
 }

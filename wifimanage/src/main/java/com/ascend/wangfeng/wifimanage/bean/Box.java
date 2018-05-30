@@ -8,16 +8,24 @@ package com.ascend.wangfeng.wifimanage.bean;
 
 public class Box {
     private Long id;
-    private int mac;
+    private String mac;
     private String version;
     private double longtitude;
     private double latitude;
 
-    public int getMac() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getMac() {
         return mac;
     }
 
-    public void setMac(int mac) {
+    public void setMac(String mac) {
         this.mac = mac;
     }
 
@@ -43,5 +51,16 @@ public class Box {
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+    }
+
+    @Override
+    public String toString() {
+        return "Box{" +
+                "id=" + id +
+                ", mac='" + mac + '\'' +
+                ", version='" + version + '\'' +
+                ", longtitude=" + longtitude +
+                ", latitude=" + latitude +
+                '}';
     }
 }

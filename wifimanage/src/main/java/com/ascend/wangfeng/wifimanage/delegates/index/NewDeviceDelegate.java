@@ -107,21 +107,17 @@ public class NewDeviceDelegate extends LatteDelegate {
         mToolbarTitle.setText(bundle.getInt(TITLE) == TITLE_NEW_DEVICE ? "新设备" : "在线设备");
         mDevices = new ArrayList<>();
         mAdapter = new NewDeviceAdapter(mDevices, this);
-        mAdapter.setListener(new NewDeviceAdapter.OnClickListener() {
-            @Override
-            public void click(Device device) {
-                Bundle bundle = new Bundle();
-                switch (getArguments().getInt(TITLE)) {
-                    case TITLE_NEW_DEVICE:
-                        bundle.putSerializable(DeviceEditDelegate.DEVICE, device);
-                        start(DeviceEditDelegate.newInstance(bundle));
-                        break;
-                    case TITLE_ONLINE_DEVICE:
-                        bundle.putSerializable(DeviceDetailDelegate.DEVICE, device);
-                        start(DeviceDetailDelegate.newInstance(bundle));
-                        break;
-                }
-
+        mAdapter.setListener(device -> {
+            Bundle bundle1 = new Bundle();
+            switch (getArguments().getInt(TITLE)) {
+                case TITLE_NEW_DEVICE:
+                    bundle1.putSerializable(DeviceEditDelegate.DEVICE, device);
+                    start(DeviceEditDelegate.newInstance(bundle1));
+                    break;
+                case TITLE_ONLINE_DEVICE:
+                    bundle1.putSerializable(DeviceDetailDelegate.DEVICE, device);
+                    start(DeviceDetailDelegate.newInstance(bundle1));
+                    break;
             }
         });
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());

@@ -2,9 +2,13 @@ package com.ascend.wangfeng.wifimanage;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
+import com.ascend.wangfeng.latte.util.storage.LattePreference;
+import com.ascend.wangfeng.wifimanage.bean.User;
+import com.ascend.wangfeng.wifimanage.utils.SpKey;
 import com.ascend.wangfeng.wifimanage.views.GithubActivityView;
 
 import butterknife.BindView;
@@ -25,15 +29,12 @@ public class TestDelegate extends LatteDelegate{
 
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
-        Integer[][] data = new Integer[7][];
-        //构造假数据
-        for(int i = 0;i <7; i++){
-            Integer[] column = new Integer[24];
-            for(int j= 0;j <24; j++){
-                column[j] = (int)(Math.random()*4);
-            }
-            data[i] = column;
-        }
-        mGithub.setData(data);
+        User user = new User();
+        user.setName("maple");
+        user.setPassword("1234");
+        LattePreference.setJson(SpKey.USER,user);
+        User user1= (User) LattePreference.getJson(SpKey.USER,User.class);
+        user1.toString();
+        Log.i(TAG, "onBindView: "+ user1.toString());
     }
 }

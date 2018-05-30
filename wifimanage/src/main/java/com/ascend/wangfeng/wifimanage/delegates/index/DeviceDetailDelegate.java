@@ -142,14 +142,11 @@ public class DeviceDetailDelegate extends LatteDelegate {
                 start(PlanDetailDelegate.newInstance(bundle));
             }
         });
-        mCimgOwner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mPerson!=null){
-                    Bundle args = new Bundle();
-                    args.putSerializable(PersonDetailDelegate.PERSON, mPerson);
-                    start(PersonDetailDelegate.newInstance(args),SINGLETASK);
-                }
+        mCimgOwner.setOnClickListener(view -> {
+            if (mPerson != null) {
+                Bundle args = new Bundle();
+                args.putSerializable(PersonDetailDelegate.PERSON, mPerson);
+                start(PersonDetailDelegate.newInstance(args), SINGLETASK);
             }
         });
     }
@@ -162,7 +159,7 @@ public class DeviceDetailDelegate extends LatteDelegate {
 
     private void initData() {
         Bundle bundle = getArguments();
-        mDevice = (Device) bundle.getSerializable("device");
+        mDevice = (Device) bundle.getSerializable(DEVICE);
         mCimgIcon.setImage(DeviceType.getTypes().get(mDevice.getType()).getImgId());
         mTvDeviceName.setText(mDevice.getName());
         mTvLasttime.setText("最近更新时间: " + TimeUtil.format(mDevice.getLasttime()));
@@ -193,7 +190,7 @@ public class DeviceDetailDelegate extends LatteDelegate {
                 .subscribe(new MyObserver<Response<Person>>() {
                     @Override
                     public void onNext(Response<Person> response) {
-                        mPerson =response.getData();
+                        mPerson = response.getData();
                         mTvOwner.setText(response.getData().getName());
                         mCimgOwner.setImage(Icon.getImgUrl(response.getData().getImgUrl()));
                     }

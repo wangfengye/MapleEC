@@ -8,5 +8,4 @@ dependencies {
     compile 'com.google.auto:auto-common:0.8'
 }
 
-sourceCompatibility = "1.7"
-targetCompatibility = "1.7"
+
