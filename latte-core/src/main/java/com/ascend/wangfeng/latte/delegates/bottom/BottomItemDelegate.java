@@ -6,6 +6,8 @@ import android.widget.Toast;
 import com.ascend.wangfeng.latte.R;
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 
+import me.yokeyword.fragmentation.ISupportFragment;
+
 /**
  * Created by fengye on 2017/8/24.
  * email 1040441325@qq.com
@@ -42,5 +44,15 @@ public abstract class BottomItemDelegate extends LatteDelegate{
         if (parent instanceof BaseBottomDelegate){
             parent.goContainer(i);
         }
+    }
+    // bottomItem所有跳转由父页面执行
+    @Override
+    public void start(ISupportFragment toFragment) {
+        getParentDelegate().start(toFragment);
+    }
+
+    @Override
+    public void start(ISupportFragment toFragment, int launchMode) {
+        getParentDelegate().start(toFragment, launchMode);
     }
 }

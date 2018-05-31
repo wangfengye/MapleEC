@@ -117,30 +117,24 @@ public class DeviceDetailDelegate extends LatteDelegate {
     private void initView() {
         mPlans = new ArrayList<>();
         mPlanAdapter = new PlanAdapter(mPlans);
-        mPlanAdapter.setListener(new PlanAdapter.OnClickListener() {
-            @Override
-            public void click(Plan plan) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(PlanDetailDelegate.PLAN, plan);
-                start(PlanDetailDelegate.newInstance(bundle));
-            }
+        mPlanAdapter.setListener(plan -> {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(PlanDetailDelegate.PLAN, plan);
+            start(PlanDetailDelegate.newInstance(bundle));
         });
         final LinearLayoutManager manager = new LinearLayoutManager(getContext());
         mRvPlans.setAdapter(mPlanAdapter);
         mRvPlans.setLayoutManager(manager);
 
-        mLlAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                Plan plan = new Plan();
-                plan.setdId(mDevice.getId());
-                plan.setType(0);
-                plan.setStarttime(getTime(9, 0));
-                plan.setEndtime(getTime(18, 0));
-                bundle.putSerializable(PlanDetailDelegate.PLAN, plan);
-                start(PlanDetailDelegate.newInstance(bundle));
-            }
+        mLlAdd.setOnClickListener(view -> {
+            Bundle bundle = new Bundle();
+            Plan plan = new Plan();
+            plan.setdId(mDevice.getId());
+            plan.setType(0);
+            plan.setStarttime(getTime(9, 0));
+            plan.setEndtime(getTime(18, 0));
+            bundle.putSerializable(PlanDetailDelegate.PLAN, plan);
+            start(PlanDetailDelegate.newInstance(bundle));
         });
         mCimgOwner.setOnClickListener(view -> {
             if (mPerson != null) {
@@ -197,6 +191,4 @@ public class DeviceDetailDelegate extends LatteDelegate {
                 });
 
     }
-
-
 }

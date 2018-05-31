@@ -2,23 +2,70 @@ package com.ascend.wangfeng.wifimanage.delegates.launch;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
+import com.ascend.wangfeng.wifimanage.R;
+import com.ascend.wangfeng.wifimanage.bean.Response;
+import com.ascend.wangfeng.wifimanage.delegates.MainDelegate;
+import com.ascend.wangfeng.wifimanage.net.Client;
+import com.ascend.wangfeng.wifimanage.net.MyObserver;
+import com.ascend.wangfeng.wifimanage.net.SchedulerProvider;
+import com.joanzapata.iconify.widget.IconTextView;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by fengye on 2018/5/30.
  * email 1040441325@qq.com
  */
 
-public class LoginDelegate extends LatteDelegate{
+public class LoginDelegate extends LatteDelegate {
+    @BindView(R.id.ic_back)
+    IconTextView mIcBack;
+    @BindView(R.id.toolbar_title)
+    TextView mToolbarTitle;
+    @BindView(R.id.ic_edit)
+    IconTextView mIcEdit;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.et_no)
+    TextInputEditText mEtNo;
+    @BindView(R.id.et_password)
+    TextInputEditText mEtPassword;
+    @BindView(R.id.btn_register)
+    TextView mBtnRegister;
+
+    @OnClick(R.id.btn_login)
+    void clickBtnLogin() {
+        String mac = mEtNo.getText().toString().trim();
+        String password = mEtPassword.getText().toString().trim();
+        Client.getInstance().login(mac, password)
+                .compose(SchedulerProvider.applyHttp())
+                .subscribe(new MyObserver<Response<String>>() {
+                    @Override
+                    public void onNext(Response<String> response) {
+                        // 登录; 初始化
+                        startWithPop(MainDelegate.newInstance());
+                    }
+                });
+    }
+    @OnClick(R.id.btn_register)
+    void clickBtnRegister(){
+        startWithPop(new ScanDelegate());
+    }
     @Override
     public Object setLayout() {
-        return null;
+        return R.layout.delegate_login;
     }
 
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
-
+        mToolbarTitle.setText("登录");
     }
+
 }

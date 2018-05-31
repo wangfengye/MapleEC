@@ -22,6 +22,9 @@ import io.reactivex.Observable;
  */
 
 public class DemoApi implements AliApi {
+    public DemoApi() {
+    }
+
     @Override
     public Observable<Response<List<Device>>> getCurrentDevices() {
         return Observable.create(e -> {
@@ -91,6 +94,16 @@ public class DemoApi implements AliApi {
                 Response<Person> response = JSONObject.parseObject(jsonStr, new TypeReference<Response<Person>>() {
                 });
                 e.onNext(response);
+        });
+    }
+
+    @Override
+    public Observable<Response<Person>> getPersonWithAttention() {
+        return Observable.create(e->{
+            String jsonStr = FileUtil.getRawFile(R.raw.persons_ids);
+            Response<Person> response = JSONObject.parseObject(jsonStr, new TypeReference<Response<Person>>() {
+            });
+            e.onNext(response);
         });
     }
 

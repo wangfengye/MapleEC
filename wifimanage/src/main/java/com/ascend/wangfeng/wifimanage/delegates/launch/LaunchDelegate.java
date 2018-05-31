@@ -11,7 +11,6 @@ import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.delegates.MainDelegate;
 import com.bigkoo.convenientbanner.ConvenientBanner;
-import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class LaunchDelegate extends LatteDelegate {
     @OnClick(R.id.btn_start)
     void clickStart() {
         MainApp.showRelease();
-        startWithPop(new ScanDelegate());
+        startWithPop(new LoginDelegate());
     }
 
     @Override
@@ -52,12 +51,8 @@ public class LaunchDelegate extends LatteDelegate {
         mImages.add(R.mipmap.lanunch_1);
         mImages.add(R.mipmap.launch_2);
         mImages.add(R.mipmap.lanunch_1);
-        mBannerLaunch.setPages(new CBViewHolderCreator<LocalImageHolderView>() {
-            @Override
-            public LocalImageHolderView createHolder() {
-                return new LocalImageHolderView();
-            }
-        }, mImages).setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
+        mBannerLaunch.setPages(() -> new LocalImageHolderView(), mImages)
+                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
                 .startTurning(5 * 1000);
     }
 

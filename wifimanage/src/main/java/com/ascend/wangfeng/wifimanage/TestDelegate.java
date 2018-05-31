@@ -7,7 +7,12 @@ import android.view.View;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.latte.util.storage.LattePreference;
+import com.ascend.wangfeng.wifimanage.bean.Person;
+import com.ascend.wangfeng.wifimanage.bean.Response;
 import com.ascend.wangfeng.wifimanage.bean.User;
+import com.ascend.wangfeng.wifimanage.net.Client;
+import com.ascend.wangfeng.wifimanage.net.MyObserver;
+import com.ascend.wangfeng.wifimanage.net.SchedulerProvider;
 import com.ascend.wangfeng.wifimanage.utils.SpKey;
 import com.ascend.wangfeng.wifimanage.views.GithubActivityView;
 
@@ -36,5 +41,16 @@ public class TestDelegate extends LatteDelegate{
         User user1= (User) LattePreference.getJson(SpKey.USER,User.class);
         user1.toString();
         Log.i(TAG, "onBindView: "+ user1.toString());
+        Person person = new Person();
+        person.setName("maple");
+        person.setImgUrl(1);
+        Client.getInstance().addPerson(person)
+                .compose(SchedulerProvider.applyHttp())
+                .subscribe(new MyObserver<Response<Person>>() {
+                    @Override
+                    public void onNext(Response<Person> response) {
+                        Log.i(TAG, "onNext: ");
+                    }
+                });
     }
 }

@@ -15,8 +15,6 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -95,11 +93,18 @@ public interface AliApi {
      */
     @GET("person/{id}")
     Observable<Response<Person>> getPersonById(@Path("id") Long id);
+    /**
+     * 查询  关注的 person
+     *
+     * @return
+     */
+    @GET("person/attention")
+    Observable<Response<Person>> getPersonWithAttention();
 
     /**
      * 查询所有 person
      *
-     * @return
+  * @return
      */
     @GET("persons")
     Observable<Response<List<Person>>> getPersons();

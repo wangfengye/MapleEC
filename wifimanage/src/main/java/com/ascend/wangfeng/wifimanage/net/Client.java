@@ -4,6 +4,10 @@ import com.ascend.wangfeng.latte.util.storage.LattePreference;
 import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.net.converter.FastJsonConverterFactory;
 import com.ascend.wangfeng.wifimanage.utils.SpKey;
+import com.franmontiel.persistentcookiejar.ClearableCookieJar;
+import com.franmontiel.persistentcookiejar.PersistentCookieJar;
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 
 import java.security.cert.CertificateException;
 import java.util.concurrent.TimeUnit;
@@ -67,16 +71,18 @@ public class Client {
         public static LocalApi mLocalApi;
 
         static {
-            String url = LattePreference.getAppPreference().getString(SpKey.LOCAL_URL, "192.168.168.112");
-            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
-                    .connectTimeout(2, TimeUnit.SECONDS);
-            Retrofit retrofit = new Retrofit.Builder()
-                    .client(clientBuilder.build())
+            // 不规范的url会导致 retrofit创建时illegalArgumentException,
+            String url = LattePreference.getAppPreference().getString(SpKey.LOCAL_URL, "http://192.168.168.112");
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(2, TimeUnit.SECONDS)
+                    .build();
+            Retrofit retrofit1 = new Retrofit.Builder()
+                    .client(client)
                     .baseUrl(url)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(FastJsonConverterFactory.create())
                     .build();
-            mLocalApi = retrofit.create(LocalApi.class);
+            mLocalApi = retrofit1.create(LocalApi.class);
         }
 
         /**
@@ -115,9 +121,13 @@ public class Client {
                         return true;
                     }
                 };
+                // 添加cookie
+                ClearableCookieJar cookieJar =
+                        new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(MainApp.getContent()));
                 return new OkHttpClient.Builder()
                         .sslSocketFactory(sslSocketFactory)
                         .hostnameVerifier(verifier)
+                        .cookieJar(cookieJar)
                         .build();
             } catch (Exception e) {
                 throw new RuntimeException(e);

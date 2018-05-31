@@ -15,10 +15,9 @@ import com.ascend.wangfeng.wifimanage.delegates.MainDelegate;
 import com.ascend.wangfeng.wifimanage.delegates.launch.LaunchDelegate;
 import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.net.MyObserver;
+import com.ascend.wangfeng.wifimanage.net.SchedulerProvider;
 import com.ascend.wangfeng.wifimanage.utils.SpKey;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import qiu.niorgai.StatusBarCompat;
 
 public class MainActivity extends ProxyActivity {
@@ -41,16 +40,21 @@ public class MainActivity extends ProxyActivity {
         User user = (User) LattePreference.getJson(SpKey.USER, User.class);
         if (user != null) {
             Client.getInstance().login(user.getName(),user.getPassword())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .compose(SchedulerProvider.applyHttp())
                     .subscribe(new MyObserver<Response<String>>() {
                         @Override
                         public void onNext(Response<String> response) {
 
                         }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            MainApp.toast(R.string.login_outtime);
+                        }
                     });
             return MainDelegate.newInstance();
         }
         return new LaunchDelegate();
+
     }
 }

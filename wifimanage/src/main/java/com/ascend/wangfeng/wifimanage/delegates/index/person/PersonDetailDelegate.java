@@ -78,32 +78,21 @@ public class PersonDetailDelegate extends LatteDelegate {
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
         mIcBack.setVisibility(View.VISIBLE);
-        mIcBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pop();
-            }
-        });
+        mIcBack.setOnClickListener(view -> pop());
         mIcEdit.setVisibility(View.VISIBLE);
-        mIcEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(PersonEditDelegate.PERSON, mPerson);
-                start(PersonEditDelegate.newInstance(bundle));
-            }
+        mIcEdit.setOnClickListener(view -> {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(PersonEditDelegate.PERSON, mPerson);
+            start(PersonEditDelegate.newInstance(bundle));
         });
         mToolbarTitle.setText("成员详情");
         mPerson = (Person) getArguments().getSerializable(PERSON);
         mDevices = new ArrayList<>();
         mDeviceAdapter = new DeviceSquareAdapter(mDevices);
-        mDeviceAdapter.setListener(new DeviceSquareAdapter.OnClickListener() {
-            @Override
-            public void click(Device device) {
-                Bundle args = new Bundle();
-                args.putSerializable(DeviceDetailDelegate.DEVICE,device);
-                start(DeviceDetailDelegate.newInstance(args),SINGLETASK);
-            }
+        mDeviceAdapter.setListener(device -> {
+            Bundle args = new Bundle();
+            args.putSerializable(DeviceDetailDelegate.DEVICE, device);
+            start(DeviceDetailDelegate.newInstance(args), SINGLETASK);
         });
         GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
         mRvDevices.setLayoutManager(manager);
@@ -138,18 +127,17 @@ public class PersonDetailDelegate extends LatteDelegate {
         Client.getInstance().getLivenessesByPId(mPerson.getId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Response<List<Liveness>>>() {
+                .subscribe(new MyObserver<Response<List<Liveness>>>() {
                     @Override
-                    public void accept(Response<List<Liveness>> response) throws Exception {
+                    public void onNext(Response<List<Liveness>> response) {
                         Integer[][] data = new Integer[7][];
-                        //构造假数据
-                        for(int i = 0;i <7; i++){
+                        for (int i = 0; i < 7; i++) {
                             Integer[] column = new Integer[24];
-                            for(int j= 0;j <24; j++){
-                                int index  =i*7+j;
-                                if (response.getData().size()>index)
-                                column[j] = response.getData().get(index).getAvalue() ;
-                                else column[j] = response.getData().get(0).getAvalue() ;
+                            for (int j = 0; j < 24; j++) {
+                                int index = i * 7 + j;
+                                if (response.getData().size() > index)
+                                    column[j] = response.getData().get(index).getAvalue();
+                                else column[j] = response.getData().get(0).getAvalue();
                             }
                             data[i] = column;
                         }

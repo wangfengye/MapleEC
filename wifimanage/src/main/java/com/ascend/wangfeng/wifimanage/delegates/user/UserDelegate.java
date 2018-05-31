@@ -5,17 +5,22 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ascend.wangfeng.latte.delegates.bottom.BottomItemDelegate;
 import com.ascend.wangfeng.latte.ui.recycler.BaseDecoration;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
+import com.ascend.wangfeng.wifimanage.bean.Liveness;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.Response;
 import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
+import com.ascend.wangfeng.wifimanage.delegates.index.DeviceDetailDelegate;
 import com.ascend.wangfeng.wifimanage.delegates.index.person.DeviceSquareAdapter;
 import com.ascend.wangfeng.wifimanage.net.Client;
+import com.ascend.wangfeng.wifimanage.net.MyObserver;
+import com.ascend.wangfeng.wifimanage.net.SchedulerProvider;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.ascend.wangfeng.wifimanage.views.GithubActivityView;
 import com.github.mikephil.charting.charts.BarChart;
@@ -33,14 +38,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import io.reactivex.functions.Consumer;
+import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by fengye on 2018/4/25.
  * email 1040441325@qq.com
  */
 
-public class UserDelegate extends BottomItemDelegate{
+public class UserDelegate extends BottomItemDelegate {
 
     @BindView(R.id.cimg_icon)
     CircleImageView mCimgIcon;
@@ -54,13 +61,19 @@ public class UserDelegate extends BottomItemDelegate{
     BarChart mBarChart;
     @BindView(R.id.github)
     GithubActivityView mGithub;
+    @BindView(R.id.rl_add)
+    RelativeLayout mRlAdd;
 
     private Person mPerson;
+    private ArrayList mDevices;
+    private DeviceSquareAdapter mDeviceAdapter;
+
     public static UserDelegate newInstance(Bundle args) {
         UserDelegate fragment = new UserDelegate();
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public Object setLayout() {
         return R.layout.delegate_user;
@@ -68,34 +81,95 @@ public class UserDelegate extends BottomItemDelegate{
 
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
-        //mPerson
-        //initPerson();
-        //initDevices();
-        //initHistory();
-
+        Client.getInstance().getPersonWithAttention()
+                .compose(SchedulerProvider.applyHttp())
+                .subscribe(new MyObserver<Response<Person>>() {
+                    @Override
+                    public void onNext(Response<Person> response) {
+                        if (response.getData() != null) {
+                            mRlAdd.setVisibility(View.GONE);
+                            mPerson = response.getData();
+                            initView();
+                            initData();
+                        } else {
+                            showAddAttention();
+                        }
+                    }
+                });
     }
-    private void initPerson() {
+    @OnClick(R.id.btn_add)
+    void clickBtnAdd(){
+        start(new AttentionChoiceDelegate());
+    }
+    private void initData() {
+        initPerson();
+        initDevices();
+        initHistory();
+    }
 
-        if (mPerson!=null){
-        mTvName.setText(mPerson.getName());
-        mCimgIcon.setImage(Icon.getImgUrl(mPerson.getImgUrl()));}
-       // mTvDesc.setText();
+    private void initDevices() {
+        Client.getInstance().getDevicesByPId(mPerson.getId())
+                .subscribe(new MyObserver<Response<List<Device>>>() {
+                    @Override
+                    public void onNext(Response<List<Device>> response) {
+                        mDevices.clear();
+                        mDevices.addAll(response.getData());
+                        mDeviceAdapter.notifyDataSetChanged();
+                    }
+                });
+    }
+
+    private void initView() {
+        mDevices = new ArrayList<>();
+        mDeviceAdapter = new DeviceSquareAdapter(mDevices);
+        mDeviceAdapter.setListener(device -> {
+            Bundle args = new Bundle();
+            args.putSerializable(DeviceDetailDelegate.DEVICE, device);
+            start(DeviceDetailDelegate.newInstance(args), SINGLETASK);
+        });
+        GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
+        mRvDevices.setLayoutManager(manager);
+        mRvDevices.setAdapter(mDeviceAdapter);
+        mRvDevices.addItemDecoration(BaseDecoration.create(getResources()
+                .getColor(android.R.color.white), 3));
+    }
+
+    // 无关注人员时情况;
+    private void showAddAttention() {
+        mRlAdd.setVisibility(View.VISIBLE);
+    }
+
+    private void initPerson() {
+        if (mPerson != null) {
+            mTvName.setText(mPerson.getName());
+            mCimgIcon.setImage(Icon.getImgUrl(mPerson.getImgUrl()));
+        }
+        // mTvDesc.setText();
     }
 
     private void initHistory() {
        /* initChart(mBarChart);
         setData();*/
-        Integer[][] data = new Integer[7][];
-        //构造假数据
-        for(int i = 0;i <7; i++){
-            Integer[] column = new Integer[24];
-            for(int j= 0;j <24; j++){
-                column[j] = (int)(Math.random()*4);
-            }
-            data[i] = column;
-        }
-        mGithub.setData(data);
-
+        Client.getInstance().getLivenessesByPId(mPerson.getId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MyObserver<Response<List<Liveness>>>() {
+                    @Override
+                    public void onNext(Response<List<Liveness>> response) {
+                        Integer[][] data = new Integer[7][];
+                        for (int i = 0; i < 7; i++) {
+                            Integer[] column = new Integer[24];
+                            for (int j = 0; j < 24; j++) {
+                                int index = i * 7 + j;
+                                if (response.getData().size() > index)
+                                    column[j] = response.getData().get(index).getAvalue();
+                                else column[j] = response.getData().get(0).getAvalue();
+                            }
+                            data[i] = column;
+                        }
+                        mGithub.setData(data);
+                    }
+                });
     }
 
     private void setData() {
@@ -104,17 +178,17 @@ public class UserDelegate extends BottomItemDelegate{
         colors.add(getResources().getColor(R.color.colorOrange));
         colors.add(getResources().getColor(R.color.colorBlue));
         ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-        for (int j = 0;j<2;j++){
+        for (int j = 0; j < 2; j++) {
             ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
-            for (int i = 1; i <7; i++) {
+            for (int i = 1; i < 7; i++) {
                 float mult = (24 + 1);
                 float val = (float) (Math.random() * mult);
                 yVals1.add(new BarEntry(i, val));
 
             }
             BarDataSet set1;
-            set1 = new BarDataSet(yVals1, "设备"+j);
+            set1 = new BarDataSet(yVals1, "设备" + j);
             set1.setDrawIcons(false);
 
             set1.setColor(colors.get(j));
@@ -124,10 +198,10 @@ public class UserDelegate extends BottomItemDelegate{
         data.setValueTextSize(10f);
 
         float groupSpace = .2f;
-        float barWidth = (1f-.2f)/2*8/10;
-        float barSpace = (1f-.2f)/2*2/10;
+        float barWidth = (1f - .2f) / 2 * 8 / 10;
+        float barSpace = (1f - .2f) / 2 * 2 / 10;
         data.setBarWidth(barWidth);
-        data.groupBars(.5f,groupSpace,barSpace);
+        data.groupBars(.5f, groupSpace, barSpace);
 
         mBarChart.setData(data);
     }
@@ -140,11 +214,11 @@ public class UserDelegate extends BottomItemDelegate{
         IAxisValueFormatter axisValueFormatter = new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                int days = 7- (int) value;
-                if (days ==0) {
+                int days = 7 - (int) value;
+                if (days == 0) {
                     return "当天";
-                }else {
-                    return days+"天前";
+                } else {
+                    return days + "天前";
                 }
             }
         };
@@ -158,7 +232,7 @@ public class UserDelegate extends BottomItemDelegate{
         IAxisValueFormatter custom = new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return (int)value + "h";
+                return (int) value + "h";
             }
         };
 
@@ -184,18 +258,5 @@ public class UserDelegate extends BottomItemDelegate{
         l.setXEntrySpace(4f);
     }
 
-    private void initDevices() {
-        Client.getInstance().getDevicesByPId(mPerson.getId())
-                .subscribe(new Consumer<Response<List<Device>>>() {
-                    @Override
-                    public void accept(Response<List<Device>> response) throws Exception {
-                        DeviceSquareAdapter adapter = new DeviceSquareAdapter(response.getData());
-                        GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
-                        mRvDevices.setLayoutManager(manager);
-                        mRvDevices.setAdapter(adapter);
-                        mRvDevices.addItemDecoration(BaseDecoration.create(getResources()
-                                .getColor(android.R.color.white), 3));
-                    }
-                });
-    }
+
 }

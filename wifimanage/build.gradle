@@ -55,4 +55,6 @@ dependencies {
     compile files('libs/BaiduLBS_Android.jar')
     compile 'com.yanzhenjie:permission:2.0.0-rc5'
     compile 'com.android.support:support-fragment:27+'
+    // cookie
+    compile 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
 }
