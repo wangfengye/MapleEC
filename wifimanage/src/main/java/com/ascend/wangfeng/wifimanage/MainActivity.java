@@ -54,6 +54,5 @@ public class MainActivity extends ProxyActivity {
             return MainDelegate.newInstance();
         }
         return new LaunchDelegate();
-
     }
 }
