@@ -121,9 +121,9 @@ public class IndexDelegate extends BottomItemDelegate {
             @Override
             public void onNext(Response<List<Device>> response) {
                 for (Device d : response.getData()) {
-                    if (d.getpId() != null && d.getpId() != 0) {
+                    if (d.getPid() != null && d.getPid() != 0) {
                         mOnlineDevices.add(d);
-                        mPIds.add(d.getpId());
+                        mPIds.add(d.getPid());
                     } else {
                         mNewDevices.add(d);
                     }
@@ -163,7 +163,7 @@ public class IndexDelegate extends BottomItemDelegate {
             if (i >= 6) break;
             LayoutInflater.from(getContext()).inflate(R.layout.item_circle_image, mLlNewDeviceContent);
             CircleImageView img = (CircleImageView) mLlNewDeviceContent.getChildAt(i);
-            img.setImage(DeviceType.getTypes().get(mNewDevices.get(i).getType()).getImgId());
+            img.setImage(DeviceType.getTypes().get(mNewDevices.get(i).getDtype()).getImgId());
             img.setBg(getResources().getColor(R.color.colorOrange));
             img.setSrcType(CircleImageView.TYPE_WHITE);
         }
@@ -173,7 +173,7 @@ public class IndexDelegate extends BottomItemDelegate {
             if (i >= 5) break;
             LayoutInflater.from(getContext()).inflate(R.layout.item_circle_image, mLlPeopleContent);
             CircleImageView img = (CircleImageView) mLlPeopleContent.getChildAt(i);
-            img.setImage(Icon.getImgUrl(mPeople.get(i).getImgUrl()));
+            img.setImage(Icon.getImgUrl(mPeople.get(i).getPimage()));
             img.setBg(getResources().getColor(R.color.colorAccent));
             img.setSrcType(CircleImageView.TYPE_NORMAL);
         }
@@ -183,7 +183,7 @@ public class IndexDelegate extends BottomItemDelegate {
             if (i >= 5) break;
             LayoutInflater.from(getContext()).inflate(R.layout.item_circle_image, mLlOnlineDeviceContent);
             CircleImageView img = (CircleImageView) mLlOnlineDeviceContent.getChildAt(i);
-            img.setImage(DeviceType.getTypes().get(mOnlineDevices.get(i).getType()).getImgId());
+            img.setImage(DeviceType.getTypes().get(mOnlineDevices.get(i).getDtype()).getImgId());
             img.setBg(getResources().getColor(R.color.colorAccent));
             img.setSrcType(CircleImageView.TYPE_WHITE);
         }

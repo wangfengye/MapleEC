@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Response;
+import com.ascend.wangfeng.wifimanage.bean.User;
 import com.ascend.wangfeng.wifimanage.delegates.MainDelegate;
 import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.net.MyObserver;
@@ -46,9 +47,9 @@ public class LoginDelegate extends LatteDelegate {
         String password = mEtPassword.getText().toString().trim();
         Client.getInstance().login(mac, password)
                 .compose(SchedulerProvider.applyHttp())
-                .subscribe(new MyObserver<Response<String>>() {
+                .subscribe(new MyObserver<Response<User>>() {
                     @Override
-                    public void onNext(Response<String> response) {
+                    public void onNext(Response<User> response) {
                         // 登录; 初始化
                         startWithPop(MainDelegate.newInstance());
                     }

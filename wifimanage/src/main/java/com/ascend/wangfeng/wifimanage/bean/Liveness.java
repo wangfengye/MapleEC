@@ -3,56 +3,74 @@ package com.ascend.wangfeng.wifimanage.bean;
 /**
  * Created by fengye on 2018/5/24.
  * email 1040441325@qq.com
- * 活跃度
+ * 活跃度(t_activity)
  */
 
 public class Liveness {
-    private Long id;
-    private Long dId;
-    private Long time;
-    private int hour;
-    private int avalue;// 活跃度,0-60
+    private Long aid;
+    private Long bmac;
+    private Long dmac;
+    private Long aYear;
+    private Long aHour;
+    private Integer avalue;// 活跃度,0-60
 
-    public Liveness() {
+    public Long getAid() {
+        return aid;
     }
 
-    public Long getId() {
-        return id;
+    public void setAid(Long aid) {
+        this.aid = aid;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Long getBmac() {
+        return bmac;
     }
 
-    public Long getdId() {
-        return dId;
+    public void setBmac(Long bmac) {
+        this.bmac = bmac;
     }
 
-    public void setdId(Long dId) {
-        this.dId = dId;
+    public Long getDmac() {
+        return dmac;
     }
 
-    public Long getTime() {
-        return time;
+    public void setDmac(Long dmac) {
+        this.dmac = dmac;
     }
 
-    public void setTime(Long time) {
-        this.time = time;
+    public Long getaYear() {
+        return aYear;
     }
 
-    public int getHour() {
-        return hour;
+    public void setaYear(Long aYear) {
+        this.aYear = aYear;
     }
 
-    public void setHour(int hour) {
-        this.hour = hour;
+    public Long getaHour() {
+        return aHour;
     }
 
-    public int getAvalue() {
+    public void setaHour(Long aHour) {
+        this.aHour = aHour;
+    }
+
+    public Integer getAvalue() {
         return avalue;
     }
 
-    public void setAvalue(int avalue) {
+    public void setAvalue(Integer avalue) {
         this.avalue = avalue;
+    }
+
+    @Override
+    public String toString() {
+        return "Liveness{" +
+                "aid=" + aid +
+                ", bmac=" + bmac +
+                ", dmac=" + dmac +
+                ", aYear=" + aYear +
+                ", aHour=" + aHour +
+                ", avalue=" + avalue +
+                '}';
     }
 }

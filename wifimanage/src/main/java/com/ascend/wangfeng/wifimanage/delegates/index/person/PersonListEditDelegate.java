@@ -110,7 +110,7 @@ public class PersonListEditDelegate extends LatteDelegate {
         // 返回上一页携带选中数据
         Bundle bundle = new Bundle();
         for (Person p : mPeople) {
-            if (p.isChosed()) bundle.putSerializable("person", p);
+            if (p.isSelected()) bundle.putSerializable("person", p);
             setFragmentResult(1, bundle);
         }
         pop();

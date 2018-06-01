@@ -129,8 +129,8 @@ public class DeviceDetailDelegate extends LatteDelegate {
         mLlAdd.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
             Plan plan = new Plan();
-            plan.setdId(mDevice.getId());
-            plan.setType(0);
+            plan.setDmac(mDevice.getDmac());
+            plan.setPtype(0);
             plan.setStarttime(getTime(9, 0));
             plan.setEndtime(getTime(18, 0));
             bundle.putSerializable(PlanDetailDelegate.PLAN, plan);
@@ -154,17 +154,17 @@ public class DeviceDetailDelegate extends LatteDelegate {
     private void initData() {
         Bundle bundle = getArguments();
         mDevice = (Device) bundle.getSerializable(DEVICE);
-        mCimgIcon.setImage(DeviceType.getTypes().get(mDevice.getType()).getImgId());
-        mTvDeviceName.setText(mDevice.getName());
+        mCimgIcon.setImage(DeviceType.getTypes().get(mDevice.getDtype()).getImgId());
+        mTvDeviceName.setText(mDevice.getDname());
         mTvLasttime.setText("最近更新时间: " + TimeUtil.format(mDevice.getLasttime()));
         mTvFirsttime.setText("首次出现时间: " + TimeUtil.format(mDevice.getFirsttime()));
-        mTvIp.setText(mDevice.getIp());
-        mTvMac.setText(mDevice.getMac());
-        mTvBrand.setText(mDevice.getBrand());
-        mTvDhcp.setText(mDevice.getDhcp());
+        mTvIp.setText(mDevice.getDevIp());
+        mTvMac.setText(mDevice.getDmac());
+        mTvBrand.setText(mDevice.getVendor());// 厂商
+        mTvDhcp.setText(mDevice.getHostname());// 主机
         mTvNetbios.setText(mDevice.getNetbios());
-        reViewOwner(mDevice.getId());
-        Client.getInstance().getPlansByDId(mDevice.getId())
+        reViewOwner(mDevice.getDid());
+        Client.getInstance().getPlansByDId(mDevice.getDid())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<Response<List<Plan>>>() {
@@ -185,8 +185,8 @@ public class DeviceDetailDelegate extends LatteDelegate {
                     @Override
                     public void onNext(Response<Person> response) {
                         mPerson = response.getData();
-                        mTvOwner.setText(response.getData().getName());
-                        mCimgOwner.setImage(Icon.getImgUrl(response.getData().getImgUrl()));
+                        mTvOwner.setText(response.getData().getPname());
+                        mCimgOwner.setImage(Icon.getImgUrl(response.getData().getPimage()));
                     }
                 });
 

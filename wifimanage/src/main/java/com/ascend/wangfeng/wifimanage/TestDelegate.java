@@ -35,15 +35,15 @@ public class TestDelegate extends LatteDelegate{
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
         User user = new User();
-        user.setName("maple");
-        user.setPassword("1234");
+        user.setUname("maple");
+        user.setUpasswd("1234");
         LattePreference.setJson(SpKey.USER,user);
         User user1= (User) LattePreference.getJson(SpKey.USER,User.class);
         user1.toString();
         Log.i(TAG, "onBindView: "+ user1.toString());
         Person person = new Person();
-        person.setName("maple");
-        person.setImgUrl(1);
+        person.setPname("maple");
+        person.setPimage(1);
         Client.getInstance().addPerson(person)
                 .compose(SchedulerProvider.applyHttp())
                 .subscribe(new MyObserver<Response<Person>>() {

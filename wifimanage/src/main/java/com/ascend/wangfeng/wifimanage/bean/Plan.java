@@ -7,67 +7,96 @@ import java.io.Serializable;
 /**
  * Created by fengye on 2018/5/15.
  * email 1040441325@qq.com
- * 时间规划
+ * 时间规划(t_plan)
  */
 
 public class Plan implements Serializable,MultiItemEntity{
 
     private static final long serialVersionUID = -1314258825409184663L;
 
-    private Long id;
-    private Long dId;
-    private Long bId;
-    private int type;// 规划类型,即每周哪几天执行
+    private Long pid;
+    private String dmac;
+    private String bmac;
+    private Integer ptype;
     private Long starttime;
     private Long endtime;
-
-    public Long getId() {
-        return this.id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public int getType() {
-        return this.type;
-    }
-    public void setType(int type) {
-        this.type = type;
-    }
-    public Long getStarttime() {
-        return this.starttime;
-    }
-    public void setStarttime(Long starttime) {
-        this.starttime = starttime;
-    }
-    public Long getEndtime() {
-        return this.endtime;
-    }
-    public void setEndtime(Long endtime) {
-        this.endtime = endtime;
-    }
-
-    public Long getdId() {
-        return dId;
-    }
-
-    public void setdId(Long dId) {
-        this.dId = dId;
-    }
-
-    public Long getbId() {
-        return bId;
-    }
-
-    public void setbId(Long bId) {
-        this.bId = bId;
-    }
+    private Boolean power;
 
     @Override
     public int getItemType() {
         return 0;
     }
-    final String[] items = {"每日", "工作日(周一至周五)", "假日(周末)"};
+    private static final String[] items = {"每日", "工作日(周一至周五)", "假日(周末)"};
     public String getTypeStr(){
-        return items[getType()];
+        return items[getPtype()];
+    }
+
+    public Long getPid() {
+        return pid;
+    }
+
+    public void setPid(Long pid) {
+        this.pid = pid;
+    }
+
+    public String getDmac() {
+        return dmac;
+    }
+
+    public void setDmac(String dmac) {
+        this.dmac = dmac;
+    }
+
+    public String getBmac() {
+        return bmac;
+    }
+
+    public void setBmac(String bmac) {
+        this.bmac = bmac;
+    }
+
+    public Integer getPtype() {
+        return ptype;
+    }
+
+    public void setPtype(Integer ptype) {
+        this.ptype = ptype;
+    }
+
+    public Long getStarttime() {
+        return starttime;
+    }
+
+    public void setStarttime(Long starttime) {
+        this.starttime = starttime;
+    }
+
+    public Long getEndtime() {
+        return endtime;
+    }
+
+    public void setEndtime(Long endtime) {
+        this.endtime = endtime;
+    }
+
+    public Boolean getPower() {
+        return power;
+    }
+
+    public void setPower(Boolean power) {
+        this.power = power;
+    }
+
+    @Override
+    public String toString() {
+        return "Plan{" +
+                "pid=" + pid +
+                ", dmac='" + dmac + '\'' +
+                ", bmac='" + bmac + '\'' +
+                ", ptype=" + ptype +
+                ", starttime=" + starttime +
+                ", endtime=" + endtime +
+                ", power=" + power +
+                '}';
     }
 }

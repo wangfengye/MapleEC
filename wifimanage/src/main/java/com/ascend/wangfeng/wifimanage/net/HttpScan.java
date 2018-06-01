@@ -23,7 +23,6 @@ import java.util.concurrent.Executors;
 
 public class HttpScan {
     boolean doCallback = false;// 保证doCallback执行一次
-
     public static final String TAG = HttpScan.class.getSimpleName();
     private ExecutorService pool;
     Callback mCallback;

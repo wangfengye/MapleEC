@@ -12,12 +12,12 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -31,7 +31,7 @@ public interface AliApi {
      *
      * @return
      */
-    @GET("devices/current")
+    @GET("dev/online")
     Observable<Response<List<Device>>> getCurrentDevices();
 
     /**
@@ -39,7 +39,7 @@ public interface AliApi {
      *
      * @return
      */
-    @GET("devices/old")
+    @GET("dev/controlled")
     Observable<Response<List<Device>>> getTagDevices();
 
     /**
@@ -47,7 +47,7 @@ public interface AliApi {
      *
      * @return
      */
-    @GET("devices/new")
+    @GET("dev/uncontrolled")
     Observable<Response<List<Device>>> getUnknownDevices();
 
     /**
@@ -64,8 +64,8 @@ public interface AliApi {
      * @param id person_id
      * @return
      */
-    @GET("devices/pid")
-    Observable<Response<List<Device>>> getDevicesByPId(@Query("id") Long id);
+    @GET("dev/pid")
+    Observable<Response<List<Device>>> getDevicesByPId(@Query("pid") Long id);
 
     /**
      * 新增设备
@@ -73,7 +73,7 @@ public interface AliApi {
      * @param device
      * @return
      */
-    @POST("devices")
+    @POST("dev/save")
     Observable<Response<Device>> addDevice(@Body Device device);
 
     /**
@@ -82,7 +82,7 @@ public interface AliApi {
      * @param device
      * @return
      */
-    @PUT("devices")
+    @PUT("dev/update")
     Observable<Response<Device>> updateDevice(@Body Device device);
 
     /**
@@ -91,8 +91,8 @@ public interface AliApi {
      * @param id peson_id
      * @return
      */
-    @GET("person/{id}")
-    Observable<Response<Person>> getPersonById(@Path("id") Long id);
+    @GET("person")
+    Observable<Response<Person>> getPersonById(@Query("pid") Long id);
     /**
      * 查询  关注的 person
      *
@@ -106,7 +106,7 @@ public interface AliApi {
      *
   * @return
      */
-    @GET("persons")
+    @GET("person/findAll")
     Observable<Response<List<Person>>> getPersons();
 
     /**
@@ -115,7 +115,7 @@ public interface AliApi {
      * @param person
      * @return
      */
-    @POST("person/")
+    @POST("person/save")
     Observable<Response<Person>> addPerson(@Body Person person);
 
     /**
@@ -124,24 +124,24 @@ public interface AliApi {
      * @param person
      * @return
      */
-    @PUT("person")
+    @PUT("person/update")
     Observable<Response<Person>> updatePerson(@Body Person person);
 
     /**
      * 获取活跃度,最近一周(维度:person,同一person下多设备,去最高值)
      *
-     * @param id 人员id
+     * @param pid 人员id
      * @return
      */
-    @GET("liveness")
-    Observable<Response<List<Liveness>>> getLivenessesByPId(Long id);
+    @GET("activity/lastweek")
+    Observable<Response<List<Liveness>>> getLivenessesByPId(@Query("pid") Long pid);
 
     /**
      * 查询所有plan
      *
      * @return
      */
-
+    @Deprecated
     @GET("plans")
     Observable<Response<List<Plan>>> getPlans();
 
@@ -151,8 +151,8 @@ public interface AliApi {
      * @param DId: 设备id
      * @return
      */
-    @GET("plans")
-    Observable<Response<List<Plan>>> getPlansByDId(@Query("dId") Long DId);
+    @GET("plan/device")
+    Observable<Response<List<Plan>>> getPlansByDId(@Query("did") Long DId);
 
     /**
      * 新增plan
@@ -160,7 +160,7 @@ public interface AliApi {
      * @param plan
      * @return
      */
-    @POST("plans")
+    @POST("plan/save")
     Observable<Response<Plan>> addPlan(@Body Plan plan);
 
     /**
@@ -169,7 +169,7 @@ public interface AliApi {
      * @param plan
      * @return
      */
-    @PUT("plans")
+    @PUT("plan/update")
     Observable<Response<Plan>> updatePlan(@Body Plan plan);
 
     /**
@@ -178,7 +178,7 @@ public interface AliApi {
      * @param plan
      * @return
      */
-    @PUT("plans")
+    @DELETE("plan/del")
     Observable<Response<String>> deletePlan(@Body Plan plan);
 
     /**
@@ -197,7 +197,7 @@ public interface AliApi {
      */
     @FormUrlEncoded
     @POST("login")
-    Observable<Response<String>> login(@Field("mac") String mac, @Field("password") String password);
+    Observable<Response<User>> login(@Field("mac") String mac, @Field("upasswd") String password);
 
     /**
      * 创建用户
@@ -205,8 +205,8 @@ public interface AliApi {
      * @return
      */
     @FormUrlEncoded
-    @POST("user")
-    Observable<Response<User>> createUser(@Field("mac") String mac,@Field("password") String password
-            , @Field("longitude") double longitude, @Field("latitude") double latitude);
+    @POST("usr/create")
+    Observable<Response<User>> createUser(@Field("mac") String mac,@Field("upasswd") String password
+            , @Field("blng") double longitude, @Field("blat") double latitude);
 
 }

@@ -7,60 +7,70 @@ package com.ascend.wangfeng.wifimanage.bean;
  */
 
 public class Box {
-    private Long id;
-    private String mac;
-    private String version;
-    private double longtitude;
-    private double latitude;
+    private Long bid;
+    private String bmac;
+    private String bver;
+    private double blng;
+    private double blat;
+    private String routerMac;// 路由器mac;
 
-    public Long getId() {
-        return id;
+    public Long getBid() {
+        return bid;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setBid(Long bid) {
+        this.bid = bid;
     }
 
-    public String getMac() {
-        return mac;
+    public String getBmac() {
+        return bmac;
     }
 
-    public void setMac(String mac) {
-        this.mac = mac;
+    public void setBmac(String bmac) {
+        this.bmac = bmac;
     }
 
-    public String getVersion() {
-        return version;
+    public String getBver() {
+        return bver;
     }
 
-    public void setVersion(String version) {
-        this.version = version;
+    public void setBver(String bver) {
+        this.bver = bver;
     }
 
-    public double getLongtitude() {
-        return longtitude;
+    public double getBlng() {
+        return blng;
     }
 
-    public void setLongtitude(double longtitude) {
-        this.longtitude = longtitude;
+    public void setBlng(double blng) {
+        this.blng = blng;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public double getBlat() {
+        return blat;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public void setBlat(double blat) {
+        this.blat = blat;
+    }
+
+    public String getRouterMac() {
+        return routerMac;
+    }
+
+    public void setRouterMac(String routerMac) {
+        this.routerMac = routerMac;
     }
 
     @Override
     public String toString() {
         return "Box{" +
-                "id=" + id +
-                ", mac='" + mac + '\'' +
-                ", version='" + version + '\'' +
-                ", longtitude=" + longtitude +
-                ", latitude=" + latitude +
+                "bid=" + bid +
+                ", bmac='" + bmac + '\'' +
+                ", bver='" + bver + '\'' +
+                ", blng=" + blng +
+                ", blat=" + blat +
+                ", routerMac='" + routerMac + '\'' +
                 '}';
     }
 }

@@ -96,7 +96,7 @@ public class RegisterDelegate extends LatteDelegate {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
-                    mEtNo.setText(res.getMac());
+                    mEtNo.setText(res.getBmac());
                 });
     }
 

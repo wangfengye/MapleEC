@@ -29,7 +29,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -111,8 +110,8 @@ public class PersonDetailDelegate extends LatteDelegate {
     }
 
     private void initPerson() {
-        mTvName.setText(mPerson.getName());
-        mCimgIcon.setImage(Icon.getImgUrl(mPerson.getImgUrl()));
+        mTvName.setText(mPerson.getPname());
+        mCimgIcon.setImage(Icon.getImgUrl(mPerson.getPimage()));
         //mTvDesc.setText();
     }
 
@@ -124,7 +123,7 @@ public class PersonDetailDelegate extends LatteDelegate {
     }
 
     private void initGithubView() {
-        Client.getInstance().getLivenessesByPId(mPerson.getId())
+        Client.getInstance().getLivenessesByPId(mPerson.getPid())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<Response<List<Liveness>>>() {
@@ -233,7 +232,7 @@ public class PersonDetailDelegate extends LatteDelegate {
     }
 
     private void initDevices() {
-        Client.getInstance().getDevicesByPId(mPerson.getId())
+        Client.getInstance().getDevicesByPId(mPerson.getPid())
                 .subscribe(new MyObserver<Response<List<Device>>>() {
                     @Override
                     public void onNext(Response<List<Device>> response) {

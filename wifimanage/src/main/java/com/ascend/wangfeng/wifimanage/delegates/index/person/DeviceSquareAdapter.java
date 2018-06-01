@@ -28,8 +28,8 @@ public class DeviceSquareAdapter extends BaseMultiItemQuickAdapter<Device,Multip
 
     @Override
     protected void convert(MultipleViewHolder helper, final Device item) {
-        helper.setImageResource(R.id.img_icon, DeviceType.getTypes().get(item.getType()).getImgId());
-        helper.setText(R.id.tv_name,item.getName());
+        helper.setImageResource(R.id.img_icon, DeviceType.getTypes().get(item.getDtype()).getImgId());
+        helper.setText(R.id.tv_name,item.getDname());
         if (mListener!=null){
             helper.setOnClickListener(R.id.rl_content, new View.OnClickListener() {
                 @Override

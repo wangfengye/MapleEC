@@ -45,23 +45,23 @@ public class PersonAdapter extends BaseMultiItemQuickAdapter<Person, MultipleVie
 
     @Override
     protected void convert(MultipleViewHolder helper, final Person item) {
-        helper.setText(R.id.tv_name, item.getName());
+        helper.setText(R.id.tv_name, item.getPname());
         helper.setText(R.id.tv_desc, "描述性信息");
         CircleImageView cimg = helper.getView(R.id.cimg_icon);
-        cimg.setImage(Icon.getImgUrl(item.getImgUrl()));
+        cimg.setImage(Icon.getImgUrl(item.getPimage()));
         cimg.setState(item.isOnline());
         RadioButton button = helper.getView(R.id.rb_choose);
         if (mEdit) {
             button.setVisibility(View.VISIBLE);
             helper.setVisible(R.id.it_right, false);
-            button.setChecked(item.isChosed());
+            button.setChecked(item.isSelected());
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     for (int i = 0; i < getData().size(); i++) {
-                        if (getData().get(i).isChosed()) getData().get(i).setChosed(false);
+                        if (getData().get(i).isSelected()) getData().get(i).setSelected(false);
                     }
-                    item.setChosed(true);
+                    item.setSelected(true);
                     // 通过消息机制,避免绘制时触发更新
                     Handler handler = new Handler();
                     handler.post(new Runnable() {

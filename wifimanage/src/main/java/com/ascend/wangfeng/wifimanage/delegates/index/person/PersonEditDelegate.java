@@ -50,8 +50,8 @@ public class PersonEditDelegate extends LatteDelegate {
 
     @OnClick(R.id.btn_save)
     void save() {
-        mPerson.setName(mEtName.getText().toString());
-        if (mPerson.getId() == null || mPerson.getId() == 0) {
+        mPerson.setPname(mEtName.getText().toString());
+        if (mPerson.getPid() == null || mPerson.getPid() == 0) {
             Client.getInstance().addPerson(mPerson)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -104,11 +104,11 @@ public class PersonEditDelegate extends LatteDelegate {
     public void init() {
         mPerson = (Person) getArguments().getSerializable(PERSON);
         if (mPerson != null) {
-            mCimgIcon.setImage(Icon.getImgUrl(mPerson.getImgUrl()));
-            mEtName.setText(mPerson.getName());
+            mCimgIcon.setImage(Icon.getImgUrl(mPerson.getPimage()));
+            mEtName.setText(mPerson.getPimage());
         } else {
             mPerson = new Person();
-            mPerson.setImgUrl(0);
+            mPerson.setPimage(0);
         }
     }
 
@@ -118,7 +118,7 @@ public class PersonEditDelegate extends LatteDelegate {
         if (data != null) {
             int res = data.getInt(IconChooseDelegate.ICON);
             if (res != 0) {
-                mPerson.setImgUrl(res);
+                mPerson.setPimage(res);
                 mCimgIcon.setImage(Icon.getImgUrl(res));
             }
         }

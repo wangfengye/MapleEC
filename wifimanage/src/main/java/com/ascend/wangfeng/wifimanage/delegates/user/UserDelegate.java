@@ -108,7 +108,7 @@ public class UserDelegate extends BottomItemDelegate {
     }
 
     private void initDevices() {
-        Client.getInstance().getDevicesByPId(mPerson.getId())
+        Client.getInstance().getDevicesByPId(mPerson.getPid())
                 .subscribe(new MyObserver<Response<List<Device>>>() {
                     @Override
                     public void onNext(Response<List<Device>> response) {
@@ -141,8 +141,8 @@ public class UserDelegate extends BottomItemDelegate {
 
     private void initPerson() {
         if (mPerson != null) {
-            mTvName.setText(mPerson.getName());
-            mCimgIcon.setImage(Icon.getImgUrl(mPerson.getImgUrl()));
+            mTvName.setText(mPerson.getPname());
+            mCimgIcon.setImage(Icon.getImgUrl(mPerson.getPimage()));
         }
         // mTvDesc.setText();
     }
@@ -150,7 +150,7 @@ public class UserDelegate extends BottomItemDelegate {
     private void initHistory() {
        /* initChart(mBarChart);
         setData();*/
-        Client.getInstance().getLivenessesByPId(mPerson.getId())
+        Client.getInstance().getLivenessesByPId(mPerson.getPid())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<Response<List<Liveness>>>() {

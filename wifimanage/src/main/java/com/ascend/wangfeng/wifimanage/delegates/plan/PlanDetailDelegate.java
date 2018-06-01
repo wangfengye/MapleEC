@@ -115,7 +115,7 @@ public class PlanDetailDelegate extends LatteDelegate {
             @Override
             public void onClick(View view) {
                 // 保存计划
-                if (mPlan.getId() != null && mPlan.getId() != 0) {
+                if (mPlan.getPid() != null && mPlan.getPid() != 0) {
                     // update
                     Client.getInstance().updatePlan(mPlan)
                             .subscribeOn(Schedulers.io())
@@ -154,12 +154,12 @@ public class PlanDetailDelegate extends LatteDelegate {
         mPlan = (Plan) getArguments().getSerializable(PLAN);
         if (mPlan == null) {
             mPlan = new Plan();
-            mPlan.setType(0);
+            mPlan.setPtype(0);
             mPlan.setStarttime(getTime(9, 0));
             mPlan.setEndtime(getTime(18, 0));
         } else {
             // 加载数据
-            mTvRepeatContent.setText(items[mPlan.getType()]);
+            mTvRepeatContent.setText(items[mPlan.getPtype()]);
             mTvStartContent.setText(time2Str(mPlan.getStarttime()));
             mTvEndContent.setText(time2Str(mPlan.getEndtime()));
         }
@@ -174,7 +174,7 @@ public class PlanDetailDelegate extends LatteDelegate {
                 mTvRepeatContent.setText(items[i]);
                 //存储结果
                 anInterface.dismiss();
-                mPlan.setType(i);
+                mPlan.setPtype(i);
             }
         });
         mRlReapeat.setOnClickListener(new View.OnClickListener() {

@@ -2,6 +2,7 @@ package com.ascend.wangfeng.wifimanage.net;
 
 import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.R;
+import com.ascend.wangfeng.wifimanage.bean.Response;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -11,7 +12,7 @@ import io.reactivex.disposables.Disposable;
  * email 1040441325@qq.com
  */
 
-public abstract class MyObserver<T> implements Observer<T> {
+public abstract class MyObserver<T extends Response> implements Observer<T> {
 
     public static final String TAG = MyObserver.class.getSimpleName();
 
@@ -34,4 +35,6 @@ public abstract class MyObserver<T> implements Observer<T> {
     public void onComplete() {
 
     }
+
+
 }

@@ -39,12 +39,11 @@ public class MainActivity extends ProxyActivity {
     public LatteDelegate setRootDelegate() {
         User user = (User) LattePreference.getJson(SpKey.USER, User.class);
         if (user != null) {
-            Client.getInstance().login(user.getName(),user.getPassword())
+            Client.getInstance().login(user.getBid().toString(),user.getUpasswd())
                     .compose(SchedulerProvider.applyHttp())
-                    .subscribe(new MyObserver<Response<String>>() {
+                    .subscribe(new MyObserver<Response<User>>() {
                         @Override
-                        public void onNext(Response<String> response) {
-
+                        public void onNext(Response<User> response) {
                         }
 
                         @Override

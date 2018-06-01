@@ -180,7 +180,7 @@ public class DemoApi implements AliApi {
     }
 
     @Override
-    public Observable<Response<String>> login(String mac, String password) {
+    public Observable<Response<User>> login(String mac, String password) {
         return Observable.create(e -> e.onError(new Exception()));
     }
 

@@ -72,7 +72,7 @@ public class DeviceEditDelegate extends LatteDelegate {
     @OnClick(R.id.btn_save)
     void clickBtnSave() {
 
-        if (mDevice.getId() != null && mDevice.getId() != 0) {
+        if (mDevice.getDid() != null && mDevice.getDid() != 0) {
             // 更新
             Client.getInstance().updateDevice(mDevice)
                     .subscribeOn(Schedulers.io())
@@ -138,7 +138,7 @@ public class DeviceEditDelegate extends LatteDelegate {
         mAdapter = new DeviceTypeAdapter(mTypes);
         mAdapter.setListener(deviceType-> {
                 // 设置设备类型;
-                mDevice.setType(deviceType.getId());
+                mDevice.setDtype(deviceType.getId());
         });
         mRvTypes.setAdapter(mAdapter);
         mRvTypes.setLayoutManager(manager);
@@ -152,8 +152,8 @@ public class DeviceEditDelegate extends LatteDelegate {
     private void initData() {
         mDevice = (Device) getArguments().getSerializable(DEVICE);
         // 设置设备图标
-        mCimgIcon.setImage(mTypes.get(mDevice.getType()).getImgId());
-        mEtName.setText(mDevice.getName());
+        mCimgIcon.setImage(mTypes.get(mDevice.getDtype()).getImgId());
+        mEtName.setText(mDevice.getDname());
         // 监听名称改变
         mEtName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -163,7 +163,7 @@ public class DeviceEditDelegate extends LatteDelegate {
 
             @Override
             public void onTextChanged(CharSequence sequence, int i, int i1, int i2) {
-                mDevice.setName(sequence.toString());
+                mDevice.setDname(sequence.toString());
             }
 
             @Override
@@ -171,10 +171,10 @@ public class DeviceEditDelegate extends LatteDelegate {
 
             }
         });
-        mTypes.get(mDevice.getType()).setChose(true);
+        mTypes.get(mDevice.getDtype()).setChose(true);
         mAdapter.notifyDataSetChanged();
         // 拥有者关系
-        reViewOwner(mDevice.getId());
+        reViewOwner(mDevice.getDid());
     }
 
     private void reViewOwner(Long id) {
@@ -185,8 +185,8 @@ public class DeviceEditDelegate extends LatteDelegate {
                     @Override
                     public void onNext(Response<Person> response) {
                         mCImgOwener.setSrcType(CircleImageView.TYPE_NORMAL);
-                        mCImgOwener.setImage(Icon.getImgUrl(response.getData().getImgUrl()));
-                        mTvOwner.setText(response.getData().getName());
+                        mCImgOwener.setImage(Icon.getImgUrl(response.getData().getPimage()));
+                        mTvOwner.setText(response.getData().getPname());
                     }
                 });
     }
@@ -195,10 +195,10 @@ public class DeviceEditDelegate extends LatteDelegate {
     public void onFragmentResult(int requestCode, int resultCode, Bundle data) {
         mPerson = (Person) data.getSerializable("person");
         if (mPerson != null) {
-            mDevice.setpId(mPerson.getId());
+            mDevice.setPid(mPerson.getPid());
             mCImgOwener.setSrcType(CircleImageView.TYPE_NORMAL);
-            mCImgOwener.setImage(Icon.getImgUrl(mPerson.getImgUrl()));
-            mTvOwner.setText(mPerson.getName());
+            mCImgOwener.setImage(Icon.getImgUrl(mPerson.getPimage()));
+            mTvOwner.setText(mPerson.getPname());
         }
     }
 

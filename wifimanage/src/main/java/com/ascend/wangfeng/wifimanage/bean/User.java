@@ -3,64 +3,94 @@ package com.ascend.wangfeng.wifimanage.bean;
 /**
  * Created by fengye on 2018/5/5.
  * email 1040441325@qq.com
- * 用户
+ * 用户(t_usr)
  */
 
 public class User {
-    private Long id;// 设备编号
-    private String password;
-    private String name;//姓名
-    private String icon;// 头像url
-    private Long bId;
+    private Long uid;// 设备编号
+    private String umac;// 手机mac
+    private String uname;//姓名
+    private String umobile;// 手机
+    private String upasswd;
+    private Long bid;
+    private Long bid2; // 预留bid;
+    private Long bid3;
 
-    public Long getId() {
-        return id;
+    public Long getUid() {
+        return uid;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUid(Long uid) {
+        this.uid = uid;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUmac() {
+        return umac;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUmac(String umac) {
+        this.umac = umac;
     }
 
-    public String getName() {
-        return name;
+    public String getUname() {
+        return uname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUname(String uname) {
+        this.uname = uname;
     }
 
-    public String getIcon() {
-        return icon;
+    public String getUmobile() {
+        return umobile;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setUmobile(String umobile) {
+        this.umobile = umobile;
     }
 
-    public Long getbId() {
-        return bId;
+    public String getUpasswd() {
+        return upasswd;
     }
 
-    public void setbId(Long bId) {
-        this.bId = bId;
+    public void setUpasswd(String upasswd) {
+        this.upasswd = upasswd;
+    }
+
+    public Long getBid() {
+        return bid;
+    }
+
+    public void setBid(Long bid) {
+        this.bid = bid;
+    }
+
+    public Long getBid2() {
+        return bid2;
+    }
+
+    public void setBid2(Long bid2) {
+        this.bid2 = bid2;
+    }
+
+    public Long getBid3() {
+        return bid3;
+    }
+
+    public void setBid3(Long bid3) {
+        this.bid3 = bid3;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", icon='" + icon + '\'' +
-                ", bId=" + bId +
+                "uid=" + uid +
+                ", umac='" + umac + '\'' +
+                ", uname='" + uname + '\'' +
+                ", umobile='" + umobile + '\'' +
+                ", upasswd='" + upasswd + '\'' +
+                ", bid=" + bid +
+                ", bid2=" + bid2 +
+                ", bid3=" + bid3 +
                 '}';
     }
 }

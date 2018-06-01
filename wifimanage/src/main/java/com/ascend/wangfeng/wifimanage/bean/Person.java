@@ -7,51 +7,63 @@ import java.io.Serializable;
 /**
  * Created by fengye on 2018/4/26.
  * email 1040441325@qq.com
- * 人员
+ * 人员(t_person)
  */
 
 public class Person implements MultiItemEntity,Serializable {
 
     private static final long serialVersionUID = -8680204258925672590L;
-    private Long id;
-    private String name;
-    private int imgUrl;
-    private boolean sex;//true;man,false:woman
+    private Long pid;
+    private Long bid;
+    private String pname;
+    private Integer pimage;
+    // 表现属性
+    private boolean selected; // 选中
+    private boolean online;// 在线
 
-    private boolean chosed;// 是否选中,选择列表中使用
-    private boolean online;// 是否在线
-
-    public Long getId() {
-        return this.id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public String getName() {
-        return this.name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public int getImgUrl() {
-        return this.imgUrl;
-    }
-    public void setImgUrl(int imgUrl) {
-        this.imgUrl = imgUrl;
-    }
-    public boolean getSex() {
-        return this.sex;
-    }
-    public void setSex(boolean sex) {
-        this.sex = sex;
+    @Override
+    public int getItemType() {
+        return 0;
     }
 
-    public boolean isChosed() {
-        return chosed;
+    public Long getPid() {
+        return pid;
     }
 
-    public void setChosed(boolean chosed) {
-        this.chosed = chosed;
+    public void setPid(Long pid) {
+        this.pid = pid;
+    }
+
+    public Long getBid() {
+        return bid;
+    }
+
+    public void setBid(Long bid) {
+        this.bid = bid;
+    }
+
+    public String getPname() {
+        return pname;
+    }
+
+    public void setPname(String pname) {
+        this.pname = pname;
+    }
+
+    public Integer getPimage() {
+        return pimage;
+    }
+
+    public void setPimage(Integer pimage) {
+        this.pimage = pimage;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
     public boolean isOnline() {
@@ -63,7 +75,12 @@ public class Person implements MultiItemEntity,Serializable {
     }
 
     @Override
-    public int getItemType() {
-        return 0;
+    public String toString() {
+        return "Person{" +
+                "pid=" + pid +
+                ", bid=" + bid +
+                ", pname='" + pname + '\'' +
+                ", pimage=" + pimage +
+                '}';
     }
 }

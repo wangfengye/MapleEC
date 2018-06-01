@@ -7,167 +7,159 @@ import java.io.Serializable;
 /**
  * Created by fengye on 2018/4/26.
  * email 1040441325@qq.com
- * 设备
+ * 设备表(b_dev)
  */
 public class Device implements MultiItemEntity, Serializable {
-
     private static final long serialVersionUID = -1251039796477336552L;
 
-    private Long id;
-    private Long pId;
-    private String name;//设备名称
-    private int type;// 设备类型
-    private String mac;//mac地址
-    private String ip;
-    private String dhcp;//主机名
-    private String bonjour;
+    private Long did;
+    private String dname;
+    private int dtype;
+    private String dmac;
+    private Long bid;
+    private Long pid;
+    private String oui;
+    private String hostname;
+    private String vendor;
     private String netbios;
-    private String brand;//厂商
-    private String model;//型号
-    private long firsttime;//首次出现时间
-    private long lasttime;//最近更新时间
-    private int status; //活跃状态
-    private String apBssid;//归属网络
-
-
-    public Long getpId() {
-        return pId;
-    }
-
-    public void setpId(Long pId) {
-        this.pId = pId;
-    }
+    private String devIp;
+    private Long firsttime;
+    private Long lasttime;
+    // vo
+    private boolean online;
 
     @Override
     public int getItemType() {
         return 0;
     }
-
-
-    public Long getId() {
-        return this.id;
+    public Long getDid() {
+        return did;
     }
 
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setDid(Long did) {
+        this.did = did;
     }
 
-
-    public String getName() {
-        return this.name;
+    public String getDmac() {
+        return dmac;
     }
 
-
-    public void setName(String name) {
-        this.name = name;
+    public void setDmac(String dmac) {
+        this.dmac = dmac;
     }
 
-
-    public int getType() {
-        return this.type;
+    public Long getBid() {
+        return bid;
     }
 
-
-    public void setType(int type) {
-        this.type = type;
+    public void setBid(Long bid) {
+        this.bid = bid;
     }
 
-
-    public String getMac() {
-        return this.mac;
+    public Long getPid() {
+        return pid;
     }
 
-
-    public void setMac(String mac) {
-        this.mac = mac;
+    public void setPid(Long pid) {
+        this.pid = pid;
     }
 
-
-    public String getIp() {
-        return this.ip;
+    public String getOui() {
+        return oui;
     }
 
-
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setOui(String oui) {
+        this.oui = oui;
     }
 
-
-    public String getDhcp() {
-        return this.dhcp;
+    public String getHostname() {
+        return hostname;
     }
 
-    public void setDhcp(String dhcp) {
-        this.dhcp = dhcp;
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
     }
 
-    public String getBonjour() {
-        return this.bonjour;
+    public String getVendor() {
+        return vendor;
     }
 
-    public void setBonjour(String bonjour) {
-        this.bonjour = bonjour;
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
     }
 
     public String getNetbios() {
-        return this.netbios;
+        return netbios;
     }
 
     public void setNetbios(String netbios) {
         this.netbios = netbios;
     }
 
-    public String getBrand() {
-        return this.brand;
+    public String getDevIp() {
+        return devIp;
     }
 
-
-    public void setBrand(String brand) {
-        this.brand = brand;
+    public void setDevIp(String devIp) {
+        this.devIp = devIp;
     }
 
-    public String getModel() {
-        return this.model;
+    public Long getFirsttime() {
+        return firsttime;
     }
 
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public long getFirsttime() {
-        return this.firsttime;
-    }
-
-    public void setFirsttime(long firsttime) {
+    public void setFirsttime(Long firsttime) {
         this.firsttime = firsttime;
     }
 
-    public long getLasttime() {
-        return this.lasttime;
+    public Long getLasttime() {
+        return lasttime;
     }
 
-    public void setLasttime(long lasttime) {
+    public void setLasttime(Long lasttime) {
         this.lasttime = lasttime;
     }
 
-
-    public int getStatus() {
-        return this.status;
+    public String getDname() {
+        return dname;
     }
 
-
-    public void setStatus(int status) {
-        this.status = status;
+    public void setDname(String dname) {
+        this.dname = dname;
     }
 
-
-    public String getApBssid() {
-        return this.apBssid;
+    public int getDtype() {
+        return dtype;
     }
 
+    public void setDtype(int dtype) {
+        this.dtype = dtype;
+    }
 
-    public void setApBssid(String apBssid) {
-        this.apBssid = apBssid;
+    public boolean isOnline() {
+        return online;
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
+    }
+
+    @Override
+    public String toString() {
+        return "Device{" +
+                "did=" + did +
+                ", dname='" + dname + '\'' +
+                ", dtype='" + dtype + '\'' +
+                ", dmac='" + dmac + '\'' +
+                ", bid=" + bid +
+                ", pid=" + pid +
+                ", oui='" + oui + '\'' +
+                ", hostname='" + hostname + '\'' +
+                ", vendor='" + vendor + '\'' +
+                ", netbios='" + netbios + '\'' +
+                ", devIp='" + devIp + '\'' +
+                ", firsttime=" + firsttime +
+                ", lasttime=" + lasttime +
+                '}';
     }
 }
