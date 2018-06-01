@@ -206,7 +206,7 @@ public interface AliApi {
      */
     @FormUrlEncoded
     @POST("usr/create")
-    Observable<Response<User>> createUser(@Field("mac") String mac,@Field("upasswd") String password
+    Observable<Response<User>> createUser(@Field("bmac") String mac,@Field("upasswd") String password
             , @Field("blng") double longitude, @Field("blat") double latitude);
 
 }

@@ -99,7 +99,7 @@ public class HttpScan {
         Log.i(TAG, "getResponse: " + a);
         // 返回json中有mac字段说明请求地址正确
         JSONObject object = JSON.parseObject(a);
-        String s = object.getString("mac");
+        String s = object.getString("bmac");
         if (s != null) {
             return true;
         }
