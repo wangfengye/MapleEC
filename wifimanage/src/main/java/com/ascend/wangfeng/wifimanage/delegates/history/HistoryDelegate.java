@@ -14,7 +14,6 @@ import com.ascend.wangfeng.latte.delegates.bottom.BottomItemDelegate;
 import com.ascend.wangfeng.latte.ui.recycler.BaseDecoration;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Event;
-import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.Response;
 import com.ascend.wangfeng.wifimanage.delegates.index.person.PersonDetailDelegate;
 import com.ascend.wangfeng.wifimanage.net.Client;
@@ -89,7 +88,7 @@ public class HistoryDelegate extends BottomItemDelegate {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<Response<List<Event>>>() {
                     @Override
-                    public void onNext(Response<List<Event>> response) {
+                    public void onSuccess(Response<List<Event>> response) {
                         mEvents.clear();
                         mEvents.addAll(response.getData());
                         mAdapter.notifyDataSetChanged();
@@ -101,17 +100,14 @@ public class HistoryDelegate extends BottomItemDelegate {
         mEvents = new ArrayList<>();
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         mAdapter = new EventAdapter(mEvents);
-        mAdapter.setClickListener(new EventAdapter.OnClickListener() {
-            @Override
-            public void Click(Person person) {
-                Bundle args = new Bundle();
-                args.putSerializable(PersonDetailDelegate.PERSON, person);
-                getParentDelegate().start(PersonDetailDelegate.newInstance(args));
-            }
+        mAdapter.setClickListener(person -> {
+            Bundle args = new Bundle();
+            args.putSerializable(PersonDetailDelegate.PERSON, person);
+            getParentDelegate().start(PersonDetailDelegate.newInstance(args));
         });
         mRvHistory.setAdapter(mAdapter);
         mRvHistory.setLayoutManager(manager);
-        mRvHistory.addItemDecoration(BaseDecoration.create(getResources().getColor(R.color.textFour), 1));
+        mRvHistory.addItemDecoration(BaseDecoration.create(getResources().getColor(R.color.textFour,getActivity().getTheme()), 1));
     }
 
     private void initDate() {
@@ -121,34 +117,26 @@ public class HistoryDelegate extends BottomItemDelegate {
         mTvLunar.setText("今日");
         mTvYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mTvCurrentDay.setText(String.valueOf(mCalendarView.getCurDay()));
-        mCalendarView.setOnDateSelectedListener(new CalendarView.OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(Calendar calendar, boolean isClick) {
-                mTvMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
-                mTvYear.setText(String.valueOf(calendar.getYear()));
-                mTvLunar.setText(calendar.getLunar());
-                mTvCurrentDay.setText(String.valueOf(calendar.getDay()));
-                mYear = calendar.getYear();
-                if (mAdapter != null && mEvents != null)
-                    initData(calendar);
-            }
+        mCalendarView.setOnDateSelectedListener((Calendar calendar, boolean isClick) -> {
+            mTvMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
+            mTvYear.setText(String.valueOf(calendar.getYear()));
+            mTvLunar.setText(calendar.getLunar());
+            mTvCurrentDay.setText(String.valueOf(calendar.getDay()));
+            mYear = calendar.getYear();
+            if (mAdapter != null && mEvents != null)
+                initData(calendar);
         });
-        mCalendarView.setOnYearChangeListener(new CalendarView.OnYearChangeListener() {
-            @Override
-            public void onYearChange(int year) {
-                mYear = year;
-                mTvMonthDay.setText(String.valueOf(year));
-            }
+        mCalendarView.setOnYearChangeListener(year -> {
+            mYear = year;
+            mTvMonthDay.setText(String.valueOf(year));
+
         });
-        mTvMonthDay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!mCalendarLayout.isExpand()) {
-                    mCalendarView.showYearSelectLayout(mYear);
-                } else {
-                    mCalendarView.showYearSelectLayout(mYear);
-                    mTvMonthDay.setText(String.valueOf(mYear));
-                }
+        mTvMonthDay.setOnClickListener(view -> {
+            if (!mCalendarLayout.isExpand()) {
+                mCalendarView.showYearSelectLayout(mYear);
+            } else {
+                mCalendarView.showYearSelectLayout(mYear);
+                mTvMonthDay.setText(String.valueOf(mYear));
             }
         });
 

@@ -48,7 +48,7 @@ public class TestDelegate extends LatteDelegate{
                 .compose(SchedulerProvider.applyHttp())
                 .subscribe(new MyObserver<Response<Person>>() {
                     @Override
-                    public void onNext(Response<Person> response) {
+                    public void onSuccess(Response<Person> response) {
                         Log.i(TAG, "onNext: ");
                     }
                 });

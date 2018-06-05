@@ -2,7 +2,6 @@ package com.ascend.wangfeng.latte.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.ContentFrameLayout;
 
 import com.ascend.wangfeng.latte.R;
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
@@ -28,12 +27,10 @@ public abstract class ProxyActivity extends SupportActivity {
     }
 
     private void initContainer(Bundle savedInstanceState){
-        final ContentFrameLayout container =new ContentFrameLayout(this);
-        container.setId(R.id.delegate_container);
-        setContentView(container);
+        setContentView(R.layout.activity_main);
 
         if (findFragment(LatteDelegate.class) == null&&savedInstanceState==null){
-            loadRootFragment(R.id.delegate_container,setRootDelegate());
+            loadRootFragment(R.id.fl_container,setRootDelegate());
         }
     }
 

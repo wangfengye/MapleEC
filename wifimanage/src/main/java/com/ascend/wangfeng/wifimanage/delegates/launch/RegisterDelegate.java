@@ -10,11 +10,13 @@ import android.widget.Toast;
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.latte.util.storage.LattePreference;
 import com.ascend.wangfeng.wifimanage.R;
+import com.ascend.wangfeng.wifimanage.bean.Box;
 import com.ascend.wangfeng.wifimanage.bean.Response;
 import com.ascend.wangfeng.wifimanage.bean.User;
 import com.ascend.wangfeng.wifimanage.delegates.MainDelegate;
 import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.net.MyObserver;
+import com.ascend.wangfeng.wifimanage.net.SchedulerProvider;
 import com.ascend.wangfeng.wifimanage.utils.SpKey;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -35,6 +37,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.Observable;
 
 /**
  * Created by fengye on 2018/5/19.
@@ -62,16 +65,20 @@ public class RegisterDelegate extends LatteDelegate {
     void clickBtnLogin() {
         String mac = mEtNo.getText().toString().trim();
         String password = mEtPassword.getText().toString().trim();
-        Client.getInstance().createUser(mac,password,mLocation.getLongitude(),mLocation.getLatitude())
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new MyObserver<Response<User>>() {
-            @Override
-            public void onNext(Response<User> response) {
-                LattePreference.setJson(SpKey.USER,response.getData());
-                startWithPop(MainDelegate.newInstance());
-            }
-        });
+        Observable.concat(Client.getInstance().createUser(mac, password, mLocation.getLongitude(), mLocation.getLatitude()),
+                Client.getInstance().login(mac, password))
+                .compose(SchedulerProvider.applyHttp())
+                .subscribe(new MyObserver<Response<User>>() {
+                    @Override
+                    public void onSuccess(Response<User> response) {
+                        User user = new User();
+                        user.setUmac(mac);
+                        user.setUpasswd(password);
+                        LattePreference.setJson(SpKey.USER,response.getData());
+                        startWithPop(MainDelegate.newInstance());
+                    }
+                });
+
 
     }
 
@@ -95,8 +102,11 @@ public class RegisterDelegate extends LatteDelegate {
         Client.getLocalApi().getBoxInfo()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(res -> {
-                    mEtNo.setText(res.getBmac());
+                .subscribe(new MyObserver<Response<Box>>() {
+                    @Override
+                    public void onSuccess(Response<Box> response) {
+                        mEtNo.setText(response.getData().getBmac());
+                    }
                 });
     }
 

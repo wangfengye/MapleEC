@@ -21,7 +21,6 @@ import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.net.MyObserver;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.ascend.wangfeng.wifimanage.views.GithubActivityView;
-import com.github.mikephil.charting.charts.BarChart;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
@@ -97,7 +96,7 @@ public class PersonDetailDelegate extends LatteDelegate {
         mRvDevices.setLayoutManager(manager);
         mRvDevices.setAdapter(mDeviceAdapter);
         mRvDevices.addItemDecoration(BaseDecoration.create(getResources()
-                .getColor(android.R.color.white), 3));
+                .getColor(android.R.color.white, getActivity().getTheme()), 3));
     }
 
     @Override
@@ -128,12 +127,12 @@ public class PersonDetailDelegate extends LatteDelegate {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<Response<List<Liveness>>>() {
                     @Override
-                    public void onNext(Response<List<Liveness>> response) {
+                    public void onSuccess(Response<List<Liveness>> response) {
                         Integer[][] data = new Integer[7][];
                         for (int i = 0; i < 7; i++) {
                             Integer[] column = new Integer[24];
                             for (int j = 0; j < 24; j++) {
-                                int index = i * 7 + j;
+                                int index = i * 24 + j;
                                 if (response.getData().size() > index)
                                     column[j] = response.getData().get(index).getAvalue();
                                 else column[j] = response.getData().get(0).getAvalue();
@@ -145,97 +144,11 @@ public class PersonDetailDelegate extends LatteDelegate {
                 });
     }
 
-    private void setData() {
-//        ArrayList<Integer> colors = new ArrayList<>();
-//        colors.add(getResources().getColor(R.color.colorAccent));
-//        colors.add(getResources().getColor(R.color.colorOrange));
-//        colors.add(getResources().getColor(R.color.colorBlue));
-//        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-//        for (int j = 0;j<2;j++){
-//            ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
-//
-//            for (int i = 1; i <7; i++) {
-//                float mult = (24 + 1);
-//                float val = (float) (Math.random() * mult);
-//                yVals1.add(new BarEntry(i, val));
-//
-//            }
-//            BarDataSet set1;
-//            set1 = new BarDataSet(yVals1, "设备"+j);
-//            set1.setDrawIcons(false);
-//
-//            set1.setColor(colors.get(j));
-//            dataSets.add(set1);
-//        }
-//        BarData data = new BarData(dataSets);
-//        data.setValueTextSize(10f);
-//
-//        float groupSpace = .2f;
-//        float barWidth = (1f-.2f)/2*8/10;
-//        float barSpace = (1f-.2f)/2*2/10;
-//        data.setBarWidth(barWidth);
-//        data.groupBars(.5f,groupSpace,barSpace);
-//
-//        mBarChart.setData(data);
-    }
-
-    private void initChart(BarChart chart) {
-       /* chart.setDrawBarShadow(false);
-        chart.setDrawValueAboveBar(true);
-        chart.setPinchZoom(false);
-        chart.setDrawGridBackground(false);
-        IAxisValueFormatter axisValueFormatter = new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                int days = 7- (int) value;
-                if (days ==0) {
-                    return "当天";
-                }else {
-                    return days+"天前";
-                }
-            }
-        };
-        XAxis xAxis = mBarChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(false);
-        xAxis.setGranularity(1f); // only intervals of 1 day
-        xAxis.setLabelCount(7);
-        xAxis.setValueFormatter(axisValueFormatter);
-
-        IAxisValueFormatter custom = new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return (int)value + "h";
-            }
-        };
-
-        YAxis leftAxis = mBarChart.getAxisLeft();
-
-        leftAxis.setDrawGridLines(false);
-        leftAxis.setLabelCount(8, false);
-        leftAxis.setValueFormatter(custom);
-        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        leftAxis.setSpaceTop(15f);
-        leftAxis.setSpaceBottom(0f);
-
-        mBarChart.getAxisRight().setEnabled(false);
-
-        Legend l = mBarChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        l.setDrawInside(false);
-        l.setForm(Legend.LegendForm.SQUARE);
-        l.setFormSize(9f);
-        l.setTextSize(11f);
-        l.setXEntrySpace(4f);*/
-    }
-
     private void initDevices() {
         Client.getInstance().getDevicesByPId(mPerson.getPid())
                 .subscribe(new MyObserver<Response<List<Device>>>() {
                     @Override
-                    public void onNext(Response<List<Device>> response) {
+                    public void onSuccess(Response<List<Device>> response) {
                         mDevices.clear();
                         mDevices.addAll(response.getData());
                         mDeviceAdapter.notifyDataSetChanged();

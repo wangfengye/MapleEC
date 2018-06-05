@@ -1,19 +1,19 @@
 {
   "message":"success",
-  "code":200,
+  "statusCode":200,
   "data":[
     {
-      "id": 1,
+      "pid": 1,
       "bid": 1,
-      "name": "白羊",
-      "imgUrl":0,
-      "online": true
+      "pname": "小明",
+      "pimage":0,
+      "online": 1
     },
     {
-      "id": 2,
+      "pid": 2,
       "bid": 1,
-      "name": "摩羯",
-      "imgUrl":1
+      "pname": "李雷",
+      "pimage":1
     }
   ]
 }

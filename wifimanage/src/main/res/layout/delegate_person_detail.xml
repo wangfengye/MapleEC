@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="最近上线时间: 18:00"
+                android:text="最近上线时间: 2018/6/1 18:00"
                 android:textSize="14sp"/>
         </LinearLayout>
     </LinearLayout>

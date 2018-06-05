@@ -75,7 +75,7 @@ public class NewDeviceDelegate extends LatteDelegate {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new MyObserver<Response<List<Device>>>() {
                         @Override
-                        public void onNext(Response<List<Device>> response) {
+                        public void onSuccess(Response<List<Device>> response) {
                             mDevices.clear();
                             mDevices.addAll(response.getData());
                             mAdapter.notifyDataSetChanged();
@@ -87,7 +87,7 @@ public class NewDeviceDelegate extends LatteDelegate {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new MyObserver<Response<List<Device>>>() {
                         @Override
-                        public void onNext(Response<List<Device>> response) {
+                        public void onSuccess(Response<List<Device>> response) {
                             mDevices.clear();
                             mDevices.addAll(response.getData());
                             mAdapter.notifyDataSetChanged();
@@ -106,7 +106,7 @@ public class NewDeviceDelegate extends LatteDelegate {
         Bundle bundle = getArguments();
         mToolbarTitle.setText(bundle.getInt(TITLE) == TITLE_NEW_DEVICE ? "新设备" : "在线设备");
         mDevices = new ArrayList<>();
-        mAdapter = new NewDeviceAdapter(mDevices, this);
+        mAdapter = new NewDeviceAdapter(mDevices);
         mAdapter.setListener(device -> {
             Bundle bundle1 = new Bundle();
             switch (getArguments().getInt(TITLE)) {
@@ -125,7 +125,7 @@ public class NewDeviceDelegate extends LatteDelegate {
 
         mRvDevices.setAdapter(mAdapter);
         mRvDevices.addItemDecoration(BaseDecoration.create(getResources()
-                .getColor(android.R.color.darker_gray), 1));
+                .getColor(android.R.color.darker_gray,getActivity().getTheme()), 1));
     }
 
 }

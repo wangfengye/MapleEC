@@ -33,11 +33,8 @@ public class PlanAdapter extends BaseMultiItemQuickAdapter<Plan, MultipleViewHol
         helper.setText(R.id.tv_time, time2Str(item.getStarttime()) + " ~ "
                 + time2Str(item.getEndtime()));
         helper.setText(R.id.tv_repeat, item.getTypeStr());
-        helper.setOnClickListener(R.id.rl_content, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener != null) mListener.click(item);
-            }
+        helper.getView(R.id.rl_content).setOnClickListener( view -> {
+            if (mListener != null) mListener.click(item);
         });
     }
 

@@ -37,18 +37,14 @@ public class IconAdapter extends BaseMultiItemQuickAdapter<Icon, MultipleViewHol
         helper.setImageResource(R.id.img_icon, item.getIconUrl());
         helper.setBackgroundRes(R.id.rl_content, item.isChose()
                 ? R.drawable.ll_round_choosed : R.drawable.ll_round_normal);
-        helper.setOnClickListener(R.id.rl_content, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener != null) {
-                    for (Icon icon :
-                            getData()) {
-                        icon.setChose(false);
-                    }
-                    item.setChose(true);
-                    notifyDataSetChanged();
-                    mListener.click(item);
+        helper.getView(R.id.rl_content).setOnClickListener(view -> {
+            if (mListener != null) {
+                for (Icon icon : getData()) {
+                    icon.setChose(false);
                 }
+                item.setChose(true);
+                notifyDataSetChanged();
+                mListener.click(item);
             }
         });
 

@@ -77,7 +77,7 @@ public class GithubActivityView extends View {
         mPaint.setColor(getResources().getColor(R.color.textSec));
         for (int i = 0; i < column; i++) {
             if (i % 4 == 0) {
-                canvas.drawText(String.valueOf(i) + "h", mRowTitleWidth + i * (radius + mSpaceWidth), radius, mPaint);
+                canvas.drawText(String.valueOf(i) + ":00", mRowTitleWidth + i * (radius + mSpaceWidth), radius, mPaint);
                 canvas.save();
             }
         }

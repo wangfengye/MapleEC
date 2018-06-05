@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
-import com.ascend.wangfeng.latte.net.rx.BaseObserver;
 import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Plan;
@@ -81,7 +80,7 @@ public class PlanDetailDelegate extends LatteDelegate {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<Response<String>>() {
                     @Override
-                    public void onNext(Response<String> response) {
+                    public void onSuccess(Response<String> response) {
                         MainApp.toast(R.string.delete_success);
                         pop();
                     }
@@ -111,37 +110,34 @@ public class PlanDetailDelegate extends LatteDelegate {
         });
         mIcEdit.setVisibility(View.VISIBLE);
         mIcEdit.setText("{fa-save}");
-        mIcEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 保存计划
-                if (mPlan.getPid() != null && mPlan.getPid() != 0) {
-                    // update
-                    Client.getInstance().updatePlan(mPlan)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new BaseObserver<Response<Plan>>() {
-                                @Override
-                                public void onNext(Response<Plan> response) {
-                                    MainApp.toast(R.string.update_success);
-                                    pop();
-                                }
-                            });
-                } else {
-                    // add
-                    Client.getInstance().addPlan(mPlan)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new BaseObserver<Response<Plan>>() {
-                                @Override
-                                public void onNext(Response<Plan> response) {
-                                    MainApp.toast(R.string.add_success);
-                                    pop();
-                                }
-                            });
-                }
-                pop();
+        mIcEdit.setOnClickListener(view -> {
+            // 保存计划
+            if (mPlan.getPid() != null && mPlan.getPid() != 0) {
+                // update
+                Client.getInstance().updatePlan(mPlan)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new MyObserver<Response<Plan>>() {
+                            @Override
+                            public void onSuccess(Response<Plan> response) {
+                                MainApp.toast(R.string.update_success);
+                                pop();
+                            }
+                        });
+            } else {
+                // add
+                Client.getInstance().addPlan(mPlan)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new MyObserver<Response<Plan>>() {
+                            @Override
+                            public void onSuccess(Response<Plan> response) {
+                                MainApp.toast(R.string.add_success);
+                                pop();
+                            }
+                        });
             }
+            pop();
         });
         initData();
         initRepeat();
@@ -168,32 +164,21 @@ public class PlanDetailDelegate extends LatteDelegate {
     // 重复规划
     private void initRepeat() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface anInterface, int i) {
+        builder.setItems(items, (DialogInterface anInterface, int i)-> {
                 mTvRepeatContent.setText(items[i]);
                 //存储结果
                 anInterface.dismiss();
                 mPlan.setPtype(i);
-            }
         });
-        mRlReapeat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                builder.show();
-            }
-        });
+        mRlReapeat.setOnClickListener(view-> builder.show());
     }
 
     public void initStart() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setPositiveButton("设置", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface anInterface, int i) {
+        builder.setPositiveButton("设置",(DialogInterface anInterface, int i)-> {
                 // 更新时间
                 mPlan.setStarttime(getTime(mStartHour, mStartMinute));
                 mTvStartContent.setText(String.format("%02d : %02d", mStartHour, mStartMinute));
-            }
         });
         builder.setNegativeButton("取消", null);
         final AlertDialog dialog = builder.create();
@@ -243,12 +228,7 @@ public class PlanDetailDelegate extends LatteDelegate {
                 mEndMinute = i1;
             }
         });
-        mRlEnd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.show();
-            }
-        });
+        mRlEnd.setOnClickListener(view -> dialog.show());
     }
 
 

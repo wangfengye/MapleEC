@@ -35,9 +35,10 @@ public class IconChooseDelegate extends LatteDelegate {
     @BindView(R.id.rv_icons)
     RecyclerView mRvIcons;
 
-    public static IconChooseDelegate newInstance(){
+    public static IconChooseDelegate newInstance() {
         return new IconChooseDelegate();
     }
+
     @Override
     public Object setLayout() {
         return R.layout.delegate_icon_choose;
@@ -47,37 +48,28 @@ public class IconChooseDelegate extends LatteDelegate {
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
         mIcBack.setVisibility(View.VISIBLE);
         mToolbarTitle.setText("头像选择");
-        mIcBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressedSupport();
-            }
-        });
+        mIcBack.setOnClickListener(view -> onBackPressedSupport());
         initRv();
     }
 
     private void initRv() {
-        GridLayoutManager manager = new GridLayoutManager(getContext(),4);
+        GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
         IconAdapter adapter = new IconAdapter(Icon.getList());
-        adapter.setListener(new IconAdapter.OnClicekListener() {
-            @Override
-            public void click(Icon icon) {
-                // 设置返回数据
-                Bundle bundle = new Bundle();
-                bundle.putInt(ICON,icon.getIcon());
-                setFragmentResult(DELEGAE_CODE, bundle);
-            }
+        adapter.setListener(icon -> {
+            // 设置返回数据
+            Bundle bundle = new Bundle();
+            bundle.putInt(ICON, icon.getIcon());
+            setFragmentResult(DELEGAE_CODE, bundle);
         });
         mRvIcons.setLayoutManager(manager);
         mRvIcons.setAdapter(adapter);
         mRvIcons.addItemDecoration(BaseDecoration.create(getResources()
-                .getColor(R.color.colorBg), 3));
+                .getColor(R.color.colorBg,getActivity().getTheme()), 3));
 
     }
 
     @Override
     public boolean onBackPressedSupport() {
-
         pop();
         return true;
     }

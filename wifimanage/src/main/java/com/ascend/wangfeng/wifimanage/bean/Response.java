@@ -7,7 +7,7 @@ package com.ascend.wangfeng.wifimanage.bean;
 
 public class Response<T> {
     private String message;
-    private  int code;
+    private int statusCode;
     private T data;
 
     public String getMessage() {
@@ -18,12 +18,12 @@ public class Response<T> {
         this.message = message;
     }
 
-    public int getCode() {
-        return code;
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 
     public T getData() {

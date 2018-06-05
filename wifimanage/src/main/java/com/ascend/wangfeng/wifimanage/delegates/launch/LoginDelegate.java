@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
+import com.ascend.wangfeng.latte.util.storage.LattePreference;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Response;
 import com.ascend.wangfeng.wifimanage.bean.User;
@@ -15,6 +16,7 @@ import com.ascend.wangfeng.wifimanage.delegates.MainDelegate;
 import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.net.MyObserver;
 import com.ascend.wangfeng.wifimanage.net.SchedulerProvider;
+import com.ascend.wangfeng.wifimanage.utils.SpKey;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import butterknife.BindView;
@@ -49,8 +51,17 @@ public class LoginDelegate extends LatteDelegate {
                 .compose(SchedulerProvider.applyHttp())
                 .subscribe(new MyObserver<Response<User>>() {
                     @Override
-                    public void onNext(Response<User> response) {
+                    public boolean showLoading() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onSuccess(Response<User> response) {
                         // 登录; 初始化
+                        User user = new User();
+                        user.setUmac(mac);
+                        user.setUpasswd(password);
+                        LattePreference.setJson(SpKey.USER,response.getData());
                         startWithPop(MainDelegate.newInstance());
                     }
                 });
@@ -67,6 +78,11 @@ public class LoginDelegate extends LatteDelegate {
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
         mToolbarTitle.setText("登录");
+        User user = LattePreference.getJson(SpKey.USER,null);
+        if ( user !=null){
+            mEtNo.setText(user.getBmac());
+            mEtPassword.setText(user.getUpasswd());
+        }
     }
 
 }

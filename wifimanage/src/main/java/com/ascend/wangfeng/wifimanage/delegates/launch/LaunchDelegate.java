@@ -26,7 +26,7 @@ import butterknife.OnClick;
 public class LaunchDelegate extends LatteDelegate {
     public static final String TAG = LaunchDelegate.class.getSimpleName();
     @BindView(R.id.banner_launch)
-    ConvenientBanner mBannerLaunch;
+    ConvenientBanner<Integer> mBannerLaunch;
 
     @OnClick(R.id.btn_demo)
     void clickDemo() {

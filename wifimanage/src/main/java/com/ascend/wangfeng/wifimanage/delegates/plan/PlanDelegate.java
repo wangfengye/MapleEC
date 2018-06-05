@@ -10,7 +10,6 @@ import com.ascend.wangfeng.latte.delegates.bottom.BottomItemDelegate;
 import com.ascend.wangfeng.latte.ui.recycler.BaseDecoration;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
-import com.ascend.wangfeng.wifimanage.bean.Plan;
 import com.ascend.wangfeng.wifimanage.bean.Response;
 import com.ascend.wangfeng.wifimanage.delegates.index.DeviceDetailDelegate;
 import com.ascend.wangfeng.wifimanage.delegates.index.NewDeviceAdapter;
@@ -33,7 +32,6 @@ import io.reactivex.schedulers.Schedulers;
 public class PlanDelegate extends BottomItemDelegate {
     @BindView(R.id.rv_devices)
     RecyclerView mRvDevices;
-    private ArrayList<Plan> mPlans;
     private ArrayList<Device> mDevices;
     private NewDeviceAdapter mAdapter;
 
@@ -59,7 +57,7 @@ public class PlanDelegate extends BottomItemDelegate {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<Response<List<Device>>>() {
                     @Override
-                    public void onNext(Response<List<Device>> response) {
+                    public void onSuccess(Response<List<Device>> response) {
                         mDevices.clear();
                         mDevices.addAll(response.getData());
                         mAdapter.notifyDataSetChanged();
@@ -68,21 +66,18 @@ public class PlanDelegate extends BottomItemDelegate {
     }
 
     private void initRv() {
-        mPlans = new ArrayList<>();
+
         mDevices = new ArrayList<>();
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());
-        mAdapter = new NewDeviceAdapter(mDevices, this);
-        mAdapter.setListener(new NewDeviceAdapter.OnClickListener() {
-            @Override
-            public void click(Device device) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(DeviceDetailDelegate.DEVICE, device);
-                getParentDelegate().start(DeviceDetailDelegate.newInstance(bundle));
-            }
+        mAdapter = new NewDeviceAdapter(mDevices);
+        mAdapter.setListener(device -> {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(DeviceDetailDelegate.DEVICE, device);
+            getParentDelegate().start(DeviceDetailDelegate.newInstance(bundle));
         });
         mRvDevices.setLayoutManager(manager);
         mRvDevices.setAdapter(mAdapter);
         mRvDevices.addItemDecoration(BaseDecoration.create(getResources()
-                .getColor(R.color.textThi), 1));
+                .getColor(R.color.textThi,getActivity().getTheme()), 1));
     }
 }

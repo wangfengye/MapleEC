@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'com.jakewharton.butterknife'
 android {
     compileSdkVersion 27
@@ -35,11 +34,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-}
-greendao {
-    schemaVersion 1;
-    daoPackage 'com.ascend.wangfeng.wifimanage.greendao'
-    targetGenDir 'src/main/java'
 }
 
 dependencies {

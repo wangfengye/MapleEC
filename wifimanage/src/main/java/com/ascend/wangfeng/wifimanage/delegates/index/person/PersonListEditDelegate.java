@@ -15,13 +15,13 @@ import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.Response;
 import com.ascend.wangfeng.wifimanage.net.Client;
+import com.ascend.wangfeng.wifimanage.net.MyObserver;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import io.reactivex.functions.Consumer;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
@@ -48,22 +48,15 @@ public class PersonListEditDelegate extends LatteDelegate {
     public Object setLayout() {
         return R.layout.delegate_person_list_edit;
     }
+
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
         mToolbarTitle.setText("成员列表");
         mIcBack.setVisibility(View.VISIBLE);
-        mIcBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressedSupport();
-            }
-        });
-        mLlAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 进入成员信息编辑页面
-                start(PersonEditDelegate.newInstance(null));
-            }
+        mIcBack.setOnClickListener(view -> onBackPressedSupport());
+        mLlAdd.setOnClickListener(view -> {
+            // 进入成员信息编辑页面
+            start(PersonEditDelegate.newInstance(null));
         });
 
     }
@@ -82,17 +75,17 @@ public class PersonListEditDelegate extends LatteDelegate {
 
     private void initList() {
         mPeople = new ArrayList<>();
-        final PersonAdapter adapter = new PersonAdapter(mPeople,this);
+        final PersonAdapter adapter = new PersonAdapter(mPeople, this);
         adapter.setEdit();
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());
         mRvPeople.setLayoutManager(manager);
         mRvPeople.setAdapter(adapter);
         mRvPeople.addItemDecoration(BaseDecoration.create(getResources()
-                .getColor(android.R.color.darker_gray), 1));
+                .getColor(android.R.color.darker_gray,getActivity().getTheme()), 1));
         Client.getInstance().getPersons()
-                .subscribe(new Consumer<Response<List<Person>>>() {
+                .subscribe(new MyObserver<Response<List<Person>>>() {
                     @Override
-                    public void accept(Response<List<Person>> response) throws Exception {
+                    public void onSuccess(Response<List<Person>> response) {
                         mPeople.addAll(response.getData());
                         adapter.notifyDataSetChanged();
                     }

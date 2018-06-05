@@ -71,7 +71,7 @@ public class LattePreference {
                 .putString(key,json)
                 .commit();
     }
-    public static Object getJson(String key, Type type){
+    public static <T> T getJson(String key, Type type){
         String json = getAppPreference().getString(key,"");
         return JSON.parseObject(json,type);
     }

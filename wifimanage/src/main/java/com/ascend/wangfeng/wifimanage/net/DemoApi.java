@@ -108,6 +108,11 @@ public class DemoApi implements AliApi {
     }
 
     @Override
+    public Observable<Response<Person>> updatePersonWithAttention(Person person) {
+        return Observable.create(e->e.onError(new Exception()));
+    }
+
+    @Override
     public Observable<Response<List<Person>>> getPersons() {
 
         return Observable.create(e->{

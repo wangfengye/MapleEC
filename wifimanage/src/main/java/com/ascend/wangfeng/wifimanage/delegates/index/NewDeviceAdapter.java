@@ -2,7 +2,6 @@ package com.ascend.wangfeng.wifimanage.delegates.index;
 
 import android.view.View;
 
-import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.latte.ui.recycler.MultipleViewHolder;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
@@ -17,7 +16,7 @@ import java.util.List;
  */
 
 public class NewDeviceAdapter extends BaseMultiItemQuickAdapter<Device,MultipleViewHolder> {
-    private LatteDelegate mDelegate;
+
     private OnClickListener mListener;
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
@@ -25,9 +24,8 @@ public class NewDeviceAdapter extends BaseMultiItemQuickAdapter<Device,MultipleV
      *
      * @param data A new list is created out of this one to avoid mutable list
      */
-    public NewDeviceAdapter(List<Device> data,LatteDelegate delegate) {
+    public NewDeviceAdapter(List<Device> data) {
         super(data);
-        this.mDelegate = delegate;
         addItemType(0, R.layout.item_device);
     }
     public void setListener(OnClickListener listener){
@@ -40,7 +38,7 @@ public class NewDeviceAdapter extends BaseMultiItemQuickAdapter<Device,MultipleV
         helper.setText(R.id.tv_ip,item.getDevIp());
         helper.setText(R.id.tv_brand,item.getVendor());
         helper.setText(R.id.tv_mac,item.getDmac());
-        helper.setOnClickListener(R.id.ll_main, view-> {
+        helper.getView(R.id.ll_main).setOnClickListener( view-> {
                 if (mListener!=null)mListener.click(item);
         });
         CircleImageView cimg = helper.getView(R.id.cimg);

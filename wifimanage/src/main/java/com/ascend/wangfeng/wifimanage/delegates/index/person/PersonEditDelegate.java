@@ -57,7 +57,7 @@ public class PersonEditDelegate extends LatteDelegate {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new MyObserver<Response<Person>>() {
                         @Override
-                        public void onNext(Response<Person> response) {
+                        public void onSuccess(Response<Person> response) {
                             Toast.makeText(getActivity(), R.string.add_success, Toast.LENGTH_SHORT).show();
                             pop();
                         }
@@ -68,7 +68,7 @@ public class PersonEditDelegate extends LatteDelegate {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new MyObserver<Response<Person>>() {
                         @Override
-                        public void onNext(Response<Person> response) {
+                        public void onSuccess(Response<Person> response) {
                             Toast.makeText(getActivity(), R.string.update_success, Toast.LENGTH_SHORT).show();
                             pop();
                         }
@@ -91,12 +91,7 @@ public class PersonEditDelegate extends LatteDelegate {
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
         mIcBack.setVisibility(View.VISIBLE);
-        mIcBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pop();
-            }
-        });
+        mIcBack.setOnClickListener(view -> pop());
         mToolbarTitle.setText("成员编辑");
         init();
     }
@@ -105,7 +100,7 @@ public class PersonEditDelegate extends LatteDelegate {
         mPerson = (Person) getArguments().getSerializable(PERSON);
         if (mPerson != null) {
             mCimgIcon.setImage(Icon.getImgUrl(mPerson.getPimage()));
-            mEtName.setText(mPerson.getPimage());
+            mEtName.setText(mPerson.getPname());
         } else {
             mPerson = new Person();
             mPerson.setPimage(0);

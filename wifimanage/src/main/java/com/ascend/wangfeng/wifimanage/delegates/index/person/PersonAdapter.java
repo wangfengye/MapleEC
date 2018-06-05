@@ -55,35 +55,24 @@ public class PersonAdapter extends BaseMultiItemQuickAdapter<Person, MultipleVie
             button.setVisibility(View.VISIBLE);
             helper.setVisible(R.id.it_right, false);
             button.setChecked(item.isSelected());
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    for (int i = 0; i < getData().size(); i++) {
-                        if (getData().get(i).isSelected()) getData().get(i).setSelected(false);
-                    }
-                    item.setSelected(true);
-                    // 通过消息机制,避免绘制时触发更新
-                    Handler handler = new Handler();
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            notifyDataSetChanged();
-                        }
-                    });
+            button.setOnClickListener(view -> {
+                for (int i = 0; i < getData().size(); i++) {
+                    if (getData().get(i).isSelected()) getData().get(i).setSelected(false);
                 }
+                item.setSelected(true);
+                // 通过消息机制,避免绘制时触发更新
+                Handler handler = new Handler();
+                handler.post(() -> notifyDataSetChanged());
             });
         } else {
             button.setVisibility(View.GONE);
             helper.setVisible(R.id.it_right, true);
             cimg.setState(item.isOnline());
-            helper.setOnClickListener(R.id.ll_person, new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // 进入成员详情;
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("person", item);
-                    mDelegate.start(PersonDetailDelegate.newInstance(bundle));
-                }
+            helper.getView(R.id.ll_person).setOnClickListener(view->{
+                // 进入成员详情;
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("person", item);
+                mDelegate.start(PersonDetailDelegate.newInstance(bundle));
             });
         }
     }

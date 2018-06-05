@@ -119,7 +119,7 @@ public class IndexDelegate extends BottomItemDelegate {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<Response<List<Device>>>() {
             @Override
-            public void onNext(Response<List<Device>> response) {
+            public void onSuccess(Response<List<Device>> response) {
                 for (Device d : response.getData()) {
                     if (d.getPid() != null && d.getPid() != 0) {
                         mOnlineDevices.add(d);
@@ -145,7 +145,7 @@ public class IndexDelegate extends BottomItemDelegate {
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new MyObserver<Response<Person>>() {
                                     @Override
-                                    public void onNext(Response<Person> response) {
+                                    public void onSuccess(Response<Person> response) {
                                         mPeople.add(response.getData());
                                         resetView();
                                     }
@@ -164,7 +164,7 @@ public class IndexDelegate extends BottomItemDelegate {
             LayoutInflater.from(getContext()).inflate(R.layout.item_circle_image, mLlNewDeviceContent);
             CircleImageView img = (CircleImageView) mLlNewDeviceContent.getChildAt(i);
             img.setImage(DeviceType.getTypes().get(mNewDevices.get(i).getDtype()).getImgId());
-            img.setBg(getResources().getColor(R.color.colorOrange));
+            img.setBg(getResources().getColor(R.color.colorOrange,getActivity().getTheme()));
             img.setSrcType(CircleImageView.TYPE_WHITE);
         }
         // 在线人员
@@ -174,7 +174,7 @@ public class IndexDelegate extends BottomItemDelegate {
             LayoutInflater.from(getContext()).inflate(R.layout.item_circle_image, mLlPeopleContent);
             CircleImageView img = (CircleImageView) mLlPeopleContent.getChildAt(i);
             img.setImage(Icon.getImgUrl(mPeople.get(i).getPimage()));
-            img.setBg(getResources().getColor(R.color.colorAccent));
+            img.setBg(getResources().getColor(R.color.colorAccent,getActivity().getTheme()));
             img.setSrcType(CircleImageView.TYPE_NORMAL);
         }
         // 在线设备
@@ -184,7 +184,7 @@ public class IndexDelegate extends BottomItemDelegate {
             LayoutInflater.from(getContext()).inflate(R.layout.item_circle_image, mLlOnlineDeviceContent);
             CircleImageView img = (CircleImageView) mLlOnlineDeviceContent.getChildAt(i);
             img.setImage(DeviceType.getTypes().get(mOnlineDevices.get(i).getDtype()).getImgId());
-            img.setBg(getResources().getColor(R.color.colorAccent));
+            img.setBg(getResources().getColor(R.color.colorAccent,getActivity().getTheme()));
             img.setSrcType(CircleImageView.TYPE_WHITE);
         }
     }

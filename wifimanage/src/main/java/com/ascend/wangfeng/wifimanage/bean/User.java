@@ -16,6 +16,8 @@ public class User {
     private Long bid2; // 预留bid;
     private Long bid3;
 
+    private String bmac;// vo box mac
+
     public Long getUid() {
         return uid;
     }
@@ -78,6 +80,14 @@ public class User {
 
     public void setBid3(Long bid3) {
         this.bid3 = bid3;
+    }
+
+    public String getBmac() {
+        return bmac;
+    }
+
+    public void setBmac(String bmac) {
+        this.bmac = bmac;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.ascend.wangfeng.wifimanage.net;
 
 
 import com.ascend.wangfeng.wifimanage.bean.Box;
+import com.ascend.wangfeng.wifimanage.bean.Response;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -13,5 +14,5 @@ import retrofit2.http.GET;
 
 public interface LocalApi {
     @GET("get_sta_mac")
-    Observable<Box> getBoxInfo();
+    Observable<Response<Box>> getBoxInfo();
 }

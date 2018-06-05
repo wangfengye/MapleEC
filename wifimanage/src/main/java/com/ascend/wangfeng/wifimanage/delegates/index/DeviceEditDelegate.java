@@ -79,7 +79,7 @@ public class DeviceEditDelegate extends LatteDelegate {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new MyObserver<Response<Device>>() {
                         @Override
-                        public void onNext(Response<Device> response) {
+                        public void onSuccess(Response<Device> response) {
                             MainApp.toast(R.string.update_success);
                             goDeviceDetail();
                         }
@@ -91,7 +91,7 @@ public class DeviceEditDelegate extends LatteDelegate {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new MyObserver<Response<Device>>() {
                         @Override
-                        public void onNext(Response<Device> response) {
+                        public void onSuccess(Response<Device> response) {
                             MainApp.toast(R.string.add_success);
                             goDeviceDetail();
                         }
@@ -121,12 +121,7 @@ public class DeviceEditDelegate extends LatteDelegate {
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
         mToolbarTitle.setText("设备编辑");
         mIcBack.setVisibility(View.VISIBLE);
-        mIcBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pop();
-            }
-        });
+        mIcBack.setOnClickListener(view -> pop());
         initRv();
         initData();
 
@@ -143,7 +138,7 @@ public class DeviceEditDelegate extends LatteDelegate {
         mRvTypes.setAdapter(mAdapter);
         mRvTypes.setLayoutManager(manager);
         mRvTypes.addItemDecoration(BaseDecoration.create(getResources()
-                .getColor(R.color.colorBg), 3));
+                .getColor(R.color.colorBg,getActivity().getTheme()), 3));
     }
 
     /**
@@ -183,7 +178,7 @@ public class DeviceEditDelegate extends LatteDelegate {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<Response<Person>>() {
                     @Override
-                    public void onNext(Response<Person> response) {
+                    public void onSuccess(Response<Person> response) {
                         mCImgOwener.setSrcType(CircleImageView.TYPE_NORMAL);
                         mCImgOwener.setImage(Icon.getImgUrl(response.getData().getPimage()));
                         mTvOwner.setText(response.getData().getPname());

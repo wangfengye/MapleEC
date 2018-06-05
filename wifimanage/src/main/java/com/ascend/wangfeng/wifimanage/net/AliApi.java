@@ -102,6 +102,12 @@ public interface AliApi {
     Observable<Response<Person>> getPersonWithAttention();
 
     /**
+     *
+     * @return
+     */
+    @PUT("person/attention/update")
+    Observable<Response<Person>> updatePersonWithAttention(@Body Person person);
+    /**
      * 查询所有 person
      *
   * @return
@@ -187,7 +193,7 @@ public interface AliApi {
      * @param time 当天凌晨的时间戳(秒级)
      * @return
      */
-    @GET("events")
+    @GET("p/online")
     Observable<Response<List<Event>>> getEvents(@Query("time") Long time);
 
     /**
@@ -197,7 +203,7 @@ public interface AliApi {
      */
     @FormUrlEncoded
     @POST("login")
-    Observable<Response<User>> login(@Field("mac") String mac, @Field("upasswd") String password);
+    Observable<Response<User>> login(@Field("bmac") String mac, @Field("upasswd") String password);
 
     /**
      * 创建用户
@@ -205,7 +211,7 @@ public interface AliApi {
      * @return
      */
     @FormUrlEncoded
-    @POST("usr/create")
+    @POST("usr/register")
     Observable<Response<User>> createUser(@Field("bmac") String mac,@Field("upasswd") String password
             , @Field("blng") double longitude, @Field("blat") double latitude);
 

@@ -31,17 +31,13 @@ public class DeviceTypeAdapter extends BaseMultiItemQuickAdapter<DeviceType, Mul
         helper.setText(R.id.tv_name, item.getName());
         helper.setBackgroundRes(R.id.rl_content, item.isChose()
                 ? R.drawable.ll_round_choosed : R.drawable.ll_round_normal);
-        helper.setOnClickListener(R.id.rl_content, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                for (DeviceType t :
-                        getData()) {
-                    if (t.isChose()) t.setChose(false);
-                }
-                item.setChose(true);
-                notifyDataSetChanged();
-                if (mListener != null) mListener.click(item);
+        helper.getView(R.id.rl_content).setOnClickListener(view -> {
+            for (DeviceType t : getData()) {
+                if (t.isChose()) t.setChose(false);
             }
+            item.setChose(true);
+            notifyDataSetChanged();
+            if (mListener != null) mListener.click(item);
         });
 
     }

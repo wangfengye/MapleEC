@@ -40,7 +40,6 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
     private int mRadiusIcon;
     private int mRadiusPoint;
     private int mBlank;
-    private Drawable mImage;// 图片
     private Drawable mIcon;//图标
     private boolean mShowOnline;//是否绘制点
     private boolean mOnline;//是否在线
@@ -281,6 +280,7 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
     }
     @Deprecated
     // 无用方法,保留是为了记录矩阵的bitmap变换
+    @SuppressWarnings("all")
     private void  drawBitmap(Bitmap bitmap,Canvas canvas){
         BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         float scale = (mRadius * 2 / 4) * 2.0f / Math.min(bitmap.getHeight(), bitmap.getWidth());

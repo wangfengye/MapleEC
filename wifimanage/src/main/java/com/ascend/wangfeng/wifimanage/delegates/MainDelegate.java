@@ -39,6 +39,6 @@ public class MainDelegate extends BaseBottomDelegate{
 
     @Override
     public int setClickedColor() {
-        return getResources().getColor(R.color.colorPrimaryDark);
+        return getResources().getColor(R.color.colorPrimaryDark,getActivity().getTheme());
     }
 }

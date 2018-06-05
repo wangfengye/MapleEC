@@ -61,6 +61,7 @@ public class HttpScan {
 
     public void scan(Callback callback) {
         this.mCallback = callback;
+        doCallback = false;
         init();
         ;
     }
@@ -86,7 +87,9 @@ public class HttpScan {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (conn != null) conn.disconnect();
+            if (conn != null) {
+                conn.disconnect();
+            }
             return success;
         }
 

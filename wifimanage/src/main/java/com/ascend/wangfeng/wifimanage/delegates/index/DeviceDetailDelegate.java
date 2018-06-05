@@ -169,7 +169,7 @@ public class DeviceDetailDelegate extends LatteDelegate {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<Response<List<Plan>>>() {
                     @Override
-                    public void onNext(Response<List<Plan>> response) {
+                    public void onSuccess(Response<List<Plan>> response) {
                         mPlans.clear();
                         mPlans.addAll(response.getData());
                         mPlanAdapter.notifyDataSetChanged();
@@ -183,7 +183,7 @@ public class DeviceDetailDelegate extends LatteDelegate {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<Response<Person>>() {
                     @Override
-                    public void onNext(Response<Person> response) {
+                    public void onSuccess(Response<Person> response) {
                         mPerson = response.getData();
                         mTvOwner.setText(response.getData().getPname());
                         mCimgOwner.setImage(Icon.getImgUrl(response.getData().getPimage()));

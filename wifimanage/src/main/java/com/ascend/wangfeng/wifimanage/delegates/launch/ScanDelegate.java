@@ -53,7 +53,7 @@ public class ScanDelegate extends LatteDelegate {
         mToolbarTitle.setText("发现设备");
         mWpScan.setText(Color.WHITE, 60);
         mWpScan.setCurrent(70, "搜索中...");
-        mWpScan.setWaveColor(getResources().getColor(R.color.colorAccent));
+        mWpScan.setWaveColor(getResources().getColor(R.color.colorAccent,getActivity().getTheme()));
         startScan();
     }
 
@@ -73,7 +73,7 @@ public class ScanDelegate extends LatteDelegate {
 
     private void setScanSuccess() {
         mWpScan.setAllowProgressInBothDirections(false);
-        mWpScan.setWaveColor(getResources().getColor(R.color.colorBlue));
+        mWpScan.setWaveColor(getResources().getColor(R.color.colorBlue,getActivity().getTheme()));
         mWpScan.setCurrent(100, "注册/登录");
         mWpScan.setOnClickListener(view -> {
             // 进入登录页
@@ -83,14 +83,14 @@ public class ScanDelegate extends LatteDelegate {
 
     private void setScanError() {
         mWpScan.setAllowProgressInBothDirections(false);
-        mWpScan.setWaveColor(getResources().getColor(R.color.colorRed));
+        mWpScan.setWaveColor(getResources().getColor(R.color.colorRed,getActivity().getTheme()));
         mWpScan.setCurrent(100, "重新搜索");
         mWpScan.setOnClickListener(view -> {
             // 重新搜索
             mWpScan.reSet();
             mWpScan.setAllowProgressInBothDirections(true);
             mWpScan.setCurrent(50, "搜索中...");
-            mWpScan.setWaveColor(getResources().getColor(R.color.colorAccent));
+            mWpScan.setWaveColor(getResources().getColor(R.color.colorAccent,getActivity().getTheme()));
             startScan();
         });
         showDialog();

@@ -65,7 +65,7 @@ public class UserDelegate extends BottomItemDelegate {
     RelativeLayout mRlAdd;
 
     private Person mPerson;
-    private ArrayList mDevices;
+    private ArrayList<Device> mDevices;
     private DeviceSquareAdapter mDeviceAdapter;
 
     public static UserDelegate newInstance(Bundle args) {
@@ -85,7 +85,7 @@ public class UserDelegate extends BottomItemDelegate {
                 .compose(SchedulerProvider.applyHttp())
                 .subscribe(new MyObserver<Response<Person>>() {
                     @Override
-                    public void onNext(Response<Person> response) {
+                    public void onSuccess(Response<Person> response) {
                         if (response.getData() != null) {
                             mRlAdd.setVisibility(View.GONE);
                             mPerson = response.getData();
@@ -111,7 +111,7 @@ public class UserDelegate extends BottomItemDelegate {
         Client.getInstance().getDevicesByPId(mPerson.getPid())
                 .subscribe(new MyObserver<Response<List<Device>>>() {
                     @Override
-                    public void onNext(Response<List<Device>> response) {
+                    public void onSuccess(Response<List<Device>> response) {
                         mDevices.clear();
                         mDevices.addAll(response.getData());
                         mDeviceAdapter.notifyDataSetChanged();
@@ -131,7 +131,7 @@ public class UserDelegate extends BottomItemDelegate {
         mRvDevices.setLayoutManager(manager);
         mRvDevices.setAdapter(mDeviceAdapter);
         mRvDevices.addItemDecoration(BaseDecoration.create(getResources()
-                .getColor(android.R.color.white), 3));
+                .getColor(android.R.color.white,getActivity().getTheme()), 3));
     }
 
     // 无关注人员时情况;
@@ -155,12 +155,12 @@ public class UserDelegate extends BottomItemDelegate {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<Response<List<Liveness>>>() {
                     @Override
-                    public void onNext(Response<List<Liveness>> response) {
+                    public void onSuccess(Response<List<Liveness>> response) {
                         Integer[][] data = new Integer[7][];
                         for (int i = 0; i < 7; i++) {
                             Integer[] column = new Integer[24];
                             for (int j = 0; j < 24; j++) {
-                                int index = i * 7 + j;
+                                int index = i * 24 + j;
                                 if (response.getData().size() > index)
                                     column[j] = response.getData().get(index).getAvalue();
                                 else column[j] = response.getData().get(0).getAvalue();
@@ -174,9 +174,9 @@ public class UserDelegate extends BottomItemDelegate {
 
     private void setData() {
         ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(getResources().getColor(R.color.colorAccent));
-        colors.add(getResources().getColor(R.color.colorOrange));
-        colors.add(getResources().getColor(R.color.colorBlue));
+        colors.add(getResources().getColor(R.color.colorAccent,getActivity().getTheme()));
+        colors.add(getResources().getColor(R.color.colorOrange,getActivity().getTheme()));
+        colors.add(getResources().getColor(R.color.colorBlue,getActivity().getTheme()));
         ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
         for (int j = 0; j < 2; j++) {
             ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
@@ -205,7 +205,7 @@ public class UserDelegate extends BottomItemDelegate {
 
         mBarChart.setData(data);
     }
-
+    @SuppressWarnings("all")
     private void initChart(BarChart chart) {
         chart.setDrawBarShadow(false);
         chart.setDrawValueAboveBar(true);

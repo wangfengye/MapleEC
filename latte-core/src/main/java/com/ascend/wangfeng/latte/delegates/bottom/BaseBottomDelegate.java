@@ -154,7 +154,7 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
         itemTitle.setTextColor(mClickedColor);
         showHideFragment(ITEM_DELEGATES.get(tag), ITEM_DELEGATES.get(mCurrentDelegate));
         if (TAB_BEANS.get(tag).getType() == BottomBean.TYPE_TOP) {
-            ITEM_DELEGATES.get(mCurrentDelegate).onResume();
+            ITEM_DELEGATES.get(mCurrentDelegate).onSupportVisible();
         }
         mCurrentDelegate = tag;
     }
