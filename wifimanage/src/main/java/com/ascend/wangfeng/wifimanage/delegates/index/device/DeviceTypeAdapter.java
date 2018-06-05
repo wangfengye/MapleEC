@@ -1,4 +1,4 @@
-package com.ascend.wangfeng.wifimanage.delegates.index;
+package com.ascend.wangfeng.wifimanage.delegates.index.device;
 
 import android.view.View;
 

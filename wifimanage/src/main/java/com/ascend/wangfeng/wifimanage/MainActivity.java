@@ -21,8 +21,6 @@ import com.ascend.wangfeng.wifimanage.net.MyObserver;
 import com.ascend.wangfeng.wifimanage.net.SchedulerProvider;
 import com.ascend.wangfeng.wifimanage.utils.SpKey;
 
-import qiu.niorgai.StatusBarCompat;
-
 public class MainActivity extends ProxyActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
@@ -32,17 +30,17 @@ public class MainActivity extends ProxyActivity {
         super.onCreate(savedInstanceState);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.hide();
-        StatusBarCompat.translucentStatusBar(this, true);
+        // 透明状态栏
+        // StatusBarCompat.translucentStatusBar(this, true);
         //初始化activity content;
-        Latte.getConfigurator().withActivityContext(this).configure();
-
+        Latte.getConfigurator().withActivityContext(this);
     }
 
     @Override
     public LatteDelegate setRootDelegate() {
-        User user = (User) LattePreference.getJson(SpKey.USER, User.class);
+        User user = LattePreference.getJson(SpKey.USER, User.class);
         if (user != null) {
-            Client.getInstance().login(user.getBid().toString(),user.getUpasswd())
+            Client.getInstance().login(user.getBmac(),user.getUpasswd())
                     .compose(SchedulerProvider.applyHttp())
                     .subscribe(new MyObserver<Response<User>>() {
                         @Override

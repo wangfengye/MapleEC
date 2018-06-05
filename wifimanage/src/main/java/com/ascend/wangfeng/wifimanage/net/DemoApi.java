@@ -185,12 +185,12 @@ public class DemoApi implements AliApi {
     }
 
     @Override
-    public Observable<Response<User>> login(String mac, String password) {
+    public Observable<Response<User>> login(Long mac, String password) {
         return Observable.create(e -> e.onError(new Exception()));
     }
 
     @Override
-    public Observable<Response<User>> createUser(String mac, String password, double longitude, double latitude) {
+    public Observable<Response<User>> createUser(Long mac, String password, double longitude, double latitude) {
         return Observable.create(e -> e.onError(new Exception()));
     }
 }

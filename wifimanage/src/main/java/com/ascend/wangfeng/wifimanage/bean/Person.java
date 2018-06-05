@@ -14,7 +14,7 @@ public class Person implements MultiItemEntity,Serializable {
 
     private static final long serialVersionUID = -8680204258925672590L;
     private Long pid;
-    private Long bid;
+    private Long bmac;
     private String pname;
     private Integer pimage;
     // 表现属性
@@ -34,12 +34,12 @@ public class Person implements MultiItemEntity,Serializable {
         this.pid = pid;
     }
 
-    public Long getBid() {
-        return bid;
+    public Long getBmac() {
+        return bmac;
     }
 
-    public void setBid(Long bid) {
-        this.bid = bid;
+    public void setBmac(Long bmac) {
+        this.bmac = bmac;
     }
 
     public String getPname() {
@@ -78,7 +78,7 @@ public class Person implements MultiItemEntity,Serializable {
     public String toString() {
         return "Person{" +
                 "pid=" + pid +
-                ", bid=" + bid +
+                ", bmac=" + bmac +
                 ", pname='" + pname + '\'' +
                 ", pimage=" + pimage +
                 '}';

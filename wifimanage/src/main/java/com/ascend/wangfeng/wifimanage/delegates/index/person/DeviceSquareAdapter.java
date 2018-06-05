@@ -5,7 +5,7 @@ import android.view.View;
 import com.ascend.wangfeng.latte.ui.recycler.MultipleViewHolder;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
-import com.ascend.wangfeng.wifimanage.delegates.index.DeviceType;
+import com.ascend.wangfeng.wifimanage.delegates.index.device.DeviceType;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 
 import java.util.List;

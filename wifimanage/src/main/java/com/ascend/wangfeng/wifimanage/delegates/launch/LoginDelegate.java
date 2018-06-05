@@ -16,6 +16,7 @@ import com.ascend.wangfeng.wifimanage.delegates.MainDelegate;
 import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.net.MyObserver;
 import com.ascend.wangfeng.wifimanage.net.SchedulerProvider;
+import com.ascend.wangfeng.wifimanage.utils.MacUtil;
 import com.ascend.wangfeng.wifimanage.utils.SpKey;
 import com.joanzapata.iconify.widget.IconTextView;
 
@@ -45,7 +46,7 @@ public class LoginDelegate extends LatteDelegate {
 
     @OnClick(R.id.btn_login)
     void clickBtnLogin() {
-        String mac = mEtNo.getText().toString().trim();
+        Long mac = MacUtil.stringToLong(mEtNo.getText().toString().trim());
         String password = mEtPassword.getText().toString().trim();
         Client.getInstance().login(mac, password)
                 .compose(SchedulerProvider.applyHttp())
@@ -59,17 +60,19 @@ public class LoginDelegate extends LatteDelegate {
                     public void onSuccess(Response<User> response) {
                         // 登录; 初始化
                         User user = new User();
-                        user.setUmac(mac);
+                        user.setBmac(mac);
                         user.setUpasswd(password);
-                        LattePreference.setJson(SpKey.USER,response.getData());
+                        LattePreference.setJson(SpKey.USER, response.getData());
                         startWithPop(MainDelegate.newInstance());
                     }
                 });
     }
+
     @OnClick(R.id.btn_register)
-    void clickBtnRegister(){
+    void clickBtnRegister() {
         startWithPop(new ScanDelegate());
     }
+
     @Override
     public Object setLayout() {
         return R.layout.delegate_login;
@@ -78,9 +81,9 @@ public class LoginDelegate extends LatteDelegate {
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
         mToolbarTitle.setText("登录");
-        User user = LattePreference.getJson(SpKey.USER,null);
-        if ( user !=null){
-            mEtNo.setText(user.getBmac());
+        User user = LattePreference.getJson(SpKey.USER, null);
+        if (user != null) {
+            mEtNo.setText(MacUtil.longToString(user.getBmac()));
             mEtPassword.setText(user.getUpasswd());
         }
     }

@@ -2,7 +2,8 @@ package com.ascend.wangfeng.wifimanage.delegates;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -12,13 +13,15 @@ import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.Response;
-import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
-import com.ascend.wangfeng.wifimanage.delegates.index.DeviceType;
-import com.ascend.wangfeng.wifimanage.delegates.index.NewDeviceDelegate;
+import com.ascend.wangfeng.wifimanage.delegates.index.IndexPersonAdapter;
+import com.ascend.wangfeng.wifimanage.delegates.index.IndexSquareAdapter;
+import com.ascend.wangfeng.wifimanage.delegates.index.device.DeviceDetailDelegate;
+import com.ascend.wangfeng.wifimanage.delegates.index.device.DeviceEditDelegate;
+import com.ascend.wangfeng.wifimanage.delegates.index.device.NewDeviceDelegate;
+import com.ascend.wangfeng.wifimanage.delegates.index.person.PersonDetailDelegate;
 import com.ascend.wangfeng.wifimanage.delegates.index.person.PersonListDelegate;
 import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.net.MyObserver;
-import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -39,18 +42,20 @@ import io.reactivex.schedulers.Schedulers;
 public class IndexDelegate extends BottomItemDelegate {
 
     public static final String TAG = IndexDelegate.class.getSimpleName();
-    @BindView(R.id.ll_new_device_content)
-    LinearLayout mLlNewDeviceContent;
     @BindView(R.id.ll_new_device)
     LinearLayout mLlNewDevice;
-    @BindView(R.id.ll_people_content)
-    LinearLayout mLlPeopleContent;
+
     @BindView(R.id.ll_people)
     LinearLayout mLlPeople;
-    @BindView(R.id.ll_online_device_content)
-    LinearLayout mLlOnlineDeviceContent;
+
     @BindView(R.id.ll_online_device)
     LinearLayout mLlOnlineDevice;
+    @BindView(R.id.rv_new_devices)
+    RecyclerView mRvNewDevices;
+    @BindView(R.id.rv_people)
+    RecyclerView mRvPeople;
+    @BindView(R.id.rv_online_devices)
+    RecyclerView mRvOnlineDevices;
 
     @OnClick(R.id.ll_new_device)
     void clickLlNewDevice() {
@@ -79,6 +84,9 @@ public class IndexDelegate extends BottomItemDelegate {
     ArrayList<Person> mPeople; // 在线人员
     LinkedHashSet<Long> mPIds; // 在线人员
     ArrayList<Device> mOnlineDevices; // 在线设备
+    private IndexSquareAdapter mNewDevicesAdapter;
+    private IndexSquareAdapter mOnlineDevicesAdapter;
+    private IndexPersonAdapter mPeopleAdapter;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     @Override
@@ -88,17 +96,57 @@ public class IndexDelegate extends BottomItemDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
+        initView();
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
+    private void initView() {
+        // 新设备
+        mNewDevices = new ArrayList<>();
+        mNewDevicesAdapter = new IndexSquareAdapter(mNewDevices,
+                getResources().getColor(R.color.colorOrange, getActivity().getTheme()));
+        mNewDevicesAdapter.setListener(device -> {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(DeviceEditDelegate.DEVICE, device);
+            start(DeviceEditDelegate.newInstance(bundle));
+        });
+        RecyclerView.LayoutManager manager = new GridLayoutManager(getContext(), 5);
+        mRvNewDevices.setLayoutManager(manager);
+        mRvNewDevices.setAdapter(mNewDevicesAdapter);
+
+        // 新人员
+        mPIds = new LinkedHashSet<>();
+        mPeople = new ArrayList<>();
+        mPeopleAdapter = new IndexPersonAdapter(mPeople
+                , getResources().getColor(R.color.colorAccent, getActivity().getTheme()));
+        mPeopleAdapter.setListener(person -> {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(PersonDetailDelegate.PERSON, person);
+            start(PersonDetailDelegate.newInstance(bundle));
+        });
+        RecyclerView.LayoutManager managerPeople = new GridLayoutManager(getContext(), 5);
+        mRvPeople.setLayoutManager(managerPeople);
+        mRvPeople.setAdapter(mPeopleAdapter);
+
+        // 在线人员
+        mOnlineDevices = new ArrayList<>();
+        mOnlineDevicesAdapter = new IndexSquareAdapter(mOnlineDevices,
+                getResources().getColor(R.color.colorAccent, getActivity().getTheme()));
+        RecyclerView.LayoutManager managerOnline = new GridLayoutManager(getContext(), 5);
+        mOnlineDevicesAdapter.setListener(device -> {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(DeviceDetailDelegate.DEVICE, device);
+            start(DeviceDetailDelegate.newInstance(bundle));
+        });
+        mRvOnlineDevices.setAdapter(mOnlineDevicesAdapter);
+        mRvOnlineDevices.setLayoutManager(managerOnline);
+
 
     }
 
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
+        if (mCompositeDisposable != null) mCompositeDisposable.clear();
         initData();
     }
 
@@ -109,33 +157,38 @@ public class IndexDelegate extends BottomItemDelegate {
     }
 
     private void initData() {
-        mNewDevices = new ArrayList<>();
-        mPeople = new ArrayList<>();
-        mOnlineDevices = new ArrayList<>();
-        mPIds = new LinkedHashSet<>();
         // 数据源
         Client.getInstance().getCurrentDevices()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<Response<List<Device>>>() {
-            @Override
-            public void onSuccess(Response<List<Device>> response) {
-                for (Device d : response.getData()) {
-                    if (d.getPid() != null && d.getPid() != 0) {
-                        mOnlineDevices.add(d);
-                        mPIds.add(d.getPid());
-                    } else {
-                        mNewDevices.add(d);
+                    @Override
+                    public void onSuccess(Response<List<Device>> response) {
+                        mOnlineDevices.clear();
+                        mNewDevices.clear();
+                        mPIds.clear();
+                        for (Device d : response.getData()) {
+                            if (d.getPid() != null && d.getPid() != 0) {
+                                mOnlineDevices.add(d);
+                                mPIds.add(d.getPid());
+                            } else {
+                                mNewDevices.add(d);
+                            }
+                        }
+                        if (mNewDevices.size() == 0) {
+                            mLlNewDevice.setVisibility(View.GONE);
+                        } else {
+                            mLlNewDevice.setVisibility(View.VISIBLE);
+                            mNewDevicesAdapter.notifyDataSetChanged();
+                        }
+                        mOnlineDevicesAdapter.notifyDataSetChanged();
+                        getPersons(mPIds);
                     }
-                }
-                getPersons(mPIds);
-            }
-        });
-
-
+                });
     }
 
     public void getPersons(LinkedHashSet<Long> ids) {
+        mPeople.clear();
         Observable.fromIterable(ids)
                 .subscribe(new BaseObserver<Long>() {
                     @Override
@@ -147,7 +200,7 @@ public class IndexDelegate extends BottomItemDelegate {
                                     @Override
                                     public void onSuccess(Response<Person> response) {
                                         mPeople.add(response.getData());
-                                        resetView();
+                                        mPeopleAdapter.notifyDataSetChanged();
                                     }
                                 });
                     }
@@ -155,43 +208,4 @@ public class IndexDelegate extends BottomItemDelegate {
 
     }
 
-    private void resetView() {
-        // 新设备
-        mLlNewDeviceContent.removeAllViews();
-        if (mNewDevices == null || mNewDevices.size() == 0) mLlNewDevice.setVisibility(View.GONE);
-        for (int i = 0; i < mNewDevices.size(); i++) {
-            if (i >= 6) break;
-            LayoutInflater.from(getContext()).inflate(R.layout.item_circle_image, mLlNewDeviceContent);
-            CircleImageView img = (CircleImageView) mLlNewDeviceContent.getChildAt(i);
-            img.setImage(DeviceType.getTypes().get(mNewDevices.get(i).getDtype()).getImgId());
-            img.setBg(getResources().getColor(R.color.colorOrange,getActivity().getTheme()));
-            img.setSrcType(CircleImageView.TYPE_WHITE);
-        }
-        // 在线人员
-        mLlPeopleContent.removeAllViews();
-        for (int i = 0; i < mPeople.size(); i++) {
-            if (i >= 5) break;
-            LayoutInflater.from(getContext()).inflate(R.layout.item_circle_image, mLlPeopleContent);
-            CircleImageView img = (CircleImageView) mLlPeopleContent.getChildAt(i);
-            img.setImage(Icon.getImgUrl(mPeople.get(i).getPimage()));
-            img.setBg(getResources().getColor(R.color.colorAccent,getActivity().getTheme()));
-            img.setSrcType(CircleImageView.TYPE_NORMAL);
-        }
-        // 在线设备
-        mLlOnlineDeviceContent.removeAllViews();
-        for (int i = 0; i < mOnlineDevices.size(); i++) {
-            if (i >= 5) break;
-            LayoutInflater.from(getContext()).inflate(R.layout.item_circle_image, mLlOnlineDeviceContent);
-            CircleImageView img = (CircleImageView) mLlOnlineDeviceContent.getChildAt(i);
-            img.setImage(DeviceType.getTypes().get(mOnlineDevices.get(i).getDtype()).getImgId());
-            img.setBg(getResources().getColor(R.color.colorAccent,getActivity().getTheme()));
-            img.setSrcType(CircleImageView.TYPE_WHITE);
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-
-        super.onDestroyView();
-    }
 }

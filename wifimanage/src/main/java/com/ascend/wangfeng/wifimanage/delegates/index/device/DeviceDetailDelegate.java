@@ -1,4 +1,4 @@
-package com.ascend.wangfeng.wifimanage.delegates.index;
+package com.ascend.wangfeng.wifimanage.delegates.index.device;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,6 +22,7 @@ import com.ascend.wangfeng.wifimanage.delegates.plan.PlanAdapter;
 import com.ascend.wangfeng.wifimanage.delegates.plan.PlanDetailDelegate;
 import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.net.MyObserver;
+import com.ascend.wangfeng.wifimanage.utils.MacUtil;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.joanzapata.iconify.widget.IconTextView;
 
@@ -159,7 +160,7 @@ public class DeviceDetailDelegate extends LatteDelegate {
         mTvLasttime.setText("最近更新时间: " + TimeUtil.format(mDevice.getLasttime()));
         mTvFirsttime.setText("首次出现时间: " + TimeUtil.format(mDevice.getFirsttime()));
         mTvIp.setText(mDevice.getDevIp());
-        mTvMac.setText(mDevice.getDmac());
+        mTvMac.setText(MacUtil.longToString(mDevice.getDmac()));
         mTvBrand.setText(mDevice.getVendor());// 厂商
         mTvDhcp.setText(mDevice.getHostname());// 主机
         mTvNetbios.setText(mDevice.getNetbios());

@@ -7,7 +7,7 @@ import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Event;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
-import com.ascend.wangfeng.wifimanage.delegates.index.DeviceType;
+import com.ascend.wangfeng.wifimanage.delegates.index.device.DeviceType;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 

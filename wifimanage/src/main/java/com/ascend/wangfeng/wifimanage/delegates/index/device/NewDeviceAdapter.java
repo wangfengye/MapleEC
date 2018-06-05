@@ -1,10 +1,11 @@
-package com.ascend.wangfeng.wifimanage.delegates.index;
+package com.ascend.wangfeng.wifimanage.delegates.index.device;
 
 import android.view.View;
 
 import com.ascend.wangfeng.latte.ui.recycler.MultipleViewHolder;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
+import com.ascend.wangfeng.wifimanage.utils.MacUtil;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 
@@ -37,7 +38,7 @@ public class NewDeviceAdapter extends BaseMultiItemQuickAdapter<Device,MultipleV
         helper.setText(R.id.tv_name,item.getDname());
         helper.setText(R.id.tv_ip,item.getDevIp());
         helper.setText(R.id.tv_brand,item.getVendor());
-        helper.setText(R.id.tv_mac,item.getDmac());
+        helper.setText(R.id.tv_mac, MacUtil.longToString(item.getDmac()));
         helper.getView(R.id.ll_main).setOnClickListener( view-> {
                 if (mListener!=null)mListener.click(item);
         });

@@ -13,10 +13,8 @@ public class User {
     private String umobile;// 手机
     private String upasswd;
     private Long bid;
-    private Long bid2; // 预留bid;
-    private Long bid3;
 
-    private String bmac;// vo box mac
+    private Long bmac;
 
     public Long getUid() {
         return uid;
@@ -66,27 +64,12 @@ public class User {
         this.bid = bid;
     }
 
-    public Long getBid2() {
-        return bid2;
-    }
 
-    public void setBid2(Long bid2) {
-        this.bid2 = bid2;
-    }
-
-    public Long getBid3() {
-        return bid3;
-    }
-
-    public void setBid3(Long bid3) {
-        this.bid3 = bid3;
-    }
-
-    public String getBmac() {
+    public Long getBmac() {
         return bmac;
     }
 
-    public void setBmac(String bmac) {
+    public void setBmac(Long bmac) {
         this.bmac = bmac;
     }
 
@@ -99,8 +82,6 @@ public class User {
                 ", umobile='" + umobile + '\'' +
                 ", upasswd='" + upasswd + '\'' +
                 ", bid=" + bid +
-                ", bid2=" + bid2 +
-                ", bid3=" + bid3 +
                 '}';
     }
 }

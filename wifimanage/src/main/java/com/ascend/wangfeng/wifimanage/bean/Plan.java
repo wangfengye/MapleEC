@@ -15,8 +15,8 @@ public class Plan implements Serializable,MultiItemEntity{
     private static final long serialVersionUID = -1314258825409184663L;
 
     private Long pid;
-    private String dmac;
-    private String bmac;
+    private Long dmac;
+    private Long bmac;
     private Integer ptype;
     private Long starttime;
     private Long endtime;
@@ -39,19 +39,19 @@ public class Plan implements Serializable,MultiItemEntity{
         this.pid = pid;
     }
 
-    public String getDmac() {
+    public Long getDmac() {
         return dmac;
     }
 
-    public void setDmac(String dmac) {
+    public void setDmac(Long dmac) {
         this.dmac = dmac;
     }
 
-    public String getBmac() {
+    public Long getBmac() {
         return bmac;
     }
 
-    public void setBmac(String bmac) {
+    public void setBmac(Long bmac) {
         this.bmac = bmac;
     }
 

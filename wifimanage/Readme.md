@@ -39,6 +39,9 @@
  
  ### 6/4
   * ProxyActivity重写;
+  
+  ### 6/5
+   * 主页面改RecyclerView;
  ---
  ### TASK
  * UI,UE设计 

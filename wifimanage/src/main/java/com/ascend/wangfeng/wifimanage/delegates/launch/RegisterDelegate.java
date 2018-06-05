@@ -17,6 +17,7 @@ import com.ascend.wangfeng.wifimanage.delegates.MainDelegate;
 import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.net.MyObserver;
 import com.ascend.wangfeng.wifimanage.net.SchedulerProvider;
+import com.ascend.wangfeng.wifimanage.utils.MacUtil;
 import com.ascend.wangfeng.wifimanage.utils.SpKey;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -63,7 +64,7 @@ public class RegisterDelegate extends LatteDelegate {
 
     @OnClick(R.id.btn_login)
     void clickBtnLogin() {
-        String mac = mEtNo.getText().toString().trim();
+        Long mac = MacUtil.stringToLong(mEtNo.getText().toString().trim());
         String password = mEtPassword.getText().toString().trim();
         Observable.concat(Client.getInstance().createUser(mac, password, mLocation.getLongitude(), mLocation.getLatitude()),
                 Client.getInstance().login(mac, password))
@@ -72,7 +73,7 @@ public class RegisterDelegate extends LatteDelegate {
                     @Override
                     public void onSuccess(Response<User> response) {
                         User user = new User();
-                        user.setUmac(mac);
+                        user.setBmac(mac);
                         user.setUpasswd(password);
                         LattePreference.setJson(SpKey.USER,response.getData());
                         startWithPop(MainDelegate.newInstance());
@@ -105,7 +106,7 @@ public class RegisterDelegate extends LatteDelegate {
                 .subscribe(new MyObserver<Response<Box>>() {
                     @Override
                     public void onSuccess(Response<Box> response) {
-                        mEtNo.setText(response.getData().getBmac());
+                        mEtNo.setText(MacUtil.longToString(response.getData().getBmac()));
                     }
                 });
     }

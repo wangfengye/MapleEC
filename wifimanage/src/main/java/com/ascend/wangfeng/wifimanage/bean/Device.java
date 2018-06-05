@@ -15,8 +15,8 @@ public class Device implements MultiItemEntity, Serializable {
     private Long did;
     private String dname;
     private int dtype;
-    private String dmac;
-    private Long bid;
+    private Long dmac;
+    private Long bmac;
     private Long pid;
     private String oui;
     private String hostname;
@@ -40,20 +40,20 @@ public class Device implements MultiItemEntity, Serializable {
         this.did = did;
     }
 
-    public String getDmac() {
+    public Long getDmac() {
         return dmac;
     }
 
-    public void setDmac(String dmac) {
+    public void setDmac(Long dmac) {
         this.dmac = dmac;
     }
 
-    public Long getBid() {
-        return bid;
+    public Long getBmac() {
+        return bmac;
     }
 
-    public void setBid(Long bid) {
-        this.bid = bid;
+    public void setBmac(Long bmac) {
+        this.bmac = bmac;
     }
 
     public Long getPid() {
@@ -151,7 +151,7 @@ public class Device implements MultiItemEntity, Serializable {
                 ", dname='" + dname + '\'' +
                 ", dtype='" + dtype + '\'' +
                 ", dmac='" + dmac + '\'' +
-                ", bid=" + bid +
+                ", bmac=" + bmac +
                 ", pid=" + pid +
                 ", oui='" + oui + '\'' +
                 ", hostname='" + hostname + '\'' +

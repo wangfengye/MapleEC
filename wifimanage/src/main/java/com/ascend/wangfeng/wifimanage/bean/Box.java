@@ -8,7 +8,7 @@ package com.ascend.wangfeng.wifimanage.bean;
 
 public class Box {
     private Long bid;
-    private String bmac;
+    private Long bmac;
     private String bver;
     private double blng;
     private double blat;
@@ -22,11 +22,11 @@ public class Box {
         this.bid = bid;
     }
 
-    public String getBmac() {
+    public Long getBmac() {
         return bmac;
     }
 
-    public void setBmac(String bmac) {
+    public void setBmac(Long bmac) {
         this.bmac = bmac;
     }
 

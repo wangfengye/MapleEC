@@ -16,7 +16,6 @@
         android:elevation="2dp"
         android:orientation="vertical"
         android:padding="8dp">
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,13 +23,10 @@
             android:text="新设备"
             android:textColor="@color/textSec"/>
         <!--设备图标表-->
-        <LinearLayout
-            android:id="@+id/ll_new_device_content"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_new_devices"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="6">
-        </LinearLayout>
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -56,16 +52,10 @@
             android:text="在线成员"
             android:textColor="@color/textSec"/>
         <!--人员图标表-->
-        <LinearLayout
-            android:id="@+id/ll_people_content"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_people"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            android:weightSum="5">
-            <!--放置图片-->
-        </LinearLayout>
-
+            android:layout_height="wrap_content"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,16 +79,10 @@
             android:layout_marginBottom="8dp"
             android:text="在线设备"
             android:textColor="@color/textSec"/>
-        <!--设备图标表-->
-        <LinearLayout
-            android:id="@+id/ll_online_device_content"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_online_devices"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="6">
-            <!--放置图片-->
-        </LinearLayout>
-
+            android:layout_height="wrap_content"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

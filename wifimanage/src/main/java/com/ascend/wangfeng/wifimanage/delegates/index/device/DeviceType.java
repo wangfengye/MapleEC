@@ -1,4 +1,4 @@
-package com.ascend.wangfeng.wifimanage.delegates.index;
+package com.ascend.wangfeng.wifimanage.delegates.index.device;
 
 import com.ascend.wangfeng.wifimanage.R;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
@@ -18,8 +18,7 @@ public class DeviceType implements MultiItemEntity {
     private boolean chose;
 
     public static ArrayList<DeviceType> getTypes() {
-        for (DeviceType t :
-                Build.sTypes) {
+        for (DeviceType t : Build.sTypes) {
             t.setChose(false);
         }
         return Build.sTypes;

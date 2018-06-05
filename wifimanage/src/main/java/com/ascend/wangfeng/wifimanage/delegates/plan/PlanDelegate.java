@@ -11,8 +11,8 @@ import com.ascend.wangfeng.latte.ui.recycler.BaseDecoration;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Response;
-import com.ascend.wangfeng.wifimanage.delegates.index.DeviceDetailDelegate;
-import com.ascend.wangfeng.wifimanage.delegates.index.NewDeviceAdapter;
+import com.ascend.wangfeng.wifimanage.delegates.index.device.DeviceDetailDelegate;
+import com.ascend.wangfeng.wifimanage.delegates.index.device.NewDeviceAdapter;
 import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.net.MyObserver;
 

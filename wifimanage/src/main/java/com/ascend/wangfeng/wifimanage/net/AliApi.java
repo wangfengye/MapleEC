@@ -154,11 +154,11 @@ public interface AliApi {
     /**
      * 查询某设备相关plans
      *
-     * @param DId: 设备id
+     * @param dmac: 设备id
      * @return
      */
     @GET("plan/device")
-    Observable<Response<List<Plan>>> getPlansByDId(@Query("did") Long DId);
+    Observable<Response<List<Plan>>> getPlansByDId(@Query("dmac") Long dmac);
 
     /**
      * 新增plan
@@ -203,7 +203,7 @@ public interface AliApi {
      */
     @FormUrlEncoded
     @POST("login")
-    Observable<Response<User>> login(@Field("bmac") String mac, @Field("upasswd") String password);
+    Observable<Response<User>> login(@Field("bmac") Long mac, @Field("upasswd") String password);
 
     /**
      * 创建用户
@@ -212,7 +212,7 @@ public interface AliApi {
      */
     @FormUrlEncoded
     @POST("usr/register")
-    Observable<Response<User>> createUser(@Field("bmac") String mac,@Field("upasswd") String password
+    Observable<Response<User>> createUser(@Field("bmac") Long mac,@Field("upasswd") String password
             , @Field("blng") double longitude, @Field("blat") double latitude);
 
 }

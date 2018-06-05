@@ -11,17 +11,19 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 public class Event implements MultiItemEntity {
 
     private Long id;
-    private String dmac;
-    private String bmac;
+    private Long dmac;
+    private Long bmac;
     private Long time;
     private Integer online;
     // vo 属性
     private Person person;
     private Device device;
+
     @Override
     public int getItemType() {
         return 0;
     }
+
     public String getEventStr() {
         switch (getOnline()) {
             case 1:
@@ -32,6 +34,7 @@ public class Event implements MultiItemEntity {
                 return "未知";
         }
     }
+
     public Long getId() {
         return id;
     }
@@ -40,19 +43,19 @@ public class Event implements MultiItemEntity {
         this.id = id;
     }
 
-    public String getDmac() {
+    public Long getDmac() {
         return dmac;
     }
 
-    public void setDmac(String dmac) {
+    public void setDmac(Long dmac) {
         this.dmac = dmac;
     }
 
-    public String getBmac() {
+    public Long getBmac() {
         return bmac;
     }
 
-    public void setBmac(String bmac) {
+    public void setBmac(Long bmac) {
         this.bmac = bmac;
     }
 

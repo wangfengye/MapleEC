@@ -16,7 +16,7 @@ import com.ascend.wangfeng.wifimanage.bean.Liveness;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.Response;
 import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
-import com.ascend.wangfeng.wifimanage.delegates.index.DeviceDetailDelegate;
+import com.ascend.wangfeng.wifimanage.delegates.index.device.DeviceDetailDelegate;
 import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.net.MyObserver;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;

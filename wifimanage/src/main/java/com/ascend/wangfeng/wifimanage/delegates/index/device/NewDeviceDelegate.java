@@ -1,4 +1,4 @@
-package com.ascend.wangfeng.wifimanage.delegates.index;
+package com.ascend.wangfeng.wifimanage.delegates.index.device;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,7 +27,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by fengye on 2018/5/8.
  * email 1040441325@qq.com
- * Q;数据由 indexDelgegate 传入,无法主动刷新
+ *
  */
 
 public class NewDeviceDelegate extends LatteDelegate {
