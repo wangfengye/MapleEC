@@ -1,0 +1,41 @@
+{
+  "message": "成功",
+  "statusCode": 200,
+  "data": [
+    {
+      "id": 1,
+      "dmac": 1,
+      "bmac": 1,
+      "online": 1,
+      "time": 1525925359
+    },
+    {
+      "id": 1,
+      "dmac": 1,
+      "bmac": 1,
+      "online": 0,
+      "time": 1525925359
+    },
+    {
+      "id": 1,
+      "dmac": 1,
+      "bmac": 1,
+      "online": 1,
+      "time": 1525925359
+    },
+    {
+      "id": 1,
+      "dmac": 1,
+      "bmac": 1,
+      "online": 0,
+      "time": 1525925359
+    },
+    {
+      "id": 1,
+      "dmac": 1,
+      "bmac": 1,
+      "online": 1,
+      "time": 1525925359
+    }
+  ]
+}

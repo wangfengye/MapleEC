@@ -6,11 +6,16 @@ import android.view.View;
 import com.ascend.wangfeng.latte.ui.recycler.MultipleViewHolder;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Person;
+import com.ascend.wangfeng.wifimanage.bean.Response;
 import com.ascend.wangfeng.wifimanage.delegates.OnAdapterListener;
 import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
+import com.ascend.wangfeng.wifimanage.net.Client;
+import com.ascend.wangfeng.wifimanage.net.MyObserver;
+import com.ascend.wangfeng.wifimanage.net.SchedulerProvider;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -20,6 +25,7 @@ import java.util.List;
 
 public class IndexPersonAdapter extends BaseMultiItemQuickAdapter<Person, MultipleViewHolder> {
     private int mColor = Color.parseColor("#10D7C6");
+    private LinkedHashSet<Long> mPIds;
     private OnAdapterListener<Person> mListener;
     public IndexPersonAdapter(List<Person> data, int color) {
         super(data);
@@ -29,7 +35,16 @@ public class IndexPersonAdapter extends BaseMultiItemQuickAdapter<Person, Multip
     public void setListener(OnAdapterListener<Person> listener){
         mListener = listener;
     }
-
+    public void setPIds(LinkedHashSet<Long> pIds){
+        getData().clear();
+        this.mPIds = pIds;
+        for (Long i:pIds) {
+            Person p = new Person();
+            p.setPid(i);
+            getData().add(p);
+        }
+        notifyDataSetChanged();
+    }
     @Override
     public int getItemCount() {
         // 最多显示6个
@@ -37,14 +52,21 @@ public class IndexPersonAdapter extends BaseMultiItemQuickAdapter<Person, Multip
     }
 
     @Override
-    protected void convert(MultipleViewHolder helper, Person item) {
+    protected void convert(MultipleViewHolder helper,Person item) {
         CircleImageView cImg = helper.getView(R.id.cimg_icon);
-        cImg.setImage(Icon.getImgUrl(item.getPimage()));
         cImg.setBg(mColor);
         cImg.setSrcType(CircleImageView.TYPE_NORMAL);
-        cImg.setOnClickListener(view -> {
-            if (mListener!=null)mListener.onclick(item);
-        });
+        Client.getInstance().getPersonById(item.getPid())
+                .compose(SchedulerProvider.applyHttp())
+                .subscribe(new MyObserver<Response<Person>>() {
+                    @Override
+                    public void onSuccess(Response<Person> response) {
+                        cImg.setOnClickListener(view -> {
+                            if (mListener!=null)mListener.onclick(response.getData());
+                        });
+                        cImg.setImage(Icon.getImgUrl(response.getData().getPimage()));
+                    }
+                });
     }
     @Override
     protected MultipleViewHolder createBaseViewHolder(View view) {

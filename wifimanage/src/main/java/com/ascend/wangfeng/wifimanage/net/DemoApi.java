@@ -67,13 +67,13 @@ public class DemoApi implements AliApi {
     }
 
     @Override
-    public Observable<Response<List<Device>>> getDevicesByPId(Long id) {
-        return Observable.create(e->{
-                String jsonStr = FileUtil.getRawFile(R.raw.devices);
-                Response<List<Device>> response = JSONObject.parseObject(jsonStr, new TypeReference<Response<List<Device>>>() {
-                });
-                e.onNext(response);
-        });
+    public Observable<Response<Device>> getDevice(Long did) {
+        return Observable.create(e->e.onError(new Exception()));
+    }
+
+    @Override
+    public Observable<Response<List<Device>>> getDevicesByPid(Long did) {
+        return Observable.create(e->e.onError(new Exception()));
     }
 
     @Override
@@ -114,7 +114,6 @@ public class DemoApi implements AliApi {
 
     @Override
     public Observable<Response<List<Person>>> getPersons() {
-
         return Observable.create(e->{
                 String jsonStr = FileUtil.getRawFile(R.raw.persons);
                 Response<List<Person>> response = JSONObject.parseObject(jsonStr, new TypeReference<Response<List<Person>>>() {
@@ -134,12 +133,27 @@ public class DemoApi implements AliApi {
     }
 
     @Override
-    public Observable<Response<List<Liveness>>> getLivenessesByPId(Long id) {
-        return Observable.create(e->{
-                String jsonStr = FileUtil.getRawFile(R.raw.livenesses_pid);
-                Response<List<Liveness>> response = JSONObject.parseObject(jsonStr, new TypeReference<Response<List<Liveness>>>() {
-                });
-                e.onNext(response);
+    public Observable<Response<Person>> delPerson(Long id) {
+        return Observable.create(e->e.onError(new Exception()));
+    }
+
+    @Override
+    public Observable<Response<List<Liveness>>> getLivenesses(Long dmac, Long time) {
+        return  Observable.create(e->{
+            String jsonStr = FileUtil.getRawFile(R.raw.livenesses_pid);
+            Response<List<Liveness>> response = JSONObject.parseObject(jsonStr, new TypeReference<Response<List<Liveness>>>() {
+            });
+            e.onNext(response);
+        });
+    }
+
+    @Override
+    public Observable<Response<List<Liveness>>> getLivenessWithDay(Long dmac, Long time) {
+        return  Observable.create(e->{
+            String jsonStr = FileUtil.getRawFile(R.raw.livenesses_pid);
+            Response<List<Liveness>> response = JSONObject.parseObject(jsonStr, new TypeReference<Response<List<Liveness>>>() {
+            });
+            e.onNext(response);
         });
     }
 
@@ -169,7 +183,7 @@ public class DemoApi implements AliApi {
     }
 
     @Override
-    public Observable<Response<String>> deletePlan(Plan plan) {
+    public Observable<Response<String>> delPlan(Long id) {
         return Observable.create(e->e.onError(new Exception()));
     }
 
@@ -192,5 +206,15 @@ public class DemoApi implements AliApi {
     @Override
     public Observable<Response<User>> createUser(Long mac, String password, double longitude, double latitude) {
         return Observable.create(e -> e.onError(new Exception()));
+    }
+
+    @Override
+    public Observable<Response<List<Event>>> getOnlineByDmac(Long dmac,Integer start, Integer len) {
+        return Observable.create(e->{
+            String jsonStr = FileUtil.getRawFile(R.raw.events_dmac);
+            Response<List<Event>> response = JSONObject.parseObject(jsonStr, new TypeReference<Response<List<Event>>>() {
+            });
+            e.onNext(response);
+        });
     }
 }

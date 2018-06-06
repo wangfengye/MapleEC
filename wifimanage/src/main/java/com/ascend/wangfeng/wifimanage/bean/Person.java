@@ -17,6 +17,7 @@ public class Person implements MultiItemEntity,Serializable {
     private Long bmac;
     private String pname;
     private Integer pimage;
+    private Boolean attention;
     // 表现属性
     private boolean selected; // 选中
     private boolean online;// 在线
@@ -72,6 +73,14 @@ public class Person implements MultiItemEntity,Serializable {
 
     public void setOnline(boolean online) {
         this.online = online;
+    }
+
+    public Boolean getAttention() {
+        return attention;
+    }
+
+    public void setAttention(Boolean attention) {
+        this.attention = attention;
     }
 
     @Override

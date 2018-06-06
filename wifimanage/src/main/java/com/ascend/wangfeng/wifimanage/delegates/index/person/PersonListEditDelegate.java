@@ -16,6 +16,7 @@ import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.Response;
 import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.net.MyObserver;
+import com.ascend.wangfeng.wifimanage.net.SchedulerProvider;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class PersonListEditDelegate extends LatteDelegate {
     @BindView(R.id.rv_people)
     RecyclerView mRvPeople;
     private ArrayList<Person> mPeople;
+    private PersonAdapter mAdapter;
 
 
     @Override
@@ -58,36 +60,32 @@ public class PersonListEditDelegate extends LatteDelegate {
             // 进入成员信息编辑页面
             start(PersonEditDelegate.newInstance(null));
         });
-
+        mPeople = new ArrayList<>();
+        mAdapter = new PersonAdapter(mPeople, this);
+        mAdapter.setEdit();
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());
+        mRvPeople.setLayoutManager(manager);
+        mRvPeople.setAdapter(mAdapter);
+        mRvPeople.addItemDecoration(BaseDecoration.create(getResources()
+                .getColor(android.R.color.darker_gray, getActivity().getTheme()), 1));
     }
 
+
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onSupportVisible() {
+        super.onSupportVisible();
         initList();
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) initList();
-    }
-
     private void initList() {
-        mPeople = new ArrayList<>();
-        final PersonAdapter adapter = new PersonAdapter(mPeople, this);
-        adapter.setEdit();
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());
-        mRvPeople.setLayoutManager(manager);
-        mRvPeople.setAdapter(adapter);
-        mRvPeople.addItemDecoration(BaseDecoration.create(getResources()
-                .getColor(android.R.color.darker_gray,getActivity().getTheme()), 1));
         Client.getInstance().getPersons()
+                .compose(SchedulerProvider.applyHttp())
                 .subscribe(new MyObserver<Response<List<Person>>>() {
                     @Override
                     public void onSuccess(Response<List<Person>> response) {
+                        mPeople.clear();
                         mPeople.addAll(response.getData());
-                        adapter.notifyDataSetChanged();
+                        mAdapter.notifyDataSetChanged();
                     }
                 });
 

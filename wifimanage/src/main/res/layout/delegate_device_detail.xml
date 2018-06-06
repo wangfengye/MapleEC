@@ -116,6 +116,7 @@
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     circle:bg="@color/colorAccent"
+                    circle:srcType="1"
                     android:src="@mipmap/ic_add"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -147,9 +148,9 @@
                         android:layout_height="36dp"
                         android:layout_marginRight="16dp"
                         android:layout_toLeftOf="@+id/tv_owner"
-                        android:src="@mipmap/ic_add"
+                        android:src="@mipmap/ic_about_us"
                         circle:bg="@color/colorAccent"
-                        circle:srcType="0"/>
+                        circle:srcType="1"/>
 
                     <TextView
                         android:id="@+id/tv_owner"

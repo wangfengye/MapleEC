@@ -3,6 +3,7 @@ package com.ascend.wangfeng.wifimanage.delegates.index.person;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -12,23 +13,22 @@ import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.latte.ui.recycler.BaseDecoration;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
-import com.ascend.wangfeng.wifimanage.bean.Liveness;
+import com.ascend.wangfeng.wifimanage.bean.Event;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.Response;
+import com.ascend.wangfeng.wifimanage.delegates.history.TimeLineAdapter;
 import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
 import com.ascend.wangfeng.wifimanage.delegates.index.device.DeviceDetailDelegate;
 import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.net.MyObserver;
+import com.ascend.wangfeng.wifimanage.net.SchedulerProvider;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
-import com.ascend.wangfeng.wifimanage.views.GithubActivityView;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by fengye on 2018/5/9.
@@ -54,12 +54,14 @@ public class PersonDetailDelegate extends LatteDelegate {
     TextView mTvDesc;
     @BindView(R.id.rv_devices)
     RecyclerView mRvDevices;
-    @BindView(R.id.gt_history)
-    GithubActivityView mGtHistory;
+    @BindView(R.id.rv_history)
+    RecyclerView mRvHistory;
 
     private Person mPerson;
     private DeviceSquareAdapter mDeviceAdapter;
     private ArrayList<Device> mDevices;
+    private ArrayList<Event> mEvents;
+    private TimeLineAdapter mTimeLineAdapter;
 
 
     public static PersonDetailDelegate newInstance(Bundle args) {
@@ -97,6 +99,13 @@ public class PersonDetailDelegate extends LatteDelegate {
         mRvDevices.setAdapter(mDeviceAdapter);
         mRvDevices.addItemDecoration(BaseDecoration.create(getResources()
                 .getColor(android.R.color.white, getActivity().getTheme()), 3));
+
+        // 时间轴
+        mEvents = new ArrayList<>();
+        mTimeLineAdapter = new TimeLineAdapter(mEvents);
+        RecyclerView.LayoutManager manager1 = new LinearLayoutManager(getContext());
+        mRvHistory.setAdapter(mTimeLineAdapter);
+        mRvHistory.setLayoutManager(manager1);
     }
 
     @Override
@@ -104,8 +113,6 @@ public class PersonDetailDelegate extends LatteDelegate {
         super.onSupportVisible();
         initPerson();
         initDevices();
-        initHistory();
-
     }
 
     private void initPerson() {
@@ -115,43 +122,28 @@ public class PersonDetailDelegate extends LatteDelegate {
     }
 
     private void initHistory() {
-        /*柱状图列表*/
-        //initChart(mBarChart);
-        //setData();
-        initGithubView();
-    }
-
-    private void initGithubView() {
-        Client.getInstance().getLivenessesByPId(mPerson.getPid())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new MyObserver<Response<List<Liveness>>>() {
+        Client.getInstance().getOnlineByDmac(mDevices.get(0).getDmac(),0,10)
+                .compose(SchedulerProvider.applyHttp())
+                .subscribe(new MyObserver<Response<List<Event>>>() {
                     @Override
-                    public void onSuccess(Response<List<Liveness>> response) {
-                        Integer[][] data = new Integer[7][];
-                        for (int i = 0; i < 7; i++) {
-                            Integer[] column = new Integer[24];
-                            for (int j = 0; j < 24; j++) {
-                                int index = i * 24 + j;
-                                if (response.getData().size() > index)
-                                    column[j] = response.getData().get(index).getAvalue();
-                                else column[j] = response.getData().get(0).getAvalue();
-                            }
-                            data[i] = column;
-                        }
-                        mGtHistory.setData(data);
+                    public void onSuccess(Response<List<Event>> response) {
+                        mEvents.clear();
+                        mEvents.addAll(response.getData());
+                        mTimeLineAdapter.notifyDataSetChanged();
                     }
                 });
     }
 
     private void initDevices() {
-        Client.getInstance().getDevicesByPId(mPerson.getPid())
+        Client.getInstance().getDevicesByPid(mPerson.getPid())
+                .compose(SchedulerProvider.applyHttp())
                 .subscribe(new MyObserver<Response<List<Device>>>() {
                     @Override
                     public void onSuccess(Response<List<Device>> response) {
                         mDevices.clear();
                         mDevices.addAll(response.getData());
                         mDeviceAdapter.notifyDataSetChanged();
+                        initHistory();
                     }
                 });
 

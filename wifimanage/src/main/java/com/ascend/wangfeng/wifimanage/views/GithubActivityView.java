@@ -84,7 +84,7 @@ public class GithubActivityView extends View {
         mPaint.setTextAlign(Paint.Align.RIGHT);
         for (int i = 0; i < row; i++) {
             // y坐标多减 一个mSpaceWidth 为了text视觉效果
-            canvas.drawText(String.valueOf(i - 6), mRowTitleWidth - mSpaceWidth, i * (radius + mSpaceWidth) + radius + mColumnTitleHeight - mSpaceWidth, mPaint);
+            canvas.drawText(getWeek(i), mRowTitleWidth - mSpaceWidth, i * (radius + mSpaceWidth) + radius + mColumnTitleHeight - mSpaceWidth, mPaint);
             canvas.save();
         }
         for (int i = 0; i < row; i++) {
@@ -117,7 +117,8 @@ public class GithubActivityView extends View {
         canvas.drawText("最多", mRowTitleWidth + 5 * (radius + mSpaceWidth), 8 * (radius + mSpaceWidth) + radius - mSpaceWidth + mColumnTitleHeight, mPaint);
     }
 
-    public int getColor(int i) {
+    public int getColor(Integer i) {
+        if (i ==null) i=0;
         i = i / mSpeed;
         switch (i) {
             case 0:
@@ -136,6 +137,7 @@ public class GithubActivityView extends View {
     }
 
     public String getWeek(int day) {
+        day+=1;
         day = day % 7;
         switch (day) {
             case 1:

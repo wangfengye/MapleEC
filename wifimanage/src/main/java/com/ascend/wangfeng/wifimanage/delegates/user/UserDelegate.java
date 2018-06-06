@@ -39,8 +39,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by fengye on 2018/4/25.
@@ -67,6 +65,7 @@ public class UserDelegate extends BottomItemDelegate {
     private Person mPerson;
     private ArrayList<Device> mDevices;
     private DeviceSquareAdapter mDeviceAdapter;
+    private Long mTime = 0L;
 
     public static UserDelegate newInstance(Bundle args) {
         UserDelegate fragment = new UserDelegate();
@@ -81,6 +80,12 @@ public class UserDelegate extends BottomItemDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
+        mTime = System.currentTimeMillis();
+    }
+
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
         Client.getInstance().getPersonWithAttention()
                 .compose(SchedulerProvider.applyHttp())
                 .subscribe(new MyObserver<Response<Person>>() {
@@ -97,24 +102,28 @@ public class UserDelegate extends BottomItemDelegate {
                     }
                 });
     }
+
     @OnClick(R.id.btn_add)
-    void clickBtnAdd(){
+    void clickBtnAdd() {
         start(new AttentionChoiceDelegate());
     }
+
     private void initData() {
         initPerson();
         initDevices();
-        initHistory();
+
     }
 
     private void initDevices() {
-        Client.getInstance().getDevicesByPId(mPerson.getPid())
+        Client.getInstance().getDevicesByPid(mPerson.getPid())
+                .compose(SchedulerProvider.applyHttp())
                 .subscribe(new MyObserver<Response<List<Device>>>() {
                     @Override
                     public void onSuccess(Response<List<Device>> response) {
                         mDevices.clear();
                         mDevices.addAll(response.getData());
                         mDeviceAdapter.notifyDataSetChanged();
+                        initHistory();
                     }
                 });
     }
@@ -131,7 +140,7 @@ public class UserDelegate extends BottomItemDelegate {
         mRvDevices.setLayoutManager(manager);
         mRvDevices.setAdapter(mDeviceAdapter);
         mRvDevices.addItemDecoration(BaseDecoration.create(getResources()
-                .getColor(android.R.color.white,getActivity().getTheme()), 3));
+                .getColor(android.R.color.white, getActivity().getTheme()), 3));
     }
 
     // 无关注人员时情况;
@@ -148,11 +157,10 @@ public class UserDelegate extends BottomItemDelegate {
     }
 
     private void initHistory() {
-       /* initChart(mBarChart);
-        setData();*/
-        Client.getInstance().getLivenessesByPId(mPerson.getPid())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        mTime = mTime - 60 * 60 * 24 * 7 * 1000;
+        Long time = com.ascend.wangfeng.latte.util.TimeUtil.getFirstTimeOfWeek(mTime);
+        Client.getInstance().getLivenesses(mDevices.get(0).getDmac(), mTime)
+                .compose(SchedulerProvider.applyHttp())
                 .subscribe(new MyObserver<Response<List<Liveness>>>() {
                     @Override
                     public void onSuccess(Response<List<Liveness>> response) {
@@ -161,9 +169,13 @@ public class UserDelegate extends BottomItemDelegate {
                             Integer[] column = new Integer[24];
                             for (int j = 0; j < 24; j++) {
                                 int index = i * 24 + j;
-                                if (response.getData().size() > index)
-                                    column[j] = response.getData().get(index).getAvalue();
-                                else column[j] = response.getData().get(0).getAvalue();
+                                for (int k = 0; k < response.getData().size(); k++) {
+                                    if (response.getData().get(k).getTimeStamp()
+                                            == time + index * 60 * 60 * 1000) {
+                                        column[j] = response.getData().get(k).getAvalue();
+                                        break;
+                                    }
+                                }
                             }
                             data[i] = column;
                         }
@@ -174,9 +186,9 @@ public class UserDelegate extends BottomItemDelegate {
 
     private void setData() {
         ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(getResources().getColor(R.color.colorAccent,getActivity().getTheme()));
-        colors.add(getResources().getColor(R.color.colorOrange,getActivity().getTheme()));
-        colors.add(getResources().getColor(R.color.colorBlue,getActivity().getTheme()));
+        colors.add(getResources().getColor(R.color.colorAccent, getActivity().getTheme()));
+        colors.add(getResources().getColor(R.color.colorOrange, getActivity().getTheme()));
+        colors.add(getResources().getColor(R.color.colorBlue, getActivity().getTheme()));
         ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
         for (int j = 0; j < 2; j++) {
             ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
@@ -205,6 +217,7 @@ public class UserDelegate extends BottomItemDelegate {
 
         mBarChart.setData(data);
     }
+
     @SuppressWarnings("all")
     private void initChart(BarChart chart) {
         chart.setDrawBarShadow(false);

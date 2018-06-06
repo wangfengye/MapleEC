@@ -6,8 +6,6 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,6 +21,7 @@ import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
 import com.ascend.wangfeng.wifimanage.delegates.index.person.PersonListEditDelegate;
 import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.net.MyObserver;
+import com.ascend.wangfeng.wifimanage.net.SchedulerProvider;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.joanzapata.iconify.widget.IconTextView;
 
@@ -71,32 +70,22 @@ public class DeviceEditDelegate extends LatteDelegate {
 
     @OnClick(R.id.btn_save)
     void clickBtnSave() {
+        mDevice.setDname(mEtName.getText().toString().trim());
+        Client.getInstance().updateDevice(mDevice)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MyObserver<Response<Device>>() {
+                    @Override
+                    public boolean showLoading() {
+                        return true;
+                    }
 
-        if (mDevice.getDid() != null && mDevice.getDid() != 0) {
-            // 更新
-            Client.getInstance().updateDevice(mDevice)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new MyObserver<Response<Device>>() {
-                        @Override
-                        public void onSuccess(Response<Device> response) {
-                            MainApp.toast(R.string.update_success);
-                            goDeviceDetail();
-                        }
-                    });
-        } else {
-            //新增
-            Client.getInstance().addDevice(mDevice)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new MyObserver<Response<Device>>() {
-                        @Override
-                        public void onSuccess(Response<Device> response) {
-                            MainApp.toast(R.string.add_success);
-                            goDeviceDetail();
-                        }
-                    });
-        }
+                    @Override
+                    public void onSuccess(Response<Device> response) {
+                        MainApp.toast(R.string.update_success);
+                        goDeviceDetail();
+                    }
+                });
     }
 
     private void goDeviceDetail() {
@@ -131,14 +120,14 @@ public class DeviceEditDelegate extends LatteDelegate {
         GridLayoutManager manager = new GridLayoutManager(getContext(), 5);
         mTypes = DeviceType.getTypes();
         mAdapter = new DeviceTypeAdapter(mTypes);
-        mAdapter.setListener(deviceType-> {
-                // 设置设备类型;
-                mDevice.setDtype(deviceType.getId());
+        mAdapter.setListener(deviceType -> {
+            // 设置设备类型;
+            mDevice.setDtype(deviceType.getId());
         });
         mRvTypes.setAdapter(mAdapter);
         mRvTypes.setLayoutManager(manager);
         mRvTypes.addItemDecoration(BaseDecoration.create(getResources()
-                .getColor(R.color.colorBg,getActivity().getTheme()), 3));
+                .getColor(R.color.colorBg, getActivity().getTheme()), 3));
     }
 
     /**
@@ -146,48 +135,35 @@ public class DeviceEditDelegate extends LatteDelegate {
      */
     private void initData() {
         mDevice = (Device) getArguments().getSerializable(DEVICE);
-        // 设置设备图标
-        mCimgIcon.setImage(mTypes.get(mDevice.getDtype()).getImgId());
-        mEtName.setText(mDevice.getDname());
-        // 监听名称改变
-        mEtName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence sequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence sequence, int i, int i1, int i2) {
-                mDevice.setDname(sequence.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        mTypes.get(mDevice.getDtype()).setChose(true);
-        mAdapter.notifyDataSetChanged();
         // 拥有者关系
-        reViewOwner(mDevice.getDid());
-    }
-
-    private void reViewOwner(Long id) {
-        Client.getInstance().getPersonById(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new MyObserver<Response<Person>>() {
+        Client.getInstance().getDevice(mDevice.getDid())
+                .compose(SchedulerProvider.applyHttp())
+                .subscribe(new MyObserver<Response<Device>>() {
                     @Override
-                    public void onSuccess(Response<Person> response) {
-                        mCImgOwener.setSrcType(CircleImageView.TYPE_NORMAL);
-                        mCImgOwener.setImage(Icon.getImgUrl(response.getData().getPimage()));
-                        mTvOwner.setText(response.getData().getPname());
+                    public void onSuccess(Response<Device> response) {
+                        mDevice = response.getData();
+                        mCimgIcon.setImage(mTypes.get(mDevice.getDtype()).getImgId());
+                        mEtName.setText(mDevice.getDname());
+                        mTypes.get(mDevice.getDtype()).setChose(true);
+                        mAdapter.notifyDataSetChanged();
+                        reViewOwner(response.getData());
                     }
                 });
+
+    }
+
+    private void reViewOwner(Device device) {
+        if (device.getPerson() != null) {
+            mCImgOwener.setSrcType(CircleImageView.TYPE_NORMAL);
+            mCImgOwener.setImage(Icon.getImgUrl(device.getPerson().getPimage()));
+            mTvOwner.setText(device.getPerson().getPname());
+        }
+
     }
 
     @Override
     public void onFragmentResult(int requestCode, int resultCode, Bundle data) {
+        if (data == null) return;
         mPerson = (Person) data.getSerializable("person");
         if (mPerson != null) {
             mDevice.setPid(mPerson.getPid());

@@ -75,7 +75,7 @@ public class PlanDetailDelegate extends LatteDelegate {
     @OnClick(R.id.btn_delete)
     void clickBtnDelete() {
         // 删除计划
-        Client.getInstance().deletePlan(mPlan)
+        Client.getInstance().delPlan(mPlan.getPid())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<Response<String>>() {

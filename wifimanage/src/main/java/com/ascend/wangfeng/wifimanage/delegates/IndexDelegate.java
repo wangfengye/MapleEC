@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.ascend.wangfeng.latte.delegates.bottom.BottomItemDelegate;
-import com.ascend.wangfeng.latte.net.rx.BaseObserver;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Person;
@@ -29,7 +28,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -182,30 +180,8 @@ public class IndexDelegate extends BottomItemDelegate {
                             mNewDevicesAdapter.notifyDataSetChanged();
                         }
                         mOnlineDevicesAdapter.notifyDataSetChanged();
-                        getPersons(mPIds);
+                        mPeopleAdapter.setPIds(mPIds);
                     }
                 });
     }
-
-    public void getPersons(LinkedHashSet<Long> ids) {
-        mPeople.clear();
-        Observable.fromIterable(ids)
-                .subscribe(new BaseObserver<Long>() {
-                    @Override
-                    public void onNext(Long aLong) {
-                        Client.getInstance().getPersonById(aLong)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new MyObserver<Response<Person>>() {
-                                    @Override
-                                    public void onSuccess(Response<Person> response) {
-                                        mPeople.add(response.getData());
-                                        mPeopleAdapter.notifyDataSetChanged();
-                                    }
-                                });
-                    }
-                });
-
-    }
-
 }

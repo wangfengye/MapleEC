@@ -75,7 +75,7 @@ public class RegisterDelegate extends LatteDelegate {
                         User user = new User();
                         user.setBmac(mac);
                         user.setUpasswd(password);
-                        LattePreference.setJson(SpKey.USER,response.getData());
+                        LattePreference.setJson(SpKey.USER,user);
                         startWithPop(MainDelegate.newInstance());
                     }
                 });

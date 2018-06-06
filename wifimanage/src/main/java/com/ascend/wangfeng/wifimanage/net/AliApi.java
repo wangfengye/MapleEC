@@ -18,7 +18,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Query;
+import retrofit2.http.Path;
 
 /**
  * Created by fengye on 2018/5/18.
@@ -59,13 +59,22 @@ public interface AliApi {
     Observable<Response<List<Device>>> getDeviecseWithPlan();
 
     /**
-     * 获取 某人的所有设备
+     * 获取 设备详情
      *
-     * @param id person_id
+     * @param did person_id
      * @return
      */
-    @GET("dev/pid")
-    Observable<Response<List<Device>>> getDevicesByPId(@Query("pid") Long id);
+    @GET("dev/findDPById/{id}")
+    Observable<Response<Device>> getDevice(@Path("id") Long did);
+
+    /**
+     * 查询人员拥有的dev
+     *
+     * @param id perosn pid
+     * @return
+     */
+    @GET("dev/findByPid/{id}")
+    Observable<Response<List<Device>>> getDevicesByPid(@Path("id") Long id);
 
     /**
      * 新增设备
@@ -91,8 +100,9 @@ public interface AliApi {
      * @param id peson_id
      * @return
      */
-    @GET("person")
-    Observable<Response<Person>> getPersonById(@Query("pid") Long id);
+    @GET("person/findById/{pid}")
+    Observable<Response<Person>> getPersonById(@Path("pid") Long id);
+
     /**
      * 查询  关注的 person
      *
@@ -102,15 +112,15 @@ public interface AliApi {
     Observable<Response<Person>> getPersonWithAttention();
 
     /**
-     *
      * @return
      */
-    @PUT("person/attention/update")
+    @PUT("person/update")
     Observable<Response<Person>> updatePersonWithAttention(@Body Person person);
+
     /**
      * 查询所有 person
      *
-  * @return
+     * @return
      */
     @GET("person/findAll")
     Observable<Response<List<Person>>> getPersons();
@@ -134,14 +144,30 @@ public interface AliApi {
     Observable<Response<Person>> updatePerson(@Body Person person);
 
     /**
-     * 获取活跃度,最近一周(维度:person,同一person下多设备,去最高值)
+     * 删除人员
      *
-     * @param pid 人员id
+     * @param id
      * @return
      */
-    @GET("activity/lastweek")
-    Observable<Response<List<Liveness>>> getLivenessesByPId(@Query("pid") Long pid);
+    @DELETE("person/del/{id}")
+    Observable<Response<Person>> delPerson(@Path("id") Long id);
 
+    /**
+     * 获取活跃度 一周
+     *
+     * @param dmac 人员id
+     * @return
+     */
+    @GET("activity/week/{dmac}/{time}")
+    Observable<Response<List<Liveness>>> getLivenesses(@Path("dmac") Long dmac,@Path("time")Long time);
+    /**
+     * 获取活跃度,一天
+     *
+     * @param dmac 人员id
+     * @return
+     */
+    @GET("activity/day/{dmac}/{time}")
+    Observable<Response<List<Liveness>>> getLivenessWithDay(@Path("dmac") Long dmac,@Path("time")Long time);
     /**
      * 查询所有plan
      *
@@ -157,8 +183,8 @@ public interface AliApi {
      * @param dmac: 设备id
      * @return
      */
-    @GET("plan/device")
-    Observable<Response<List<Plan>>> getPlansByDId(@Query("dmac") Long dmac);
+    @GET("plan/device/{dmac}")
+    Observable<Response<List<Plan>>> getPlansByDId(@Path("dmac") Long dmac);
 
     /**
      * 新增plan
@@ -181,11 +207,11 @@ public interface AliApi {
     /**
      * 删除 plan
      *
-     * @param plan
+     * @param id
      * @return
      */
-    @DELETE("plan/del")
-    Observable<Response<String>> deletePlan(@Body Plan plan);
+    @DELETE("plan/del/{id}")
+    Observable<Response<String>> delPlan(@Path("id") Long id);
 
     /**
      * 获取当天的日志
@@ -193,8 +219,8 @@ public interface AliApi {
      * @param time 当天凌晨的时间戳(秒级)
      * @return
      */
-    @GET("p/online")
-    Observable<Response<List<Event>>> getEvents(@Query("time") Long time);
+    @GET("p/online/day/{time}")
+    Observable<Response<List<Event>>> getEvents(@Path("time") Long time);
 
     /**
      * 登录
@@ -212,7 +238,10 @@ public interface AliApi {
      */
     @FormUrlEncoded
     @POST("usr/register")
-    Observable<Response<User>> createUser(@Field("bmac") Long mac,@Field("upasswd") String password
+    Observable<Response<User>> createUser(@Field("bmac") Long mac, @Field("upasswd") String password
             , @Field("blng") double longitude, @Field("blat") double latitude);
 
+    @GET("p/online/device/{dmac}/{start}/{len}")
+    Observable<Response<List<Event>>> getOnlineByDmac(@Path("dmac") Long dmac
+            , @Path("start") Integer start, @Path("len") Integer len);
 }

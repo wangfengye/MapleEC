@@ -50,7 +50,7 @@ public abstract class MyObserver<T extends Response> implements Observer<T> {
                 onSuccess(t);
                 break;
             case 400:// 请求异常
-                MainApp.toast(R.string.error);
+                MainApp.toast(t.getMessage());
                 break;
             case 401://登录信息过期
                 MainActivity activity = Latte.getConfiguration(ConfigType.ACTIVITY_CONTEXT);

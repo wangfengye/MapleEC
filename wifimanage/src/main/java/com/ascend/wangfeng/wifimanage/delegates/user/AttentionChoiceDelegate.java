@@ -68,12 +68,14 @@ public class AttentionChoiceDelegate extends LatteDelegate {
         for (int i = 0; i < mPeople.size(); i++) {
             if (mPeople.get(i).isSelected()){person = mPeople.get(i);break;}
         }
+        person.setAttention(true);
         Client.getInstance().updatePersonWithAttention(person)
                 .compose(SchedulerProvider.applyHttp())
                 .subscribe(new MyObserver<Response<Person>>() {
                     @Override
                     public void onSuccess(Response<Person> response) {
                         MainApp.toast(R.string.set_attention_success);
+                        pop();
                     }
                 });
     }

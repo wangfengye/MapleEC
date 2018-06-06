@@ -32,6 +32,9 @@ public class MainApp extends MultiDexApplication {
     public static void toast(@StringRes int id){
         Toast.makeText(mContext,id,Toast.LENGTH_SHORT).show();
     }
+    public static void toast(String message){
+        Toast.makeText(mContext,message,Toast.LENGTH_SHORT).show();
+    }
     public static void showDemo(){
         mDemo = true;
     }

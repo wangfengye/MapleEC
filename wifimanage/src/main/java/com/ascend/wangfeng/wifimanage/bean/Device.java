@@ -26,6 +26,7 @@ public class Device implements MultiItemEntity, Serializable {
     private Long firsttime;
     private Long lasttime;
     // vo
+    private Person person;
     private boolean online;
 
     @Override
@@ -142,6 +143,14 @@ public class Device implements MultiItemEntity, Serializable {
 
     public void setOnline(boolean online) {
         this.online = online;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     @Override

@@ -57,6 +57,11 @@ public class PersonEditDelegate extends LatteDelegate {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new MyObserver<Response<Person>>() {
                         @Override
+                        public boolean showLoading() {
+                            return true;
+                        }
+
+                        @Override
                         public void onSuccess(Response<Person> response) {
                             Toast.makeText(getActivity(), R.string.add_success, Toast.LENGTH_SHORT).show();
                             pop();
@@ -67,6 +72,10 @@ public class PersonEditDelegate extends LatteDelegate {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new MyObserver<Response<Person>>() {
+                        @Override
+                        public boolean showLoading() {
+                            return true;
+                        }
                         @Override
                         public void onSuccess(Response<Person> response) {
                             Toast.makeText(getActivity(), R.string.update_success, Toast.LENGTH_SHORT).show();
@@ -99,6 +108,7 @@ public class PersonEditDelegate extends LatteDelegate {
     public void init() {
         mPerson = (Person) getArguments().getSerializable(PERSON);
         if (mPerson != null) {
+
             mCimgIcon.setImage(Icon.getImgUrl(mPerson.getPimage()));
             mEtName.setText(mPerson.getPname());
         } else {

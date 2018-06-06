@@ -22,6 +22,7 @@ import com.ascend.wangfeng.wifimanage.delegates.plan.PlanAdapter;
 import com.ascend.wangfeng.wifimanage.delegates.plan.PlanDetailDelegate;
 import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.net.MyObserver;
+import com.ascend.wangfeng.wifimanage.net.SchedulerProvider;
 import com.ascend.wangfeng.wifimanage.utils.MacUtil;
 import com.ascend.wangfeng.wifimanage.views.CircleImageView;
 import com.joanzapata.iconify.widget.IconTextView;
@@ -155,16 +156,16 @@ public class DeviceDetailDelegate extends LatteDelegate {
     private void initData() {
         Bundle bundle = getArguments();
         mDevice = (Device) bundle.getSerializable(DEVICE);
-        mCimgIcon.setImage(DeviceType.getTypes().get(mDevice.getDtype()).getImgId());
-        mTvDeviceName.setText(mDevice.getDname());
-        mTvLasttime.setText("最近更新时间: " + TimeUtil.format(mDevice.getLasttime()));
-        mTvFirsttime.setText("首次出现时间: " + TimeUtil.format(mDevice.getFirsttime()));
-        mTvIp.setText(mDevice.getDevIp());
-        mTvMac.setText(MacUtil.longToString(mDevice.getDmac()));
-        mTvBrand.setText(mDevice.getVendor());// 厂商
-        mTvDhcp.setText(mDevice.getHostname());// 主机
-        mTvNetbios.setText(mDevice.getNetbios());
-        reViewOwner(mDevice.getDid());
+
+        Client.getInstance().getDevice(mDevice.getDid())
+                .compose(SchedulerProvider.applyHttp())
+                .subscribe(new MyObserver<Response<Device>>() {
+                    @Override
+                    public void onSuccess(Response<Device> response) {
+                        mDevice = response.getData();
+                        reView(response.getData());
+                    }
+                });
         Client.getInstance().getPlansByDId(mDevice.getDid())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -178,18 +179,21 @@ public class DeviceDetailDelegate extends LatteDelegate {
                 });
     }
 
-    private void reViewOwner(Long id) {
-        Client.getInstance().getPersonById(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new MyObserver<Response<Person>>() {
-                    @Override
-                    public void onSuccess(Response<Person> response) {
-                        mPerson = response.getData();
-                        mTvOwner.setText(response.getData().getPname());
-                        mCimgOwner.setImage(Icon.getImgUrl(response.getData().getPimage()));
-                    }
-                });
-
+    private void reView(Device device) {
+        mCimgIcon.setImage(DeviceType.getTypes().get(device.getDtype()).getImgId());
+        mTvDeviceName.setText(device.getDname());
+        mTvLasttime.setText("最近更新时间: " + TimeUtil.format(device.getLasttime()));
+        mTvFirsttime.setText("首次出现时间: " + TimeUtil.format(device.getFirsttime()));
+        mTvIp.setText(device.getDevIp());
+        mTvMac.setText(MacUtil.longToString(device.getDmac()));
+        mTvBrand.setText(device.getVendor());// 厂商
+        mTvDhcp.setText(device.getHostname());// 主机
+        mTvNetbios.setText(device.getNetbios());
+        mPerson = device.getPerson();
+        if (mPerson!=null){
+            mTvOwner.setText(mPerson.getPname());
+            mCimgOwner.setImage(Icon.getImgUrl(mPerson.getPimage()));
+            mCimgOwner.setSrcType(CircleImageView.TYPE_NORMAL);
+        }
     }
 }

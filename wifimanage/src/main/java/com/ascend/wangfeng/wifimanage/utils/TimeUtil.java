@@ -12,7 +12,6 @@ import java.util.Date;
 
 public class TimeUtil {
     public static Long getTime(int hour, int minute) {
-
         return Long.valueOf(hour * 60 * 60 + minute * 60);
     }
 

@@ -14,6 +14,10 @@ public class Liveness {
     private Long aHour;
     private Integer avalue;// 活跃度,0-60
 
+    public Long getTimeStamp() {
+        return aYear + aHour * 60 * 60 * 1000;
+    }
+
     public Long getAid() {
         return aid;
     }

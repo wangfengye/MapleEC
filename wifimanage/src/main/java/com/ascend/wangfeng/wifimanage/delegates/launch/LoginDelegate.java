@@ -62,7 +62,7 @@ public class LoginDelegate extends LatteDelegate {
                         User user = new User();
                         user.setBmac(mac);
                         user.setUpasswd(password);
-                        LattePreference.setJson(SpKey.USER, response.getData());
+                        LattePreference.setJson(SpKey.USER, user);
                         startWithPop(MainDelegate.newInstance());
                     }
                 });
@@ -81,7 +81,7 @@ public class LoginDelegate extends LatteDelegate {
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
         mToolbarTitle.setText("登录");
-        User user = LattePreference.getJson(SpKey.USER, null);
+        User user = LattePreference.getJson(SpKey.USER, User.class);
         if (user != null) {
             mEtNo.setText(MacUtil.longToString(user.getBmac()));
             mEtPassword.setText(user.getUpasswd());
