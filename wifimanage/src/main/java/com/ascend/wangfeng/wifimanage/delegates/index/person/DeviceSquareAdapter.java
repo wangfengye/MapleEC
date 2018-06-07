@@ -32,8 +32,20 @@ public class DeviceSquareAdapter extends BaseMultiItemQuickAdapter<Device, Multi
     protected void convert(MultipleViewHolder helper, final Device item) {
         helper.setImageResource(R.id.img_icon, DeviceType.getTypes().get(item.getDtype()).getImgId());
         helper.setText(R.id.tv_name, item.getDname());
+        helper.setBackgroundRes(R.id.rl_content, item.isSelected()
+                    ? R.drawable.ll_round_choosed : R.drawable.ll_round_normal);
+
         if (mListener != null) {
-            helper.getView(R.id.rl_content).setOnClickListener(view -> mListener.click(item));
+            helper.getView(R.id.rl_content).setOnClickListener(view -> {
+                if (mListener != null) {
+                    for (Device device : getData()) {
+                        device.setSelected(false);
+                    }
+                    item.setSelected(true);
+                    notifyDataSetChanged();
+                    mListener.click(item);
+                }
+            });
         }
     }
 

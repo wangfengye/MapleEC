@@ -28,6 +28,7 @@ public class Device implements MultiItemEntity, Serializable {
     // vo
     private Person person;
     private boolean online;
+    private boolean selected;
 
     @Override
     public int getItemType() {
@@ -151,6 +152,14 @@ public class Device implements MultiItemEntity, Serializable {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
     @Override

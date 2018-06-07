@@ -19,7 +19,6 @@ import com.ascend.wangfeng.wifimanage.bean.Liveness;
 import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.Response;
 import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
-import com.ascend.wangfeng.wifimanage.delegates.index.device.DeviceDetailDelegate;
 import com.ascend.wangfeng.wifimanage.delegates.index.person.DeviceSquareAdapter;
 import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.net.MyObserver;
@@ -49,7 +48,7 @@ import butterknife.OnClick;
  */
 
 public class UserDelegate extends BottomItemDelegate {
-
+    private static final Long WEEK_TIME = 7 * 24 * 60 * 60 * 1000L;// 一周对应的时间戳
     @BindView(R.id.ll_content)
     LinearLayout mLlContent;
     @BindView(R.id.cimg_icon)
@@ -71,6 +70,7 @@ public class UserDelegate extends BottomItemDelegate {
     private ArrayList<Device> mDevices;
     private DeviceSquareAdapter mDeviceAdapter;
     private Long mTime = 0L;
+    private Device mDevice;// 记录当前展示的device;
 
     public static UserDelegate newInstance(Bundle args) {
         UserDelegate fragment = new UserDelegate();
@@ -127,9 +127,13 @@ public class UserDelegate extends BottomItemDelegate {
                     @Override
                     public void onSuccess(Response<List<Device>> response) {
                         mDevices.clear();
+                        if (response.getData().size() > 0){
+                            mDevice = response.getData().get(0);
+                            mDevice.setSelected(true);
+                        }
                         mDevices.addAll(response.getData());
                         mDeviceAdapter.notifyDataSetChanged();
-                        initHistory(mTime,mDevices.get(0).getDmac());
+                        initHistory(mTime, mDevice);
                     }
                 });
     }
@@ -138,9 +142,9 @@ public class UserDelegate extends BottomItemDelegate {
         mDevices = new ArrayList<>();
         mDeviceAdapter = new DeviceSquareAdapter(mDevices);
         mDeviceAdapter.setListener(device -> {
-            Bundle args = new Bundle();
-            args.putSerializable(DeviceDetailDelegate.DEVICE, device);
-            start(DeviceDetailDelegate.newInstance(args), SINGLETASK);
+            // 切换加载的图表;
+            mDevice = device;
+            initHistory(mTime, device);
         });
         GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
         mRvDevices.setLayoutManager(manager);
@@ -148,18 +152,18 @@ public class UserDelegate extends BottomItemDelegate {
         mRvDevices.addItemDecoration(BaseDecoration.create(getResources()
                 .getColor(android.R.color.white, getActivity().getTheme()), 3));
 
-        mGithub.mListener = i-> {
-            if (i == GithubActivityView.LEFT){
-                if (System.currentTimeMillis()-mTime < 60 * 60 * 24 * 7 * 1000){
+        mGithub.mListener = i -> {
+            if (i == GithubActivityView.LEFT) {
+                if (System.currentTimeMillis() - mTime < 60 * 60 * 24 * 7 * 1000) {
                     Toast.makeText(getActivity(), "已划至最新时间", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                mTime += 60 * 60 * 24 * 7 * 1000;
-            }else {
-                mTime -= 60 * 60 * 24 * 7 * 1000;
+                mTime += WEEK_TIME;
+            } else {
+                mTime -= WEEK_TIME;
             }
 
-            initHistory(mTime,mDevices.get(0).getDmac());
+            initHistory(mTime, mDevice);
         };
     }
 
@@ -176,10 +180,11 @@ public class UserDelegate extends BottomItemDelegate {
         // mTvDesc.setText();
     }
 
-    private void initHistory(Long time,Long dmac) {
+    private void initHistory(Long time, Device device) {
+        if (device == null) return;
         mTvLivenessTitle.setText(TimeUtil.formatWeek(time));
         Long weekstart = com.ascend.wangfeng.latte.util.TimeUtil.getFirstTimeOfWeek(mTime);
-        Client.getInstance().getLivenesses(dmac, time)
+        Client.getInstance().getLivenesses(device.getDmac(), time)
                 .compose(SchedulerProvider.applyHttp())
                 .subscribe(new MyObserver<Response<List<Liveness>>>() {
                     @Override
