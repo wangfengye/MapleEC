@@ -32,6 +32,7 @@ public abstract class MyObserver<T extends Response> implements Observer<T> {
         if (MainApp.mDemo) {
             MainApp.toast(R.string.demo_hint);
         } else {
+
             MainApp.toast(R.string.error);
         }
 

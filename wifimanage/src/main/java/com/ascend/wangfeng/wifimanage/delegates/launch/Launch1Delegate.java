@@ -45,6 +45,11 @@ public class Launch1Delegate extends LatteDelegate{
                             startWithPop(new LoginDelegate());
                         }
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        startWithPop(new LoginDelegate());
+                    }
                 });
     }
 }

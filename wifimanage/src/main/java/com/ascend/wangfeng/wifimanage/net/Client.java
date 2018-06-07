@@ -1,5 +1,7 @@
 package com.ascend.wangfeng.wifimanage.net;
 
+import com.ascend.wangfeng.latte.app.Latte;
+import com.ascend.wangfeng.latte.util.NetUtil;
 import com.ascend.wangfeng.latte.util.storage.LattePreference;
 import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.net.converter.FastJsonConverterFactory;
@@ -9,6 +11,8 @@ import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.util.concurrent.TimeUnit;
 
@@ -19,7 +23,12 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import okhttp3.Cache;
+import okhttp3.CacheControl;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -124,10 +133,43 @@ public class Client {
                 // 添加cookie
                 ClearableCookieJar cookieJar =
                         new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(MainApp.getContent()));
+                // 缓存
+                File cacheDir = new File(Latte.getApplicationContext().getCacheDir(), "response");
+                //缓存的最大尺寸10m
+                Cache cache = new Cache(cacheDir, 1024 * 1024 * 10);
+
+
                 return new OkHttpClient.Builder()
                         .sslSocketFactory(sslSocketFactory)
                         .hostnameVerifier(verifier)
                         .cookieJar(cookieJar)
+                        .cache(cache)
+                        .addInterceptor(new Interceptor() {
+                            @Override
+                            public Response intercept(Chain chain) throws IOException {
+                                Request request = chain.request();
+                                boolean netAvaiable = NetUtil
+                                        .isNetAvaiable(Latte.getApplicationContext());
+                                if (netAvaiable) {
+                                    // 强制走网络
+                                    request = request.newBuilder()
+                                            .cacheControl(CacheControl.FORCE_NETWORK)
+                                            .build();
+                                } else {
+                                    request = request.newBuilder()
+                                            .cacheControl(CacheControl.FORCE_CACHE)
+                                            .build();
+                                }
+                                Response response = chain.proceed(request);
+                                if (!netAvaiable) {
+                                    response = response.newBuilder()
+                                            .removeHeader("Pragma")//移除干扰的头信息
+                                            .header("Cache-Control", "public, only-if-cached, max-stale=" + 7 * 24 * 60 * 60)
+                                            .build();
+                                }
+                                return response;
+                            }
+                        })
                         .build();
             } catch (Exception e) {
                 throw new RuntimeException(e);

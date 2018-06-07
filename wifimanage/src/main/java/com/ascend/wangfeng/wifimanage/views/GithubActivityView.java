@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.ascend.wangfeng.wifimanage.R;
@@ -17,15 +19,20 @@ import com.ascend.wangfeng.wifimanage.R;
  */
 
 public class GithubActivityView extends View {
+    public static final String TAG = GithubActivityView.class.getSimpleName();
+    public static final int LEFT = 1;
+    public static final int RIGHT = 2;
     private int mWidth;
     private Integer[][] data;
     private Paint mPaint;
     private float mColumnTitleHeight;
     private float mRowTitleWidth;
     private int mSpeed = 12;
-
-
     private float mSpaceWidth = 5f;
+
+    private int mLastX = 0;
+    private int mStartX = 0;
+    public OnLoadListener mListener;
 
     public GithubActivityView(Context context) {
         this(context, null);
@@ -43,6 +50,39 @@ public class GithubActivityView extends View {
     public void setData(Integer[][] data) {
         this.data = data;
         invalidate();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int x = (int) event.getX();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                mLastX = mStartX = x;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (Math.abs(x - mLastX) >= 5) {
+                    int offsetx = x - mLastX;
+                    mLastX = x;
+                    layout(getLeft() + offsetx, getTop(), getRight() + offsetx, getBottom());
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                int offsetx1 = mLastX - mStartX;
+                if (x - mStartX > 100) {//→划
+                    if (mListener != null) mListener.load(RIGHT);
+                    Log.i(TAG, "onTouchEvent: 超出右限制,加载");
+                } else if (x - mStartX < -100) {// 左划
+                    if (mListener != null) mListener.load(LEFT);
+                    Log.i(TAG, "onTouchEvent: 超出左限制,加载");
+                } else {
+                    Log.i(TAG, "onTouchEvent: 未超出限制,恢复");
+                }
+                layout(getLeft() - offsetx1, getTop(), getRight() - offsetx1, getBottom());
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 
     private void init() {
@@ -118,7 +158,7 @@ public class GithubActivityView extends View {
     }
 
     public int getColor(Integer i) {
-        if (i ==null) i=0;
+        if (i == null) i = 0;
         i = i / mSpeed;
         switch (i) {
             case 0:
@@ -137,7 +177,7 @@ public class GithubActivityView extends View {
     }
 
     public String getWeek(int day) {
-        day+=1;
+        day += 1;
         day = day % 7;
         switch (day) {
             case 1:
@@ -157,4 +197,9 @@ public class GithubActivityView extends View {
         }
         return "未知";
     }
+
+    public interface OnLoadListener {
+        void load(int i);
+    }
+
 }

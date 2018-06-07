@@ -5,11 +5,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ascend.wangfeng.latte.delegates.bottom.BottomItemDelegate;
 import com.ascend.wangfeng.latte.ui.recycler.BaseDecoration;
+import com.ascend.wangfeng.latte.util.TimeUtil;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Device;
 import com.ascend.wangfeng.wifimanage.bean.Liveness;
@@ -47,6 +50,8 @@ import butterknife.OnClick;
 
 public class UserDelegate extends BottomItemDelegate {
 
+    @BindView(R.id.ll_content)
+    LinearLayout mLlContent;
     @BindView(R.id.cimg_icon)
     CircleImageView mCimgIcon;
     @BindView(R.id.tv_name)
@@ -55,13 +60,13 @@ public class UserDelegate extends BottomItemDelegate {
     TextView mTvDesc;
     @BindView(R.id.rv_devices)
     RecyclerView mRvDevices;
-    //@BindView(R.id.bar_history)
-    BarChart mBarChart;
+
     @BindView(R.id.github)
     GithubActivityView mGithub;
     @BindView(R.id.rl_add)
     RelativeLayout mRlAdd;
-
+    @BindView(R.id.tv_liveness_title)
+    TextView mTvLivenessTitle;
     private Person mPerson;
     private ArrayList<Device> mDevices;
     private DeviceSquareAdapter mDeviceAdapter;
@@ -94,6 +99,7 @@ public class UserDelegate extends BottomItemDelegate {
                     public void onSuccess(Response<Person> response) {
                         if (response.getData() != null) {
                             mRlAdd.setVisibility(View.GONE);
+                            mLlContent.setVisibility(View.VISIBLE);
                             mPerson = response.getData();
                             initData();
                         } else {
@@ -123,7 +129,7 @@ public class UserDelegate extends BottomItemDelegate {
                         mDevices.clear();
                         mDevices.addAll(response.getData());
                         mDeviceAdapter.notifyDataSetChanged();
-                        initHistory();
+                        initHistory(mTime,mDevices.get(0).getDmac());
                     }
                 });
     }
@@ -141,6 +147,20 @@ public class UserDelegate extends BottomItemDelegate {
         mRvDevices.setAdapter(mDeviceAdapter);
         mRvDevices.addItemDecoration(BaseDecoration.create(getResources()
                 .getColor(android.R.color.white, getActivity().getTheme()), 3));
+
+        mGithub.mListener = i-> {
+            if (i == GithubActivityView.LEFT){
+                if (System.currentTimeMillis()-mTime < 60 * 60 * 24 * 7 * 1000){
+                    Toast.makeText(getActivity(), "已划至最新时间", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                mTime += 60 * 60 * 24 * 7 * 1000;
+            }else {
+                mTime -= 60 * 60 * 24 * 7 * 1000;
+            }
+
+            initHistory(mTime,mDevices.get(0).getDmac());
+        };
     }
 
     // 无关注人员时情况;
@@ -156,10 +176,10 @@ public class UserDelegate extends BottomItemDelegate {
         // mTvDesc.setText();
     }
 
-    private void initHistory() {
-        mTime = mTime - 60 * 60 * 24 * 7 * 1000;
-        Long time = com.ascend.wangfeng.latte.util.TimeUtil.getFirstTimeOfWeek(mTime);
-        Client.getInstance().getLivenesses(mDevices.get(0).getDmac(), mTime)
+    private void initHistory(Long time,Long dmac) {
+        mTvLivenessTitle.setText(TimeUtil.formatWeek(time));
+        Long weekstart = com.ascend.wangfeng.latte.util.TimeUtil.getFirstTimeOfWeek(mTime);
+        Client.getInstance().getLivenesses(dmac, time)
                 .compose(SchedulerProvider.applyHttp())
                 .subscribe(new MyObserver<Response<List<Liveness>>>() {
                     @Override
@@ -171,7 +191,7 @@ public class UserDelegate extends BottomItemDelegate {
                                 int index = i * 24 + j;
                                 for (int k = 0; k < response.getData().size(); k++) {
                                     if (response.getData().get(k).getTimeStamp()
-                                            == time + index * 60 * 60 * 1000) {
+                                            == weekstart + index * 60 * 60 * 1000) {
                                         column[j] = response.getData().get(k).getAvalue();
                                         break;
                                     }
@@ -184,7 +204,7 @@ public class UserDelegate extends BottomItemDelegate {
                 });
     }
 
-    private void setData() {
+    private void setData(BarChart barChart) {
         ArrayList<Integer> colors = new ArrayList<>();
         colors.add(getResources().getColor(R.color.colorAccent, getActivity().getTheme()));
         colors.add(getResources().getColor(R.color.colorOrange, getActivity().getTheme()));
@@ -215,7 +235,7 @@ public class UserDelegate extends BottomItemDelegate {
         data.setBarWidth(barWidth);
         data.groupBars(.5f, groupSpace, barSpace);
 
-        mBarChart.setData(data);
+        barChart.setData(data);
     }
 
     @SuppressWarnings("all")
@@ -235,7 +255,7 @@ public class UserDelegate extends BottomItemDelegate {
                 }
             }
         };
-        XAxis xAxis = mBarChart.getXAxis();
+        XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f); // only intervals of 1 day
@@ -249,7 +269,7 @@ public class UserDelegate extends BottomItemDelegate {
             }
         };
 
-        YAxis leftAxis = mBarChart.getAxisLeft();
+        YAxis leftAxis = chart.getAxisLeft();
 
         leftAxis.setDrawGridLines(false);
         leftAxis.setLabelCount(8, false);
@@ -258,9 +278,9 @@ public class UserDelegate extends BottomItemDelegate {
         leftAxis.setSpaceTop(15f);
         leftAxis.setSpaceBottom(0f);
 
-        mBarChart.getAxisRight().setEnabled(false);
+        chart.getAxisRight().setEnabled(false);
 
-        Legend l = mBarChart.getLegend();
+        Legend l = chart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);

@@ -2,9 +2,6 @@ package com.ascend.wangfeng.wifimanage.net;
 
 import android.util.Log;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -100,10 +97,8 @@ public class HttpScan {
         BufferedReader reader = new BufferedReader(iReader);
         String a = reader.readLine();
         Log.i(TAG, "getResponse: " + a);
-        // 返回json中有mac字段说明请求地址正确
-        JSONObject object = JSON.parseObject(a);
-        String s = object.getString("bmac");
-        if (s != null) {
+
+        if (a != null) {
             return true;
         }
         return false;
