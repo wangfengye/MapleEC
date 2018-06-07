@@ -102,12 +102,7 @@ public class PlanDetailDelegate extends LatteDelegate {
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
         mToolbarTitle.setText("计划编辑");
         mIcBack.setVisibility(View.VISIBLE);
-        mIcBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pop();
-            }
-        });
+        mIcBack.setOnClickListener(view -> pop());
         mIcEdit.setVisibility(View.VISIBLE);
         mIcEdit.setText("{fa-save}");
         mIcEdit.setOnClickListener(view -> {
@@ -137,7 +132,6 @@ public class PlanDetailDelegate extends LatteDelegate {
                             }
                         });
             }
-            pop();
         });
         initData();
         initRepeat();
@@ -183,7 +177,7 @@ public class PlanDetailDelegate extends LatteDelegate {
         builder.setNegativeButton("取消", null);
         final AlertDialog dialog = builder.create();
         View dialogView = View.inflate(getContext(), R.layout.dialog_time, null);
-        final TimePicker picker = (TimePicker) dialogView.findViewById(R.id.dp);
+        final TimePicker picker =  dialogView.findViewById(R.id.dp);
         dialog.setView(dialogView);
         picker.setIs24HourView(true);
         picker.setHour(getHour(mPlan.getStarttime()));

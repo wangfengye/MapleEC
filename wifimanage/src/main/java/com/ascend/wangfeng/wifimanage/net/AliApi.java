@@ -55,7 +55,7 @@ public interface AliApi {
      *
      * @return
      */
-    @GET("plans")
+    @GET("dev/planed")
     Observable<Response<List<Device>>> getDeviecseWithPlan();
 
     /**

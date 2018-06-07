@@ -81,6 +81,7 @@ public class UserDelegate extends BottomItemDelegate {
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
         mTime = System.currentTimeMillis();
+        initView();
     }
 
     @Override
@@ -94,7 +95,6 @@ public class UserDelegate extends BottomItemDelegate {
                         if (response.getData() != null) {
                             mRlAdd.setVisibility(View.GONE);
                             mPerson = response.getData();
-                            initView();
                             initData();
                         } else {
                             showAddAttention();

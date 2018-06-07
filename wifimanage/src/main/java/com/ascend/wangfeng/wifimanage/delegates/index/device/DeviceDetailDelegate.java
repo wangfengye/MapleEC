@@ -37,6 +37,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.ascend.wangfeng.wifimanage.utils.TimeUtil.getTime;
 
+
 /**
  * Created by fengye on 2018/5/8.
  * email 1040441325@qq.com
@@ -166,7 +167,7 @@ public class DeviceDetailDelegate extends LatteDelegate {
                         reView(response.getData());
                     }
                 });
-        Client.getInstance().getPlansByDId(mDevice.getDid())
+        Client.getInstance().getPlansByDId(mDevice.getDmac())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyObserver<Response<List<Plan>>>() {
@@ -182,8 +183,8 @@ public class DeviceDetailDelegate extends LatteDelegate {
     private void reView(Device device) {
         mCimgIcon.setImage(DeviceType.getTypes().get(device.getDtype()).getImgId());
         mTvDeviceName.setText(device.getDname());
-        mTvLasttime.setText("最近更新时间: " + TimeUtil.format(device.getLasttime()));
-        mTvFirsttime.setText("首次出现时间: " + TimeUtil.format(device.getFirsttime()));
+        mTvLasttime.setText("最近更新: " + TimeUtil.format(device.getLasttime()));
+        mTvFirsttime.setText("首次出现: " + TimeUtil.format(device.getFirsttime()));
         mTvIp.setText(device.getDevIp());
         mTvMac.setText(MacUtil.longToString(device.getDmac()));
         mTvBrand.setText(device.getVendor());// 厂商

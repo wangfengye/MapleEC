@@ -12,30 +12,31 @@ import java.util.Date;
 
 public class TimeUtil {
     public static Long getTime(int hour, int minute) {
-        return Long.valueOf(hour * 60 * 60 + minute * 60);
+        return Long.valueOf((hour * 60 + minute) * 60 * 1000);
     }
 
     public static String time2Str(Long timeLong) {
-        int time = (int) (timeLong / 60);
+        int time = (int) (timeLong / 60 / 1000);
         int min = time % 60;
         int hour = time / 60;
         return String.format("%02d :%02d", hour, min);
     }
 
     public static int getHour(Long time) {
-        return (int) (time / 60 / 60);
+        return (int) (time / 60 / 60 / 1000);
     }
 
     public static int getMinute(Long time) {
-        int t = (int) (time / 60);
+        int t = (int) (time / 60 / 1000);
         return t % 60;
     }
-    public static long getTime(int year,int month,int day){
-        String s = String.format("%04d-%02d-%02d",year,month,day);
+
+    public static long getTime(int year, int month, int day) {
+        String s = String.format("%04d-%02d-%02d", year, month, day);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date date = dateFormat.parse(s);
-            return date.getTime()/1000;
+            return date.getTime();
         } catch (ParseException e) {
             e.printStackTrace();
         }
