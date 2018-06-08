@@ -8,22 +8,21 @@ import com.ascend.wangfeng.wifimanage.MainApp;
 import com.ascend.wangfeng.wifimanage.R;
 import com.ascend.wangfeng.wifimanage.bean.Response;
 
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 
 /**
  * Created by fengye on 2018/5/28.
  * email 1040441325@qq.com
  */
 
-public abstract class MyObserver<T extends Response> implements Observer<T> {
+public abstract class MyObserver<T extends Response> extends DisposableObserver<T> {
 
     public static final String TAG = MyObserver.class.getSimpleName();
 
     @Override
-    public void onSubscribe(Disposable d) {
-        if (showLoading())LatteLoader.showLoading(Latte.getConfiguration(ConfigType.ACTIVITY_CONTEXT));
-        // d.dispose(); //解除订阅;
+    protected void onStart() {
+        if (showLoading())
+            LatteLoader.showLoading(Latte.getConfiguration(ConfigType.ACTIVITY_CONTEXT));
     }
 
     @Override
@@ -61,7 +60,8 @@ public abstract class MyObserver<T extends Response> implements Observer<T> {
     }
 
     public abstract void onSuccess(T t);
-    public boolean showLoading(){
+
+    public boolean showLoading() {
         return false;
     }
 }

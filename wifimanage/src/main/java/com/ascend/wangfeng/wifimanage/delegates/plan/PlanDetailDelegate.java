@@ -75,16 +75,16 @@ public class PlanDetailDelegate extends LatteDelegate {
     @OnClick(R.id.btn_delete)
     void clickBtnDelete() {
         // 删除计划
-        Client.getInstance().delPlan(mPlan.getPid())
+        add(Client.getInstance().delPlan(mPlan.getPid())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new MyObserver<Response<String>>() {
+                .subscribeWith(new MyObserver<Response<String>>() {
                     @Override
                     public void onSuccess(Response<String> response) {
                         MainApp.toast(R.string.delete_success);
                         pop();
                     }
-                });
+                }));
     }
 
     public static PlanDetailDelegate newInstance(Bundle args) {
@@ -109,36 +109,41 @@ public class PlanDetailDelegate extends LatteDelegate {
             // 保存计划
             if (mPlan.getPid() != null && mPlan.getPid() != 0) {
                 // update
-                Client.getInstance().updatePlan(mPlan)
+                add(Client.getInstance().updatePlan(mPlan)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new MyObserver<Response<Plan>>() {
+                        .subscribeWith(new MyObserver<Response<Plan>>() {
                             @Override
                             public void onSuccess(Response<Plan> response) {
                                 MainApp.toast(R.string.update_success);
                                 pop();
                             }
-                        });
+                        }));
             } else {
                 // add
-                Client.getInstance().addPlan(mPlan)
+                add(Client.getInstance().addPlan(mPlan)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new MyObserver<Response<Plan>>() {
+                        .subscribeWith(new MyObserver<Response<Plan>>() {
                             @Override
                             public void onSuccess(Response<Plan> response) {
                                 MainApp.toast(R.string.add_success);
                                 pop();
                             }
-                        });
+                        }));
             }
         });
+        // 特殊情况,由于数据直接使用bundle传输,所以直接在onBindView上初始化数据,减少重复设置点击事件
         initData();
         initRepeat();
         initStart();
         initEnd();
     }
 
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+    }
 
     private void initData() {
         mPlan = (Plan) getArguments().getSerializable(PLAN);

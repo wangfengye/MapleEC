@@ -70,29 +70,29 @@ public class NewDeviceDelegate extends LatteDelegate {
 
     private void initData() {
         if (getArguments().getInt(TITLE) == TITLE_NEW_DEVICE) {
-            Client.getInstance().getUnknownDevices()
+            add(Client.getInstance().getUnknownDevices()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new MyObserver<Response<List<Device>>>() {
+                    .subscribeWith(new MyObserver<Response<List<Device>>>() {
                         @Override
                         public void onSuccess(Response<List<Device>> response) {
                             mDevices.clear();
                             mDevices.addAll(response.getData());
                             mAdapter.notifyDataSetChanged();
                         }
-                    });
+                    }));
         } else {
-            Client.getInstance().getTagDevices()
+           add(Client.getInstance().getTagDevices()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new MyObserver<Response<List<Device>>>() {
+                    .subscribeWith(new MyObserver<Response<List<Device>>>() {
                         @Override
                         public void onSuccess(Response<List<Device>> response) {
                             mDevices.clear();
                             mDevices.addAll(response.getData());
                             mAdapter.notifyDataSetChanged();
                         }
-                    });
+                    }));
         }
     }
 

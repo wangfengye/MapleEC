@@ -57,10 +57,10 @@ public class LaunchDelegate extends LatteDelegate {
     }
 
     @Override
-    public void onPause() {
+    public void onSupportInvisible() {
+        super.onSupportInvisible();
         mBannerLaunch.stopTurning();
         mBannerLaunch.destroyDrawingCache();
-        super.onPause();
     }
 
     @Override

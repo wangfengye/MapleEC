@@ -83,17 +83,17 @@ public class HistoryDelegate extends BottomItemDelegate {
     private void initData(Calendar calendar) {
         long time = TimeUtil.getTime(calendar.getYear(), calendar.getMonth(), calendar.getDay());
         mCalendarView.getSelectedCalendar();
-        Client.getInstance().getEvents(time)
+        add(Client.getInstance().getEvents(time)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new MyObserver<Response<List<Event>>>() {
+                .subscribeWith(new MyObserver<Response<List<Event>>>() {
                     @Override
                     public void onSuccess(Response<List<Event>> response) {
                         mEvents.clear();
                         mEvents.addAll(response.getData());
                         mAdapter.notifyDataSetChanged();
                     }
-                });
+                }));
     }
 
     private void initRv() {
@@ -107,7 +107,7 @@ public class HistoryDelegate extends BottomItemDelegate {
         });
         mRvHistory.setAdapter(mAdapter);
         mRvHistory.setLayoutManager(manager);
-        mRvHistory.addItemDecoration(BaseDecoration.create(getResources().getColor(R.color.textFour,getActivity().getTheme()), 1));
+        mRvHistory.addItemDecoration(BaseDecoration.create(getResources().getColor(R.color.textFour, getActivity().getTheme()), 1));
     }
 
     private void initDate() {

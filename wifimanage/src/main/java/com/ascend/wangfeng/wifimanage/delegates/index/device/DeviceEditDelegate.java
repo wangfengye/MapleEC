@@ -71,10 +71,10 @@ public class DeviceEditDelegate extends LatteDelegate {
     @OnClick(R.id.btn_save)
     void clickBtnSave() {
         mDevice.setDname(mEtName.getText().toString().trim());
-        Client.getInstance().updateDevice(mDevice)
+        add(Client.getInstance().updateDevice(mDevice)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new MyObserver<Response<Device>>() {
+                .subscribeWith(new MyObserver<Response<Device>>() {
                     @Override
                     public boolean showLoading() {
                         return true;
@@ -85,7 +85,7 @@ public class DeviceEditDelegate extends LatteDelegate {
                         MainApp.toast(R.string.update_success);
                         goDeviceDetail();
                     }
-                });
+                }));
     }
 
     private void goDeviceDetail() {
@@ -136,9 +136,9 @@ public class DeviceEditDelegate extends LatteDelegate {
     private void initData() {
         mDevice = (Device) getArguments().getSerializable(DEVICE);
         // 拥有者关系
-        Client.getInstance().getDevice(mDevice.getDid())
+        add(Client.getInstance().getDevice(mDevice.getDid())
                 .compose(SchedulerProvider.applyHttp())
-                .subscribe(new MyObserver<Response<Device>>() {
+                .subscribeWith(new MyObserver<Response<Device>>() {
                     @Override
                     public void onSuccess(Response<Device> response) {
                         mDevice = response.getData();
@@ -148,7 +148,7 @@ public class DeviceEditDelegate extends LatteDelegate {
                         mAdapter.notifyDataSetChanged();
                         reViewOwner(response.getData());
                     }
-                });
+                }));
 
     }
 

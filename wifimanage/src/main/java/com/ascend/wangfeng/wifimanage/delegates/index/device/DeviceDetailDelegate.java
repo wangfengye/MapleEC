@@ -157,27 +157,28 @@ public class DeviceDetailDelegate extends LatteDelegate {
     private void initData() {
         Bundle bundle = getArguments();
         mDevice = (Device) bundle.getSerializable(DEVICE);
-
-        Client.getInstance().getDevice(mDevice.getDid())
+        // device数据
+        add(Client.getInstance().getDevice(mDevice.getDid())
                 .compose(SchedulerProvider.applyHttp())
-                .subscribe(new MyObserver<Response<Device>>() {
+                .subscribeWith(new MyObserver<Response<Device>>() {
                     @Override
                     public void onSuccess(Response<Device> response) {
                         mDevice = response.getData();
                         reView(response.getData());
                     }
-                });
-        Client.getInstance().getPlansByDId(mDevice.getDmac())
+                }));
+        // 计划数据
+       add (Client.getInstance().getPlansByDId(mDevice.getDmac())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new MyObserver<Response<List<Plan>>>() {
+                .subscribeWith(new MyObserver<Response<List<Plan>>>() {
                     @Override
                     public void onSuccess(Response<List<Plan>> response) {
                         mPlans.clear();
                         mPlans.addAll(response.getData());
                         mPlanAdapter.notifyDataSetChanged();
                     }
-                });
+                }));
     }
 
     private void reView(Device device) {

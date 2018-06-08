@@ -62,17 +62,17 @@ public class PersonListDelegate extends LatteDelegate {
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        Client.getInstance().getPersons()
+        add(Client.getInstance().getPersons()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new MyObserver<Response<List<Person>>>() {
+                .subscribeWith(new MyObserver<Response<List<Person>>>() {
                     @Override
                     public void onSuccess(Response<List<Person>> response) {
                         mPeople.clear();
                         mPeople.addAll(response.getData());
                         mAdapter.notifyDataSetChanged();
                     }
-                });
+                }));
     }
 
     private void initRv() {

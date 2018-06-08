@@ -36,9 +36,9 @@ import com.yanzhenjie.permission.Permission;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.Observable;
 
 /**
  * Created by fengye on 2018/5/19.
@@ -66,10 +66,10 @@ public class RegisterDelegate extends LatteDelegate {
     void clickBtnLogin() {
         Long mac = MacUtil.stringToLong(mEtNo.getText().toString().trim());
         String password = mEtPassword.getText().toString().trim();
-        Observable.concat(Client.getInstance().createUser(mac, password, mLocation.getLongitude(), mLocation.getLatitude()),
+       add(Observable.concat(Client.getInstance().createUser(mac, password, mLocation.getLongitude(), mLocation.getLatitude()),
                 Client.getInstance().login(mac, password))
                 .compose(SchedulerProvider.applyHttp())
-                .subscribe(new MyObserver<Response<User>>() {
+                .subscribeWith(new MyObserver<Response<User>>() {
                     @Override
                     public void onSuccess(Response<User> response) {
                         User user = new User();
@@ -78,7 +78,7 @@ public class RegisterDelegate extends LatteDelegate {
                         LattePreference.setJson(SpKey.USER,user);
                         startWithPop(MainDelegate.newInstance());
                     }
-                });
+                }));
 
 
     }
@@ -99,16 +99,21 @@ public class RegisterDelegate extends LatteDelegate {
                 })
                 .onDenied(data -> Toast.makeText(getActivity(), "无权限", Toast.LENGTH_SHORT).show())
                 .start();
+    }
+
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
         // 获取设备编号
-        Client.getLocalApi().getBoxInfo()
+        add(Client.getLocalApi().getBoxInfo()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new MyObserver<Response<Box>>() {
+                .subscribeWith(new MyObserver<Response<Box>>() {
                     @Override
                     public void onSuccess(Response<Box> response) {
                         mEtNo.setText(MacUtil.longToString(response.getData().getBmac()));
                     }
-                });
+                }));
     }
 
     private void initLocation() {

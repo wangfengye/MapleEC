@@ -41,11 +41,11 @@ public class MainActivity extends ProxyActivity {
         return new LaunchDelegate();
     }
 
-    public void showLoginOut(){
+    public void showLoginOut() {
 
         View view1 = findViewById(R.id.cl_root);
-        Snackbar.make(view1,"登录过期",Snackbar.LENGTH_SHORT)
-                .setAction("重新登录",view -> start(new LoginDelegate()))
+        Snackbar.make(view1, "登录过期", Snackbar.LENGTH_SHORT)
+                .setAction("重新登录", view -> start(new LoginDelegate()))
                 .show();
     }
 }

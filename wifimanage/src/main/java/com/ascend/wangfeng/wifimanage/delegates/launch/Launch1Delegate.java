@@ -20,7 +20,7 @@ import com.ascend.wangfeng.wifimanage.utils.SpKey;
  * email 1040441325@qq.com
  */
 
-public class Launch1Delegate extends LatteDelegate{
+public class Launch1Delegate extends LatteDelegate {
     @Override
     public Object setLayout() {
         return R.layout.delegate_lanunch_1;
@@ -28,20 +28,26 @@ public class Launch1Delegate extends LatteDelegate{
 
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
+
+    }
+
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
         User user = LattePreference.getJson(SpKey.USER, User.class);
-        Client.getInstance().login(user.getBmac(),user.getUpasswd())
+        add(Client.getInstance().login(user.getBmac(), user.getUpasswd())
                 .compose(SchedulerProvider.applyHttp())
-                .subscribe(new MyObserver<Response<User>>() {
+                .subscribeWith(new MyObserver<Response<User>>() {
                     @Override
-                    public void onSuccess(Response<User> response) {//重写onNext后,该方法无效
-                    }
+                    public void onSuccess(Response<User> response) {
+                    }//重写onNext后,该方法无效
 
                     @Override
                     public void onNext(Response<User> response) {
                         super.onNext(response);
-                        if (response.getStatusCode() == 200){
+                        if (response.getStatusCode() == 200) {
                             startWithPop(MainDelegate.newInstance());
-                        }else {
+                        } else {
                             startWithPop(new LoginDelegate());
                         }
                     }
@@ -50,6 +56,6 @@ public class Launch1Delegate extends LatteDelegate{
                     public void onError(Throwable e) {
                         startWithPop(new LoginDelegate());
                     }
-                });
+                }));
     }
 }

@@ -48,9 +48,9 @@ public class LoginDelegate extends LatteDelegate {
     void clickBtnLogin() {
         Long mac = MacUtil.stringToLong(mEtNo.getText().toString().trim());
         String password = mEtPassword.getText().toString().trim();
-        Client.getInstance().login(mac, password)
+        add(Client.getInstance().login(mac, password)
                 .compose(SchedulerProvider.applyHttp())
-                .subscribe(new MyObserver<Response<User>>() {
+                .subscribeWith(new MyObserver<Response<User>>() {
                     @Override
                     public boolean showLoading() {
                         return true;
@@ -65,7 +65,7 @@ public class LoginDelegate extends LatteDelegate {
                         LattePreference.setJson(SpKey.USER, user);
                         startWithPop(MainDelegate.newInstance());
                     }
-                });
+                }));
     }
 
     @OnClick(R.id.btn_register)

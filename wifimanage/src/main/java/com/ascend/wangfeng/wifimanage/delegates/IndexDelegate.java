@@ -29,7 +29,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -85,7 +84,6 @@ public class IndexDelegate extends BottomItemDelegate {
     private IndexSquareAdapter mNewDevicesAdapter;
     private IndexSquareAdapter mOnlineDevicesAdapter;
     private IndexPersonAdapter mPeopleAdapter;
-    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     @Override
     public Object setLayout() {
@@ -144,44 +142,44 @@ public class IndexDelegate extends BottomItemDelegate {
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        if (mCompositeDisposable != null) mCompositeDisposable.clear();
         initData();
     }
 
     @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
-        mCompositeDisposable.clear();
     }
 
     private void initData() {
         // 数据源
+        MyObserver<Response<List<Device>>> ob = new MyObserver<Response<List<Device>>>() {
+            @Override
+            public void onSuccess(Response<List<Device>> response) {
+                mOnlineDevices.clear();
+                mNewDevices.clear();
+                mPIds.clear();
+                for (Device d : response.getData()) {
+                    if (d.getPid() != null && d.getPid() != 0) {
+                        mOnlineDevices.add(d);
+                        mPIds.add(d.getPid());
+                    } else {
+                        mNewDevices.add(d);
+                    }
+                }
+                if (mNewDevices.size() == 0) {
+                    mLlNewDevice.setVisibility(View.GONE);
+                } else {
+                    mLlNewDevice.setVisibility(View.VISIBLE);
+                    mNewDevicesAdapter.notifyDataSetChanged();
+                }
+                mOnlineDevicesAdapter.notifyDataSetChanged();
+                mPeopleAdapter.setPIds(mPIds);
+            }
+        };
         Client.getInstance().getCurrentDevices()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new MyObserver<Response<List<Device>>>() {
-                    @Override
-                    public void onSuccess(Response<List<Device>> response) {
-                        mOnlineDevices.clear();
-                        mNewDevices.clear();
-                        mPIds.clear();
-                        for (Device d : response.getData()) {
-                            if (d.getPid() != null && d.getPid() != 0) {
-                                mOnlineDevices.add(d);
-                                mPIds.add(d.getPid());
-                            } else {
-                                mNewDevices.add(d);
-                            }
-                        }
-                        if (mNewDevices.size() == 0) {
-                            mLlNewDevice.setVisibility(View.GONE);
-                        } else {
-                            mLlNewDevice.setVisibility(View.VISIBLE);
-                            mNewDevicesAdapter.notifyDataSetChanged();
-                        }
-                        mOnlineDevicesAdapter.notifyDataSetChanged();
-                        mPeopleAdapter.setPIds(mPIds);
-                    }
-                });
+                .subscribe(ob);
+        add(ob);
     }
 }

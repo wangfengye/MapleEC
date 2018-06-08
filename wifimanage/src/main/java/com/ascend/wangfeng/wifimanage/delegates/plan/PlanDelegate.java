@@ -52,17 +52,17 @@ public class PlanDelegate extends BottomItemDelegate {
     }
 
     private void initData() {
-        Client.getInstance().getDeviecseWithPlan()
+        add(Client.getInstance().getDeviecseWithPlan()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new MyObserver<Response<List<Device>>>() {
+                .subscribeWith(new MyObserver<Response<List<Device>>>() {
                     @Override
                     public void onSuccess(Response<List<Device>> response) {
                         mDevices.clear();
                         mDevices.addAll(response.getData());
                         mAdapter.notifyDataSetChanged();
                     }
-                });
+                }));
     }
 
     private void initRv() {

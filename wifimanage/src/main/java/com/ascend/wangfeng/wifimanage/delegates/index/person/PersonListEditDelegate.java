@@ -78,16 +78,16 @@ public class PersonListEditDelegate extends LatteDelegate {
     }
 
     private void initList() {
-        Client.getInstance().getPersons()
+        add(Client.getInstance().getPersons()
                 .compose(SchedulerProvider.applyHttp())
-                .subscribe(new MyObserver<Response<List<Person>>>() {
+                .subscribeWith(new MyObserver<Response<List<Person>>>() {
                     @Override
                     public void onSuccess(Response<List<Person>> response) {
                         mPeople.clear();
                         mPeople.addAll(response.getData());
                         mAdapter.notifyDataSetChanged();
                     }
-                });
+                }));
 
     }
 

@@ -122,22 +122,22 @@ public class PersonDetailDelegate extends LatteDelegate {
     }
 
     private void initHistory() {
-        Client.getInstance().getOnlineByDmac(mDevices.get(0).getDmac(),0,10)
+        add(Client.getInstance().getOnlineByDmac(mDevices.get(0).getDmac(),0,10)
                 .compose(SchedulerProvider.applyHttp())
-                .subscribe(new MyObserver<Response<List<Event>>>() {
+                .subscribeWith(new MyObserver<Response<List<Event>>>() {
                     @Override
                     public void onSuccess(Response<List<Event>> response) {
                         mEvents.clear();
                         mEvents.addAll(response.getData());
                         mTimeLineAdapter.notifyDataSetChanged();
                     }
-                });
+                }));
     }
 
     private void initDevices() {
-        Client.getInstance().getDevicesByPid(mPerson.getPid())
+        add(Client.getInstance().getDevicesByPid(mPerson.getPid())
                 .compose(SchedulerProvider.applyHttp())
-                .subscribe(new MyObserver<Response<List<Device>>>() {
+                .subscribeWith(new MyObserver<Response<List<Device>>>() {
                     @Override
                     public void onSuccess(Response<List<Device>> response) {
                         mDevices.clear();
@@ -145,7 +145,7 @@ public class PersonDetailDelegate extends LatteDelegate {
                         mDeviceAdapter.notifyDataSetChanged();
                         initHistory();
                     }
-                });
+                }));
 
     }
 }
