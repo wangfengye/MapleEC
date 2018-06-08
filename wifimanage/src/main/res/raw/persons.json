@@ -1,19 +1,26 @@
 {
-  "message":"success",
-  "statusCode":200,
-  "data":[
+  "data": [
     {
-      "pid": 1,
-      "bid": 1,
-      "pname": "小明",
-      "pimage":0,
-      "online": 1
+      "pid": 14,
+      "bmac": 68217274639,
+      "pname": "其他",
+      "pimage": 5,
+      "attention": null,
+      "online": true
     },
     {
-      "pid": 2,
-      "bid": 1,
-      "pname": "李雷",
-      "pimage":1
+      "pid": 13,
+      "bmac": 68217274639,
+      "pname": "maple",
+      "pimage": 0,
+      "attention": 1,
+      "online": false
     }
-  ]
+  ],
+  "statusCode": 200,
+  "message": "操作成功！",
+  "sEcho": 0,
+  "start": 0,
+  "limit": 10,
+  "count": null
 }

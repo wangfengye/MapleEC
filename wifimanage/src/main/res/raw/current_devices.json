@@ -1,43 +1,58 @@
 {
-  "message": "成功",
-  "statusCode": 200,
   "data": [
     {
-      "did": 1,
-      "dname": "lyd-win7",
+      "did": 377,
+      "dname": "xdd",
+      "dtype": 2,
+      "dmac": 83880227048747,
+      "bmac": 68217274639,
+      "pid": 14,
+      "oui": null,
+      "hostname": "MI5C-xiaomishouji",
+      "vendor": "android-dhcp-7.1.2",
+      "netbios": "",
+      "devIp": "144.5.168.192",
+      "firsttime": 1528425114000,
+      "lasttime": 1528425116000,
+      "person": null
+    },
+    {
+      "did": 376,
+      "dname": "rd",
       "dtype": 0,
-      "pid": 1,
-      "dmac": "41:53:1a:56:72:91",
-      "devIp": "192.168.168.15",
-      "hostname": "Lenovo"
+      "dmac": 167797253305820,
+      "bmac": 68217274639,
+      "pid": 14,
+      "oui": null,
+      "hostname": "HUAWEI_P10-ff04b62cff4f28",
+      "vendor": "HUAWEI:android:VTR",
+      "netbios": "",
+      "devIp": "147.5.168.192",
+      "firsttime": 1528419217000,
+      "lasttime": 1528419617000,
+      "person": null
     },
     {
-      "dname": "iPhone7p",
-      "dtype": 1,
-      "dmac": "41:53:1a:56:72:92",
-      "devIp": "192.168.168.13",
-      "hostname": "Apple"
-    },
-    {
-      "dname": "iPadair2",
+      "did": 375,
+      "dname": "003",
       "dtype": 2,
-      "dmac": "41:53:1a:56:72:93",
-      "devIp": "192.168.168.131",
-      "hostname": "Apple"
-    },
-    {
-      "dname": "Printer",
-      "dtype": 2,
-      "dmac": "41:53:1a:56:72:94",
-      "devIp": "192.168.168.139",
-      "hostname": "HP"
-    },
-    {
-      "dname": "",
-      "dtype": 1,
-      "dmac": "41:53:1a:56:72:95",
-      "devIp": "192.168.168.138",
-      "hostname": "Lenovo"
+      "dmac": 176509002953484,
+      "bmac": 68217274639,
+      "pid": 14,
+      "oui": null,
+      "hostname": "UCLSSKTD6MGGTKA",
+      "vendor": "MSFT 5.0",
+      "netbios": "",
+      "devIp": "181.5.168.192",
+      "firsttime": 1528418908000,
+      "lasttime": 1528419614000,
+      "person": null
     }
-  ]
+  ],
+  "statusCode": 200,
+  "message": "操作成功！",
+  "sEcho": 0,
+  "start": 0,
+  "limit": 10,
+  "count": null
 }

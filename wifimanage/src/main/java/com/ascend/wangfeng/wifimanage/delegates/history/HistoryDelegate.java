@@ -83,10 +83,16 @@ public class HistoryDelegate extends BottomItemDelegate {
     private void initData(Calendar calendar) {
         long time = TimeUtil.getTime(calendar.getYear(), calendar.getMonth(), calendar.getDay());
         mCalendarView.getSelectedCalendar();
+        if (mDisposable != null) mDisposable.clear();
         add(Client.getInstance().getEvents(time)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new MyObserver<Response<List<Event>>>() {
+                    @Override
+                    public boolean showLoading() {
+                        return true;
+                    }
+
                     @Override
                     public void onSuccess(Response<List<Event>> response) {
                         mEvents.clear();

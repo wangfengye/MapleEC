@@ -34,6 +34,17 @@ public class Device implements MultiItemEntity, Serializable {
     public int getItemType() {
         return 0;
     }
+
+    /**
+     * 设备名称,未编辑名称时使用 hostname代替
+     * @return
+     */
+    public String getShowName(){
+        if (dname==null|| "".equals(dname)){
+            return hostname;
+        }
+        return dname;
+    }
     public Long getDid() {
         return did;
     }

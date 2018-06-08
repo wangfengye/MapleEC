@@ -92,9 +92,9 @@ public class UserDelegate extends BottomItemDelegate {
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        Client.getInstance().getPersonWithAttention()
+        add(Client.getInstance().getPersonWithAttention()
                 .compose(SchedulerProvider.applyHttp())
-                .subscribe(new MyObserver<Response<Person>>() {
+                .subscribeWith(new MyObserver<Response<Person>>() {
                     @Override
                     public void onSuccess(Response<Person> response) {
                         if (response.getData() != null) {
@@ -106,7 +106,7 @@ public class UserDelegate extends BottomItemDelegate {
                             showAddAttention();
                         }
                     }
-                });
+                }));
     }
 
     @OnClick(R.id.btn_add)
@@ -121,9 +121,9 @@ public class UserDelegate extends BottomItemDelegate {
     }
 
     private void initDevices() {
-        Client.getInstance().getDevicesByPid(mPerson.getPid())
+        add(Client.getInstance().getDevicesByPid(mPerson.getPid())
                 .compose(SchedulerProvider.applyHttp())
-                .subscribe(new MyObserver<Response<List<Device>>>() {
+                .subscribeWith(new MyObserver<Response<List<Device>>>() {
                     @Override
                     public void onSuccess(Response<List<Device>> response) {
                         mDevices.clear();
@@ -135,7 +135,7 @@ public class UserDelegate extends BottomItemDelegate {
                         mDeviceAdapter.notifyDataSetChanged();
                         initHistory(mTime, mDevice);
                     }
-                });
+                }));
     }
 
     private void initView() {
@@ -183,32 +183,38 @@ public class UserDelegate extends BottomItemDelegate {
     private void initHistory(Long time, Device device) {
         if (device == null) return;
         mTvLivenessTitle.setText(TimeUtil.formatWeek(time));
-        Long weekstart = com.ascend.wangfeng.latte.util.TimeUtil.getFirstTimeOfWeek(mTime);
-        Client.getInstance().getLivenesses(device.getDmac(), time)
+
+        add(Client.getInstance().getLivenesses(device.getDmac(), time)
                 .compose(SchedulerProvider.applyHttp())
-                .subscribe(new MyObserver<Response<List<Liveness>>>() {
+                .subscribeWith(new MyObserver<Response<List<Liveness>>>() {
                     @Override
                     public void onSuccess(Response<List<Liveness>> response) {
-                        Integer[][] data = new Integer[7][];
-                        for (int i = 0; i < 7; i++) {
-                            Integer[] column = new Integer[24];
-                            for (int j = 0; j < 24; j++) {
-                                int index = i * 24 + j;
-                                for (int k = 0; k < response.getData().size(); k++) {
-                                    if (response.getData().get(k).getTimeStamp()
-                                            == weekstart + index * 60 * 60 * 1000) {
-                                        column[j] = response.getData().get(k).getAvalue();
-                                        break;
-                                    }
-                                }
-                            }
-                            data[i] = column;
-                        }
+                       Integer[][] data = formatGithubViewData(response.getData());
                         mGithub.setData(data);
                     }
-                });
+                }));
     }
-
+    // 活跃度格式化为githubview 需要的形式
+    private Integer[][] formatGithubViewData(List<Liveness> res) {
+        Long weekstart = com.ascend.wangfeng.latte.util.TimeUtil.getFirstTimeOfWeek(mTime);
+        Integer[][] data = new Integer[7][];
+        for (int i = 0; i < 7; i++) {
+            Integer[] column = new Integer[24];
+            for (int j = 0; j < 24; j++) {
+                int index = i * 24 + j;
+                for (int k = 0; k < res.size(); k++) {
+                    if (res.get(k).getTimeStamp()
+                            == weekstart + index * 60 * 60 * 1000) {
+                        column[j] = res.get(k).getAvalue();
+                        break;
+                    }
+                }
+            }
+            data[i] = column;
+        }
+        return data;
+    }
+    // 设置柱状图数据
     private void setData(BarChart barChart) {
         ArrayList<Integer> colors = new ArrayList<>();
         colors.add(getResources().getColor(R.color.colorAccent, getActivity().getTheme()));
@@ -244,6 +250,7 @@ public class UserDelegate extends BottomItemDelegate {
     }
 
     @SuppressWarnings("all")
+    // 初始化柱状图
     private void initChart(BarChart chart) {
         chart.setDrawBarShadow(false);
         chart.setDrawValueAboveBar(true);

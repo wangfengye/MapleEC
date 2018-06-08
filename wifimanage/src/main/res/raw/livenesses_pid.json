@@ -1,207 +1,194 @@
 {
-  "message": "成功",
-  "statusCode": 200,
   "data": [
     {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 1
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 1
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 1
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 1
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 1
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 1
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 1
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
+      "aid": 9273,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528300800000,
+      "ahour": 13,
+      "avalue": 17
+    },
+    {
+      "aid": 9207,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528300800000,
+      "ahour": 14,
+      "avalue": 15
+    },
+    {
+      "aid": 10128,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528300800000,
+      "ahour": 15,
       "avalue": 0
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
+    },
+    {
+      "aid": 10070,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528300800000,
+      "ahour": 16,
+      "avalue": 22
+    },
+    {
+      "aid": 10101,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528300800000,
+      "ahour": 17,
       "avalue": 0
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 1
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 1
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 1
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 1
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 1
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 1
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
+    },
+    {
+      "aid": 10000,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528300800000,
+      "ahour": 18,
       "avalue": 0
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
+    },
+    {
+      "aid": 10039,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528300800000,
+      "ahour": 19,
       "avalue": 0
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 32
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 1
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 1
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 1
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 1
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 1
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 1
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
+    },
+    {
+      "aid": 9882,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528300800000,
+      "ahour": 20,
       "avalue": 0
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
+    },
+    {
+      "aid": 9922,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528300800000,
+      "ahour": 21,
       "avalue": 0
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
+    },
+    {
+      "aid": 9962,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528300800000,
+      "ahour": 22,
       "avalue": 0
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
+    },
+    {
+      "aid": 9802,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528300800000,
+      "ahour": 23,
       "avalue": 0
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
+    },
+    {
+      "aid": 9842,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528387200000,
+      "ahour": 0,
       "avalue": 0
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
+    },
+    {
+      "aid": 9722,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528387200000,
+      "ahour": 1,
       "avalue": 0
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
+    },
+    {
+      "aid": 9762,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528387200000,
+      "ahour": 2,
       "avalue": 0
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
+    },
+    {
+      "aid": 9642,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528387200000,
+      "ahour": 3,
       "avalue": 0
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
+    },
+    {
+      "aid": 9682,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528387200000,
+      "ahour": 4,
       "avalue": 0
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
+    },
+    {
+      "aid": 9562,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528387200000,
+      "ahour": 5,
       "avalue": 0
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
+    },
+    {
+      "aid": 9602,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528387200000,
+      "ahour": 6,
       "avalue": 0
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 40
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 40
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue": 56
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
-      "avalue":36
-    }, {
-      "aid": 1,
-      "aYear": 1,
-      "aHour": 1,
+    },
+    {
+      "aid": 9482,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528387200000,
+      "ahour": 7,
       "avalue": 0
+    },
+    {
+      "aid": 9522,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528387200000,
+      "ahour": 8,
+      "avalue": 0
+    },
+    {
+      "aid": 9383,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528387200000,
+      "ahour": 9,
+      "avalue": 2
+    },
+    {
+      "aid": 9438,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528387200000,
+      "ahour": 10,
+      "avalue": 5
+    },
+    {
+      "aid": 9327,
+      "bmac": 68217274639,
+      "dmac": 127694823681849,
+      "ayear": 1528387200000,
+      "ahour": 11,
+      "avalue": 4
     }
-  ]
+  ],
+  "statusCode": 200,
+  "message": "操作成功！",
+  "sEcho": 0,
+  "start": 0,
+  "limit": 10,
+  "count": null
 }

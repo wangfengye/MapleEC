@@ -42,9 +42,16 @@
   
   ### 6/5
    * 主页面改RecyclerView;
+   
+  ### 6/8
+  * RXJAVA2 订阅取消
+  * 界面优化
+    * dev 未命名时 ,显示hostname;
+    * person_detail中,device列表xml调整
  ---
  ### TASK
  * UI,UE设计 
     * 主页面改RecyclerView;
     * 日图(柱状图)周图(打点图)切换;
     * 分享,头像切换
+ 

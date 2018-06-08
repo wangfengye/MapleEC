@@ -241,6 +241,13 @@ public interface AliApi {
     Observable<Response<User>> createUser(@Field("bmac") Long mac, @Field("upasswd") String password
             , @Field("blng") double longitude, @Field("blat") double latitude);
 
+    /**
+     * 某设备在线数据
+     * @param dmac dev mac
+     * @param start start id
+     * @param len  length
+     * @return
+     */
     @GET("p/online/device/{dmac}/{start}/{len}")
     Observable<Response<List<Event>>> getOnlineByDmac(@Path("dmac") Long dmac
             , @Path("start") Integer start, @Path("len") Integer len);

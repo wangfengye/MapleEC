@@ -33,7 +33,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="iphone7P"
+            android:lines="1"
+            tools:text="iphone7P"
             android:textColor="@color/textFir"/>
 
         <TextView
@@ -41,6 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:lines="1"
             android:textSize="@dimen/sp_12"
             android:text="192.168.168.39"/>
     </LinearLayout>
@@ -56,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="APPLE"
+            tools:text="APPLE"
             android:textColor="@color/textFir"/>
 
         <TextView
@@ -64,8 +66,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:lines="1"
             android:textSize="@dimen/sp_12"
-            android:text="192.168.168.39"/>
+            tools:text="192.168.168.39"/>
     </LinearLayout>
 
     <com.joanzapata.iconify.widget.IconTextView

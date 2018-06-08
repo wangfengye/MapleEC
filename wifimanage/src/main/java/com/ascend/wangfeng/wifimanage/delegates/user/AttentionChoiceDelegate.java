@@ -69,21 +69,21 @@ public class AttentionChoiceDelegate extends LatteDelegate {
             if (mPeople.get(i).isSelected()){person = mPeople.get(i);break;}
         }
         person.setAttention(true);
-        Client.getInstance().updatePersonWithAttention(person)
+        add(Client.getInstance().updatePersonWithAttention(person)
                 .compose(SchedulerProvider.applyHttp())
-                .subscribe(new MyObserver<Response<Person>>() {
+                .subscribeWith(new MyObserver<Response<Person>>() {
                     @Override
                     public void onSuccess(Response<Person> response) {
                         MainApp.toast(R.string.set_attention_success);
                         pop();
                     }
-                });
+                }));
     }
 
     private void initData() {
-        Client.getInstance().getPersons()
+        add(Client.getInstance().getPersons()
                 .compose(SchedulerProvider.applyHttp())
-                .subscribe(new MyObserver<Response<List<Person>>>() {
+                .subscribeWith(new MyObserver<Response<List<Person>>>() {
                     @Override
                     public void onSuccess(Response<List<Person>> response) {
                         mPeople.clear();
@@ -92,7 +92,7 @@ public class AttentionChoiceDelegate extends LatteDelegate {
                         if (mPeople.size()>0) mPeople.get(0).setSelected(true);
                         mAdapter.notifyDataSetChanged();
                     }
-                });
+                }));
     }
 
     private void initView() {

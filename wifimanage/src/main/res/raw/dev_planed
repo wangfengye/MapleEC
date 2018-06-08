@@ -1,0 +1,26 @@
+{
+  "data": [
+    {
+      "did": 336,
+      "dname": "小米5",
+      "dtype": 0,
+      "dmac": 127694823681849,
+      "bmac": 68217274639,
+      "pid": 13,
+      "oui": null,
+      "hostname": "",
+      "vendor": "",
+      "netbios": "",
+      "devIp": "240.5.168.192",
+      "firsttime": 1527816453000,
+      "lasttime": 1528354825000,
+      "person": null
+    }
+  ],
+  "statusCode": 200,
+  "message": "操作成功！",
+  "sEcho": 0,
+  "start": 0,
+  "limit": 10,
+  "count": null
+}

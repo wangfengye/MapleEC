@@ -59,7 +59,7 @@ public class DemoApi implements AliApi {
     @Override
     public Observable<Response<List<Device>>> getDeviecseWithPlan() {
         return Observable.create(e->{
-                String jsonStr = FileUtil.getRawFile(R.raw.devices);
+                String jsonStr = FileUtil.getRawFile(R.raw.dev_planed);
                 Response<List<Device>> response = JSONObject.parseObject(jsonStr, new TypeReference<Response<List<Device>>>() {
                 });
                 e.onNext(response);
@@ -68,12 +68,22 @@ public class DemoApi implements AliApi {
 
     @Override
     public Observable<Response<Device>> getDevice(Long did) {
-        return Observable.create(e->e.onError(new Exception()));
+        return Observable.create(e->{
+            String jsonStr = FileUtil.getRawFile(R.raw.dev_finddpbid_id);
+            Response<Device> response = JSONObject.parseObject(jsonStr, new TypeReference<Response<Device>>() {
+            });
+            e.onNext(response);
+        });
     }
 
     @Override
     public Observable<Response<List<Device>>> getDevicesByPid(Long did) {
-        return Observable.create(e->e.onError(new Exception()));
+        return Observable.create(e->{
+            String jsonStr = FileUtil.getRawFile(R.raw.dev_findbypid_id);
+            Response<List<Device>> response = JSONObject.parseObject(jsonStr, new TypeReference<Response<List<Device>>>() {
+            });
+            e.onNext(response);
+        });
     }
 
     @Override

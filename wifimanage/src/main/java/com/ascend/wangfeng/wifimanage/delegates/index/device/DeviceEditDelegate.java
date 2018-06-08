@@ -143,7 +143,7 @@ public class DeviceEditDelegate extends LatteDelegate {
                     public void onSuccess(Response<Device> response) {
                         mDevice = response.getData();
                         mCimgIcon.setImage(mTypes.get(mDevice.getDtype()).getImgId());
-                        mEtName.setText(mDevice.getDname());
+                        mEtName.setText(mDevice.getShowName());
                         mTypes.get(mDevice.getDtype()).setChose(true);
                         mAdapter.notifyDataSetChanged();
                         reViewOwner(response.getData());

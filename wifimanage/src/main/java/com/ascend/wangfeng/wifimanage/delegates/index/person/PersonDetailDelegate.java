@@ -18,7 +18,6 @@ import com.ascend.wangfeng.wifimanage.bean.Person;
 import com.ascend.wangfeng.wifimanage.bean.Response;
 import com.ascend.wangfeng.wifimanage.delegates.history.TimeLineAdapter;
 import com.ascend.wangfeng.wifimanage.delegates.icon.Icon;
-import com.ascend.wangfeng.wifimanage.delegates.index.device.DeviceDetailDelegate;
 import com.ascend.wangfeng.wifimanage.net.Client;
 import com.ascend.wangfeng.wifimanage.net.MyObserver;
 import com.ascend.wangfeng.wifimanage.net.SchedulerProvider;
@@ -62,7 +61,7 @@ public class PersonDetailDelegate extends LatteDelegate {
     private ArrayList<Device> mDevices;
     private ArrayList<Event> mEvents;
     private TimeLineAdapter mTimeLineAdapter;
-
+    private Device mDevice;
 
     public static PersonDetailDelegate newInstance(Bundle args) {
         PersonDetailDelegate fragment = new PersonDetailDelegate();
@@ -90,11 +89,14 @@ public class PersonDetailDelegate extends LatteDelegate {
         mDevices = new ArrayList<>();
         mDeviceAdapter = new DeviceSquareAdapter(mDevices);
         mDeviceAdapter.setListener(device -> {
-            Bundle args = new Bundle();
+            // 跳转对应设备
+            /*Bundle args = new Bundle();
             args.putSerializable(DeviceDetailDelegate.DEVICE, device);
-            start(DeviceDetailDelegate.newInstance(args), SINGLETASK);
+            start(DeviceDetailDelegate.newInstance(args), SINGLETASK);*/
+            mDevice = device;
+            initHistory(mDevice);
         });
-        GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
+        GridLayoutManager manager = new GridLayoutManager(getContext(), 5);
         mRvDevices.setLayoutManager(manager);
         mRvDevices.setAdapter(mDeviceAdapter);
         mRvDevices.addItemDecoration(BaseDecoration.create(getResources()
@@ -121,8 +123,9 @@ public class PersonDetailDelegate extends LatteDelegate {
         //mTvDesc.setText();
     }
 
-    private void initHistory() {
-        add(Client.getInstance().getOnlineByDmac(mDevices.get(0).getDmac(),0,10)
+    private void initHistory(Device device) {
+        if (device ==null)return;
+        add(Client.getInstance().getOnlineByDmac(device.getDmac(),0,10)
                 .compose(SchedulerProvider.applyHttp())
                 .subscribeWith(new MyObserver<Response<List<Event>>>() {
                     @Override
@@ -141,9 +144,14 @@ public class PersonDetailDelegate extends LatteDelegate {
                     @Override
                     public void onSuccess(Response<List<Device>> response) {
                         mDevices.clear();
+                        if (response.getData().size()>0){
+                            mDevice = response.getData().get(0);
+                            mDevice.setSelected(true);
+                            initHistory(mDevice);
+                        }
                         mDevices.addAll(response.getData());
                         mDeviceAdapter.notifyDataSetChanged();
-                        initHistory();
+
                     }
                 }));
 

@@ -183,7 +183,7 @@ public class DeviceDetailDelegate extends LatteDelegate {
 
     private void reView(Device device) {
         mCimgIcon.setImage(DeviceType.getTypes().get(device.getDtype()).getImgId());
-        mTvDeviceName.setText(device.getDname());
+        mTvDeviceName.setText(device.getShowName());
         mTvLasttime.setText("最近更新: " + TimeUtil.format(device.getLasttime()));
         mTvFirsttime.setText("首次出现: " + TimeUtil.format(device.getFirsttime()));
         mTvIp.setText(device.getDevIp());

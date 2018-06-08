@@ -35,7 +35,7 @@ public class NewDeviceAdapter extends BaseMultiItemQuickAdapter<Device,MultipleV
 
     @Override
     protected void convert(MultipleViewHolder helper, final Device item) {
-        helper.setText(R.id.tv_name,item.getDname());
+        helper.setText(R.id.tv_name,item.getShowName());
         helper.setText(R.id.tv_ip,item.getDevIp());
         helper.setText(R.id.tv_brand,item.getVendor());
         helper.setText(R.id.tv_mac, MacUtil.longToString(item.getDmac()));
@@ -44,6 +44,12 @@ public class NewDeviceAdapter extends BaseMultiItemQuickAdapter<Device,MultipleV
         });
         CircleImageView cimg = helper.getView(R.id.cimg);
         cimg.setImage(DeviceType.getTypes().get(item.getDtype()).getImgId());
+        // 在线判定
+        if (System.currentTimeMillis()-item.getLasttime()<=2*60*60*1000){
+            cimg.setState(true);
+        }else {
+            cimg.setState(false);
+        }
     }
     @Override
     protected MultipleViewHolder createBaseViewHolder(View view) {

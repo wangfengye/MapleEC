@@ -1,0 +1,42 @@
+{
+  "data": [
+    {
+      "did": 369,
+      "dname": "test",
+      "dtype": 3,
+      "dmac": 57185453551943,
+      "bmac": 68217274639,
+      "pid": 13,
+      "oui": null,
+      "hostname": "THINK-PC",
+      "vendor": "MSFT 5.0",
+      "netbios": "",
+      "devIp": "110.5.168.192",
+      "firsttime": 1528344210000,
+      "lasttime": 1528358374000,
+      "person": null
+    },
+    {
+      "did": 336,
+      "dname": "小米5",
+      "dtype": 0,
+      "dmac": 127694823681849,
+      "bmac": 68217274639,
+      "pid": 13,
+      "oui": null,
+      "hostname": "",
+      "vendor": "",
+      "netbios": "",
+      "devIp": "240.5.168.192",
+      "firsttime": 1527816453000,
+      "lasttime": 1528354825000,
+      "person": null
+    }
+  ],
+  "statusCode": 200,
+  "message": "操作成功！",
+  "sEcho": 0,
+  "start": 0,
+  "limit": 10,
+  "count": null
+}
