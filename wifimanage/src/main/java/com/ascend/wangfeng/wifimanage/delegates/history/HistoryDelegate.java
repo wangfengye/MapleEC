@@ -81,7 +81,7 @@ public class HistoryDelegate extends BottomItemDelegate {
     }
 
     private void initData(Calendar calendar) {
-        long time = TimeUtil.getTime(calendar.getYear(), calendar.getLeapMonth(), calendar.getDay());
+        long time = TimeUtil.getTime(calendar.getYear(), calendar.getMonth(), calendar.getDay());
         mCalendarView.getSelectedCalendar();
         Client.getInstance().getEvents(time)
                 .subscribeOn(Schedulers.io())

@@ -1,6 +1,5 @@
 package com.ascend.wangfeng.wifimanage.delegates.history;
 
-import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.ascend.wangfeng.latte.ui.recycler.MultipleViewHolder;
@@ -28,12 +27,7 @@ public class TimeLineAdapter extends BaseMultiItemQuickAdapter<Event, MultipleVi
         addItemType(0,R.layout.item_line);
     }
 
-    @Nullable
-    @Override
-    public Event getItem(int position) {
-        mPosition =position;
-        return super.getItem(position);
-    }
+
     @Override
     protected void convert(MultipleViewHolder helper, Event item) {
         if (item.getOnline()==1){
@@ -51,6 +45,15 @@ public class TimeLineAdapter extends BaseMultiItemQuickAdapter<Event, MultipleVi
             helper.setVisible(R.id.v_line,true);
         }
     }
+
+    @Override
+    public void onBindViewHolder(MultipleViewHolder holder, int positions) {
+        mPosition = positions;
+        super.onBindViewHolder(holder, positions);
+        // 用于判断当前是否是最后一个item;
+
+    }
+
     @Override
     protected MultipleViewHolder createBaseViewHolder(View view) {
         return MultipleViewHolder.create(view);

@@ -25,19 +25,17 @@ import java.util.List;
 
 public class IndexPersonAdapter extends BaseMultiItemQuickAdapter<Person, MultipleViewHolder> {
     private int mColor = Color.parseColor("#10D7C6");
-    private LinkedHashSet<Long> mPIds;
     private OnAdapterListener<Person> mListener;
     public IndexPersonAdapter(List<Person> data, int color) {
         super(data);
         mColor =color;
-        addItemType(0, R.layout.item_index);
+        addItemType(0, R.layout.item_person_main);
     }
     public void setListener(OnAdapterListener<Person> listener){
         mListener = listener;
     }
     public void setPIds(LinkedHashSet<Long> pIds){
         getData().clear();
-        this.mPIds = pIds;
         for (Long i:pIds) {
             Person p = new Person();
             p.setPid(i);
@@ -65,6 +63,7 @@ public class IndexPersonAdapter extends BaseMultiItemQuickAdapter<Person, Multip
                             if (mListener!=null)mListener.onclick(response.getData());
                         });
                         cImg.setImage(Icon.getImgUrl(response.getData().getPimage()));
+                        helper.setText(R.id.tv_name,response.getData().getPname());
                     }
                 });
     }

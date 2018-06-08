@@ -1,5 +1,6 @@
 package com.ascend.wangfeng.wifimanage.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 
 /**
@@ -17,7 +18,9 @@ public class Event implements MultiItemEntity {
     private Integer online;
     // vo 属性
     private Person person;
+    @JSONField(name = "dev")
     private Device device;
+;
 
     @Override
     public int getItemType() {
@@ -103,4 +106,5 @@ public class Event implements MultiItemEntity {
                 ", device=" + device +
                 '}';
     }
+
 }
