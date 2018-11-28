@@ -46,7 +46,7 @@ public class UserProfileClickListener extends SimpleClickListener {
                                 //上传头像
                             }
                         });
-                mDelegate.startCameraWithCheck();
+              //  mDelegate.startCameraWithCheck();
                 break;
             case 2:
                 getGenderDialog(new DialogInterface.OnClickListener() {

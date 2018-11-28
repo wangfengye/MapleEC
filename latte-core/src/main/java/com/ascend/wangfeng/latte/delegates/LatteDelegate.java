@@ -8,7 +8,7 @@ import io.reactivex.observers.DisposableObserver;
  * email 1040441325@qq.com
  */
 
-public abstract class LatteDelegate extends PermissionCheckerDelegate{
+public abstract class LatteDelegate extends BaseDelegate{
     protected CompositeDisposable mDisposable = new CompositeDisposable();
     public <T extends LatteDelegate> T getParentDelegate(){
         return (T) getParentFragment();

@@ -61,7 +61,7 @@ public class ExampleApp extends Application {
     }
 
     private void initJpush() {
-        JPushInterface.setDebugMode(true);
+       JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         CallbackManager.getInstance()
                 .addCallback(CallbackType.TAG_PUSH_OPEN, new IGlobalCallback() {

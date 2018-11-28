@@ -5,7 +5,6 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
 
-import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.latte.ec.R;
 import com.ascend.wangfeng.latte.ec.main.sort.content.ContentDelegate;
 import com.ascend.wangfeng.latte.ui.recycler.ItemType;
@@ -75,9 +74,9 @@ public class SortRecyclerAdapter extends MultipleRecyclerAdapter {
 
     }
     private void switchContent(ContentDelegate delegate){
-        final LatteDelegate contentDelegate =DELEGATE.findChildFragment(ContentDelegate.class);
+     /*   final LatteDelegate contentDelegate =DELEGATE.findChildFragment(ContentDelegate.class);
         if (contentDelegate!=null){
-            contentDelegate.replaceFragment(delegate,false);
-        }
+            contentDelegate.getDelegate().replaceFragment(delegate,false);
+        }*/
     }
 }

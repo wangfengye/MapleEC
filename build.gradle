@@ -7,10 +7,11 @@ buildscript {
         maven {
             url 'https://maven.google.com/'
         }
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'com.jakewharton:butterknife-gradle-plugin:8.8.1'
+        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.jakewharton:butterknife-gradle-plugin:8.4.0'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.1'
     }
 }
@@ -19,18 +20,15 @@ allprojects {
     repositories {
         jcenter()
         mavenCentral()
+        google()
         maven {
             url "https://jitpack.io"
         }
-        maven {
-            url 'https://maven.google.com/'
-        }
+
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-task showMeCache << {
-    Configurations.compile.each { println it }
-}
+

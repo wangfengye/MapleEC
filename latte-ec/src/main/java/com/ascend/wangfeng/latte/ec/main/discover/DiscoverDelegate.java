@@ -41,7 +41,7 @@ public class DiscoverDelegate extends BottomItemDelegate {
         initToolbar();
         final WebDelegate delegate = WebDelegateImpl.create("html/index.html");
         delegate.setTopDelegate(this.getParentDelegate());
-        loadRootFragment(R.id.web_discovery_container,delegate);
+        getDelegate().loadRootFragment(R.id.web_discovery_container,delegate);
     }
 
     private void initToolbar() {

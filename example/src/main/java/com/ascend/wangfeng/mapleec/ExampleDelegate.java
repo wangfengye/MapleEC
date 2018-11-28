@@ -1,27 +1,11 @@
 package com.ascend.wangfeng.mapleec;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.View;
-import android.widget.Toast;
-
-import com.ascend.wangfeng.latte.delegates.LatteDelegate;
-import com.ascend.wangfeng.latte.net.RestClient;
-import com.ascend.wangfeng.latte.net.callback.ISuccess;
-import com.ascend.wangfeng.latte.net.rx.BaseObserver;
-import com.ascend.wangfeng.latte.net.rx.RxRestClient;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.schedulers.Schedulers;
-
 /**
  * Created by fengye on 2017/8/15.
  * email 1040441325@qq.com
  */
 
-public class ExampleDelegate extends LatteDelegate{
+public class ExampleDelegate {/*extends LatteDelegate{
     @Override
     public Object setLayout() {
         return com.ascend.wangfeng.mapleec.R.layout.delegate_example;
@@ -30,6 +14,7 @@ public class ExampleDelegate extends LatteDelegate{
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
         testRx() ;
+        startActivity(new Intent(getActivity(), BaseActivity.class));
     }
     private void  testRestClient(){
         RestClient.builder()
@@ -64,5 +49,5 @@ public class ExampleDelegate extends LatteDelegate{
                         Toast.makeText(_mActivity, s, Toast.LENGTH_SHORT).show();
                     }
                 });
-    }
+    }*/
 }

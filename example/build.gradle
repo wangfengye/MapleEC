@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     dexOptions {
-        jumboMode true
+        javaMaxHeapSize "4g"
     }
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
@@ -12,6 +12,8 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
+        flavorDimensions "versionCode"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             //选择要添加的对应cpu类型的.so库。
@@ -32,13 +34,18 @@ android {
     productFlavors {
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':latte-ec')
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    api project(':latte-ec')
+    api project(':photo')
     annotationProcessor project(':latte-compiler')
     //极光推送
-    compile 'cn.jiguang.sdk:jpush:3.0.3'
-    compile 'cn.jiguang.sdk:jcore:1.1.1'
+    api 'cn.jiguang.sdk:jpush:3.0.3'
+    api 'cn.jiguang.sdk:jcore:1.1.1'
 }

@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">wifiMap</string>
-    <string name="open">开启</string>
-    <string name="active_line">动态折线图</string>
-    <string name="table_empty_hint">You need to provide data for the chart.</string>
-</resources>

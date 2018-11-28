@@ -49,7 +49,7 @@ public class IndexDelegate extends BottomItemDelegate implements View.OnFocusCha
 
     @OnClick(R2.id.ic_scan)
     void onClickScan(){
-        startScanWithCheck(this.getParentDelegate());
+        //startScanWithCheck(this.getParentDelegate());
     }
 
 

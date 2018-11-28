@@ -1,1 +1,1 @@
-include  ':latte-compiler', ':latte-annotations', ':latte-core',  ':wifimanage'
+include  ':example', ':latte-compiler', ':latte-annotations', ':latte-core', ':photo',':latte-ui','latte-ec'

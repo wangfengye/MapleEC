@@ -13,4 +13,6 @@ public class AppRegisterTemplate extends ProxyActivity {
     public LatteDelegate setRootDelegate() {
         return null;
     }
+
+
 }

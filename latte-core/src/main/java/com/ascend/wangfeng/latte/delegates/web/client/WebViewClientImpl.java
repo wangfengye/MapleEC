@@ -36,11 +36,16 @@ public class WebViewClientImpl extends WebViewClient {
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
         return super.shouldOverrideUrlLoading(view, request);
     }
+    public void loadurlLocalMethod(final WebView webView, final String url) {
+        new Thread(()->webView.loadUrl(url));
+    }
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        Logger.d("shouldOverrideUrlLoading:" + url);
-        return Router.getInstance().handleWebUrl(DELEGATE, url);
+      /*  Logger.d("shouldOverrideUrlLoading:" + url);
+        return Router.getInstance().handleWebUrl(DELEGATE, url);*/
+        loadurlLocalMethod(view, url);
+        return false;
     }
 
     @Override

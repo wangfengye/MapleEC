@@ -1,9 +1,0 @@
-{
-  "message":"success",
-  "statusCode":200,
-  "data":{
-    "uid": 1,
-    "uname": "李雷",
-    "upasswd": "123456"
-  }
-}

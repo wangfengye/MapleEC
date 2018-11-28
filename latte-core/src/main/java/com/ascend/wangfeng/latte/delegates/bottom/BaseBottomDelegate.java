@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.ascend.wangfeng.latte.R;
+
 import com.ascend.wangfeng.latte.R2;
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.joanzapata.iconify.widget.IconTextView;
@@ -85,7 +86,7 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
 
         }
         final SupportFragment[] deleagates = ITEM_DELEGATES.toArray(new SupportFragment[size]);
-        loadMultipleRootFragment(R.id.bottom_bar_delegate_container, mIndexDelegate, deleagates);
+        getDelegate().loadMultipleRootFragment(R.id.bottom_bar_delegate_container, mIndexDelegate, deleagates);
         mCurrentDelegate = mIndexDelegate;
     }
 
@@ -128,7 +129,7 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
         final AppCompatTextView itemTitle = (AppCompatTextView) item.getChildAt(1);
         itemIcon.setTextColor(mClickedColor);
         itemTitle.setTextColor(mClickedColor);
-        showHideFragment(ITEM_DELEGATES.get(tag), ITEM_DELEGATES.get(mCurrentDelegate));
+        getDelegate().showHideFragment(ITEM_DELEGATES.get(tag), ITEM_DELEGATES.get(mCurrentDelegate));
         mCurrentDelegate = tag;
     }
 
@@ -152,7 +153,7 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
         final AppCompatTextView itemTitle = (AppCompatTextView) item.getChildAt(1);
         itemIcon.setTextColor(mClickedColor);
         itemTitle.setTextColor(mClickedColor);
-        showHideFragment(ITEM_DELEGATES.get(tag), ITEM_DELEGATES.get(mCurrentDelegate));
+        getDelegate().showHideFragment(ITEM_DELEGATES.get(tag), ITEM_DELEGATES.get(mCurrentDelegate));
         if (TAB_BEANS.get(tag).getType() == BottomBean.TYPE_TOP) {
             ITEM_DELEGATES.get(mCurrentDelegate).onSupportVisible();
         }

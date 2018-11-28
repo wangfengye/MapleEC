@@ -30,8 +30,8 @@ public class SortDelegate extends BottomItemDelegate {
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         final VerticalListDelegate listDelegate =new VerticalListDelegate();
-        loadRootFragment(R.id.verticl_list_container,listDelegate);
-        loadRootFragment(R.id.verticl_content_container, ContentDelegate.newInstance(DEFAULT_ID),false,true);
+        getDelegate().loadRootFragment(R.id.verticl_list_container,listDelegate);
+        getDelegate().loadRootFragment(R.id.verticl_content_container, ContentDelegate.newInstance(DEFAULT_ID),false,true);
 
 
     }
