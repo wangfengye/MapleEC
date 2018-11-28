@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">photo</string>
+    <string name="crop_error">裁剪失败</string>
+</resources>
