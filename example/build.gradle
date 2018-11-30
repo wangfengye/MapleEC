@@ -45,6 +45,7 @@ dependencies {
     api project(':latte-ec')
     api project(':photo')
     annotationProcessor project(':latte-compiler')
+    implementation "me.leolin:ShortcutBadger:1.1.22@aar"
     //极光推送
     api 'cn.jiguang.sdk:jpush:3.0.3'
     api 'cn.jiguang.sdk:jcore:1.1.1'

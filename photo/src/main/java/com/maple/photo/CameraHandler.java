@@ -118,7 +118,7 @@ public class CameraHandler implements View.OnClickListener {
             AndPermission.with(mContext)
                     .runtime()
                     .permission(Permission.Group.STORAGE)
-                    .onGranted(per -> takePhoto())
+                    .onGranted(per -> pickPhoto())
                     .onDenied(this::showNoPermission)
                     .start();
             mDialog.cancel();
