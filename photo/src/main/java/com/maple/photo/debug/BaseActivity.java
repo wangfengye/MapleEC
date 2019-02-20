@@ -1,4 +1,4 @@
-package com.maple.photo;
+package com.maple.photo.debug;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ascend.wangfeng.latte.util.FileUtil;
+import com.maple.photo.CameraHandler;
+import com.maple.photo.R;
+import com.maple.photo.RequestCodes;
 import com.yalantis.ucrop.UCrop;
 
 

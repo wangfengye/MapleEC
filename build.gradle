@@ -27,7 +27,10 @@ allprojects {
 
     }
 }
-
+ext{
+    //模块是否能单独运行
+    isModuleRun = true
+}
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

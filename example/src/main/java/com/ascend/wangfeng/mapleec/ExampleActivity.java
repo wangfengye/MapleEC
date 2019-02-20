@@ -1,6 +1,5 @@
 package com.ascend.wangfeng.mapleec;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -15,7 +14,6 @@ import com.ascend.wangfeng.latte.ec.sign.ISignListener;
 import com.ascend.wangfeng.latte.ec.sign.SignInDelegate;
 import com.ascend.wangfeng.latte.ui.launcher.ILauncherListener;
 import com.ascend.wangfeng.latte.ui.launcher.OnLauncherFinishTag;
-import com.maple.photo.BaseActivity;
 
 import cn.jpush.android.api.JPushInterface;
 import qiu.niorgai.StatusBarCompat;
@@ -29,7 +27,6 @@ public class ExampleActivity extends ProxyActivity implements ISignListener, ILa
         StatusBarCompat.translucentStatusBar(this, true);
         //初始化activity content;
         Latte.getConfigurator().withActivityContext(this);
-        startActivity(new Intent(ExampleActivity.this, BaseActivity.class));
     }
 
     @Override
