@@ -10,6 +10,8 @@ import com.ascend.wangfeng.latte.app.Latte;
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.latte.ec.launcher.LauncherDelegate;
 import com.ascend.wangfeng.latte.ec.main.EcBottomDelegate;
+import com.ascend.wangfeng.latte.ec.main.taobao.ChildDelegate;
+import com.ascend.wangfeng.latte.ec.main.taobao.FirstDelegate;
 import com.ascend.wangfeng.latte.ec.sign.ISignListener;
 import com.ascend.wangfeng.latte.ec.sign.SignInDelegate;
 import com.ascend.wangfeng.latte.ui.launcher.ILauncherListener;
@@ -32,7 +34,7 @@ public class ExampleActivity extends ProxyActivity implements ISignListener, ILa
     @Override
     public LatteDelegate setRootDelegate() {
         //return new EcBottomDelegate();
-        return new LauncherDelegate();
+        return new FirstDelegate();
     }
 
     @Override
