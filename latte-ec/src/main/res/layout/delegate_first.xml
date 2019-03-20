@@ -12,6 +12,7 @@
     <com.ascend.wangfeng.latte.ec.main.taobao.CustomNestedScrollView
         android:id="@+id/sv"
         android:layout_width="match_parent"
+        android:focusableInTouchMode="true"
         android:layout_height="match_parent">
         <LinearLayout
             android:descendantFocusability="blocksDescendants"

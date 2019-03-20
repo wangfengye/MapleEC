@@ -43,7 +43,7 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api project(':latte-ec')
-    if (!isModuleRun.toBoolean()){
+    if (!isModuleRun.toBoolean()) {
         api project(':photo')
     }
     annotationProcessor project(':latte-compiler')
@@ -51,4 +51,5 @@ dependencies {
     //极光推送
     api 'cn.jiguang.sdk:jpush:3.0.3'
     api 'cn.jiguang.sdk:jcore:1.1.1'
+    implementation project(':webview')
 }

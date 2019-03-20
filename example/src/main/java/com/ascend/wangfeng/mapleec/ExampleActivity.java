@@ -1,5 +1,6 @@
 package com.ascend.wangfeng.mapleec;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -8,14 +9,13 @@ import android.widget.Toast;
 import com.ascend.wangfeng.latte.activities.ProxyActivity;
 import com.ascend.wangfeng.latte.app.Latte;
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
-import com.ascend.wangfeng.latte.ec.launcher.LauncherDelegate;
 import com.ascend.wangfeng.latte.ec.main.EcBottomDelegate;
-import com.ascend.wangfeng.latte.ec.main.taobao.ChildDelegate;
 import com.ascend.wangfeng.latte.ec.main.taobao.FirstDelegate;
 import com.ascend.wangfeng.latte.ec.sign.ISignListener;
 import com.ascend.wangfeng.latte.ec.sign.SignInDelegate;
 import com.ascend.wangfeng.latte.ui.launcher.ILauncherListener;
 import com.ascend.wangfeng.latte.ui.launcher.OnLauncherFinishTag;
+import com.maple.webview.fun1.MainActivity;
 
 import cn.jpush.android.api.JPushInterface;
 import qiu.niorgai.StatusBarCompat;
@@ -29,6 +29,7 @@ public class ExampleActivity extends ProxyActivity implements ISignListener, ILa
         StatusBarCompat.translucentStatusBar(this, true);
         //初始化activity content;
         Latte.getConfigurator().withActivityContext(this);
+
     }
 
     @Override
@@ -59,6 +60,7 @@ public class ExampleActivity extends ProxyActivity implements ISignListener, ILa
     @Override
     protected void onResume() {
         super.onResume();
+        startActivity(new Intent(this,MainActivity.class));
         JPushInterface.onResume(this);
     }
 

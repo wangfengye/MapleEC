@@ -42,6 +42,7 @@ public class ChildDelegate extends LatteDelegate{
         Adapter adapter = new Adapter(list);
         mRv.setAdapter(adapter);
         mRv.setLayoutManager(new LinearLayoutManager(getContext()));
+        //mRv.setNestedScrollingEnabled(false);
         sr.setOnRefreshListener(refreshLayout->
                 sr.finishRefresh(2000));
         sr.setOnLoadMoreListener(refreshLayout -> {

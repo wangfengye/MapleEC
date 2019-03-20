@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 
 import com.ascend.wangfeng.latte.delegates.LatteDelegate;
@@ -37,7 +38,6 @@ public class FirstDelegate extends LatteDelegate{
         FullHeightViewpager viewPager = rootView.findViewById(R.id.vp);
         viewPager.setAdapter(new PageAdapter(getChildFragmentManager()));
         tab.setupWithViewPager(viewPager);
-
     }
 
     class  PageAdapter extends FragmentPagerAdapter {

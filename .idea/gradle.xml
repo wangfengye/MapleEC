@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/latte-ec" />
             <option value="$PROJECT_DIR$/latte-ui" />
             <option value="$PROJECT_DIR$/photo" />
+            <option value="$PROJECT_DIR$/webview" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
