@@ -60,7 +60,7 @@ public class ExampleActivity extends ProxyActivity implements ISignListener, ILa
     @Override
     protected void onResume() {
         super.onResume();
-        startActivity(new Intent(this,MainActivity.class));
+        //startActivity(new Intent(this,MainActivity.class));
         JPushInterface.onResume(this);
     }
 
