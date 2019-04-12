@@ -1,4 +1,6 @@
-apply plugin: 'com.android.library'
+
+    apply plugin: 'com.android.library'
+
 
 android {
     compileSdkVersion 27
@@ -24,6 +26,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
 }
 
 dependencies {
@@ -32,4 +35,11 @@ dependencies {
     api 'com.nineoldandroids:library:2.4.0'
     api 'com.daimajia.easing:library:1.0.1@aar'
     api 'com.daimajia.androidanimations:library:1.1.3@aar'
+    api 'com.github.wenchaosong:Banner:2.3.8'
+    api 'com.github.bumptech.glide:okhttp3-integration:4.8.0' // 新增
+    api 'com.github.bumptech.glide:annotations:4.8.0' // 新增
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
+
+
+
 }

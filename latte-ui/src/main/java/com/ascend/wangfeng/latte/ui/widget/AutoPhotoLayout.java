@@ -18,6 +18,7 @@ import com.ascend.wangfeng.latte.delegates.LatteDelegate;
 import com.ascend.wangfeng.latte.ui.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
@@ -53,12 +54,12 @@ public class AutoPhotoLayout extends LinearLayoutCompat {
 
     public final void onCrop(Uri uri) {
         createNewImageView();
-
+        RequestOptions options = new RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop();
         mUris.put(mTargetImageView.getId(),uri);
         Glide.with(mDelegate)
                 .load(uri)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .centerCrop()
+                .apply(options)
                 .into(mTargetImageView);
 
     }

@@ -13,14 +13,15 @@ import android.view.View;
  * @version v1.0
  * @see 1040441325@qq.com
  */
-public class CustomNestedScrollView extends NestedScrollView{
+public class CustomNestedScrollView extends NestedScrollView {
     public static final String TAG = CustomNestedScrollView.class.getSimpleName();
     final int MAX_SCROLL_LENGTH = 400;
     /**
      * 该控件滑动的高度，高于这个高度后交给子滑动控件
      */
-    int mParentScrollHeight ;
-    int mScrollY ;
+    int mParentScrollHeight;
+    int mScrollY;
+
     public CustomNestedScrollView(Context context) {
         super(context);
     }
@@ -38,23 +39,21 @@ public class CustomNestedScrollView extends NestedScrollView{
     }
 
 
-
-
     /**
      * 子控件告诉父控件 开始滑动了
+     *
      * @param target
      * @param dx
      * @param dy
-     * @param consumed
-     * 如果有就返回true
+     * @param consumed 如果有就返回true
      */
     @Override
     public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
         super.onNestedPreScroll(target, dx, dy, consumed);
-        Log.i(TAG, "onNestedPreScroll: "+ dx +" "+dy);
-        if (mScrollY >= mParentScrollHeight||(mScrollY<=0&&dy<0)) {
+        Log.i(TAG, "onNestedPreScroll: " + dx + " " + dy);
+        if (mScrollY >= mParentScrollHeight || (mScrollY <= 0 && dy < 0)) {
 
-        }else {
+        } else {
             consumed[0] = dx;
             consumed[1] = dy;
             scrollBy(0, dy);

@@ -10,6 +10,7 @@ import com.ascend.wangfeng.latte.ui.recycler.MultipleRecyclerAdapter;
 import com.ascend.wangfeng.latte.ui.recycler.MultipleViewHolder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
  * email 1040441325@qq.com
  */
 
-public class ImageAdapter extends MultipleRecyclerAdapter{
+public class ImageAdapter extends MultipleRecyclerAdapter {
 
     protected ImageAdapter(List<MultipleItemEntity> data) {
         super(data);
@@ -27,14 +28,16 @@ public class ImageAdapter extends MultipleRecyclerAdapter{
 
     @Override
     protected void convert(MultipleViewHolder helper, MultipleItemEntity item) {
-        switch (helper.getItemViewType()){
+        switch (helper.getItemViewType()) {
             case ItemType.SINGLE_BIG_IMAGE:
+                RequestOptions options = new RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop().dontAnimate();
                 final String imageUrl = item.getField(MultipleFields.IMAGE_URL);
                 Glide.with(mContext)
                         .load(imageUrl)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .centerCrop()
-                        .dontAnimate()
+                        .apply(
+                                options
+                        )
                         .into((AppCompatImageView) helper.getView(R.id.image_rv_item));
                 break;
             default:

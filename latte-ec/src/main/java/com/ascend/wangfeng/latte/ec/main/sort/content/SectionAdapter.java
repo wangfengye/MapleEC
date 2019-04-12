@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import com.ascend.wangfeng.latte.ec.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseSectionQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -35,11 +36,11 @@ public class SectionAdapter extends BaseSectionQuickAdapter<SectionBean,BaseView
         final int goodsId = item.t.getGoodsId();
         final  SectionContentItemEntity entity =item.t;
         helper.setText(R.id.tv,name);
+        RequestOptions options = new RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop().dontAnimate();
         Glide.with(mContext)
                 .load(thumb)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .dontAnimate()
-                .centerCrop()
+                .apply(options)
                 .into((ImageView) helper.getView(R.id.iv));
     }
 }

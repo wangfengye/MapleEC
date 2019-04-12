@@ -20,6 +20,8 @@ import com.ascend.wangfeng.latte.util.callback.CallbackManager;
 import com.ascend.wangfeng.latte.util.callback.CallbackType;
 import com.ascend.wangfeng.latte.util.callback.IGlobalCallback;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -88,9 +90,11 @@ public class OrderCommentDelegate extends LatteDelegate {
                     }
                 });
         //随便给张图
+        RequestOptions options = new RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop().dontAnimate();
         Glide.with(getContext())
                 .load("https://i8.mifile.cn/v1/a1/375bd3a4-aab9-f77b-f6a1-5dbf01087495.webp")
-                .centerCrop()
+                .apply(options)
                 .into(mImgOrderComment);
     }
 }

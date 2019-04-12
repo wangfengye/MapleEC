@@ -15,6 +15,7 @@ import com.ascend.wangfeng.latte.ui.recycler.MultipleViewHolder;
 import com.ascend.wangfeng.latte.util.DataFormat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
@@ -88,11 +89,11 @@ public class ShopCartAdapter extends MultipleRecyclerAdapter {
                 final IconTextView icPlus = helper.getView(R.id.icon_item_plus);
                 final AppCompatTextView countView = helper.getView(R.id.count_item_shop_cart);
                 final IconTextView icSelected = helper.getView(R.id.icon_item_shop_cart);
+                RequestOptions options = new RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop().dontAnimate();
                 Glide.with(mContext)
                         .load(thumb)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .centerCrop()
-                        .dontAnimate()
+                        .apply(options)
                         .into(imgThumb);
                 titleView.setText(title);
                 descView.setText(desc);

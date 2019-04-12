@@ -5,6 +5,7 @@ import android.support.v7.widget.SwitchCompat;
 import com.ascend.wangfeng.latte.ec.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -34,11 +35,11 @@ public class ListAdapter extends BaseMultiItemQuickAdapter<ListBean,BaseViewHold
                 break;
             case ListBean.TYPE_AVATAR:
                 CircleImageView imageView =helper.getView(R.id.img_arrow_avatar);
+                RequestOptions options = new RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop().dontAnimate();
                 Glide.with(mContext)
                         .load(item.getImageUrl())
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .centerCrop()
-                        .dontAnimate()
+                        .apply(options)
                         .into(imageView);
                 break;
             case ListBean.TYPE_SWITCH:
