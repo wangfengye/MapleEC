@@ -20,9 +20,9 @@ android {
             abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a'
         }
         manifestPlaceholders = [
-                JPUSH_PKGNAME : applicationId,
+                JPUSH_PKGNAME: applicationId,
                 JPUSH_APPKEY : "dc6e2d92d1516ed1bfa54ccd",
-                JPUSH_CHANNEL : "developer-default",
+                JPUSH_CHANNEL: "developer-default",
         ]
     }
     buildTypes {
@@ -46,6 +46,7 @@ dependencies {
     if (!isModuleRun.toBoolean()) {
         api project(':photo')
     }
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     annotationProcessor project(':latte-compiler')
     implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
     //极光推送

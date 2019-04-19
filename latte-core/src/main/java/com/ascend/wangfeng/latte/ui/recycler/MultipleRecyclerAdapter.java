@@ -5,11 +5,10 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.ascend.wangfeng.latte.R;
-import com.ascend.wangfeng.latte.ui.banner.BannerCreator;
+
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
@@ -61,26 +60,26 @@ implements BaseQuickAdapter.SpanSizeLookup, OnItemClickListener {
                 break;
             case ItemType.IMAGE:
                 imgUrl =item.getField(MultipleFields.IMAGE_URL);
-                Glide.with(mContext)
+               /* Glide.with(mContext)
                         .load(imgUrl)
-                        .into((ImageView) helper.getView(R.id.img_single));
+                        .into((ImageView) helper.getView(R.id.img_single));*/
                 break;
             case ItemType.IMAGE_TEXT:
                 text= item.getField(MultipleFields.TEXT);
                 helper.setText(R.id.text_single,text);
                 imgUrl =item.getField(MultipleFields.IMAGE_URL);
-                Glide.with(mContext)
+       /*         Glide.with(mContext)
                         .load(imgUrl)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .dontAnimate()
                         .centerCrop()
-                        .into((ImageView) helper.getView(R.id.img_single));
+                        .into((ImageView) helper.getView(R.id.img_single));*/
                 break;
             case ItemType.BANNER:
                 if(!mIsInitBanner){
                     bannerImages = (ArrayList<String>) item.getField(MultipleFields.BANNERS);
                     final ConvenientBanner<String> convenientBanner =helper.getView(R.id.banner_recycler_banner);
-                    BannerCreator.setDefault(convenientBanner,bannerImages,this);
+               /*     BannerCreator.setDefault(convenientBanner,bannerImages,this);*/
                     mIsInitBanner =true;
                 }
                 break;

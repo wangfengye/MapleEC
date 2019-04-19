@@ -7,8 +7,7 @@ import com.ascend.wangfeng.latte.net.callback.IFailure;
 import com.ascend.wangfeng.latte.net.callback.IRequest;
 import com.ascend.wangfeng.latte.net.callback.ISuccess;
 import com.ascend.wangfeng.latte.net.download.DownloadHandler;
-import com.ascend.wangfeng.latte.ui.loader.LatteLoader;
-import com.ascend.wangfeng.latte.ui.loader.LoaderStyle;
+
 
 import java.io.File;
 import java.util.Map;
@@ -35,7 +34,7 @@ public class RestClient {
     private final IError ERROR;
     private final IFailure FAILURE;
     private final RequestBody BODY;
-    private final LoaderStyle LOADER_STYLE;
+   // private final LoaderStyle LOADER_STYLE;
     private final File FILE;
     private final Context CONTEXT;
 
@@ -50,7 +49,7 @@ public class RestClient {
                       IFailure failure,
                       RequestBody body,
                       File file,
-                      LoaderStyle loaderStyle,
+                     /* LoaderStyle loaderStyle,*/
                       Context context) {
         this.URL = url;
         this.PARAMS.putAll(params);
@@ -63,7 +62,7 @@ public class RestClient {
         this.FAILURE = failure;
         this.BODY = body;
         this.FILE = file;
-        this.LOADER_STYLE = loaderStyle;
+    //    this.LOADER_STYLE = loaderStyle;
         this.CONTEXT =context;
     }
     public static RestClientBuilder builder(){
@@ -75,9 +74,9 @@ public class RestClient {
         if (REQUEST!=null){
             REQUEST.onRequestStart();
         }
-        if (LOADER_STYLE!=null){
+    /*    if (LOADER_STYLE!=null){
             LatteLoader.showLoading(CONTEXT,LOADER_STYLE);
-        }
+        }*/
         switch (method){
             case GET:
                 call= service.get(URL,PARAMS);
@@ -112,7 +111,7 @@ public class RestClient {
         }
     }
 private Callback<String> getRequestCallback(){
-    return new RequestCallback(REQUEST,SUCCESS,ERROR,FAILURE,LOADER_STYLE);
+    return new RequestCallback(REQUEST,SUCCESS,ERROR,FAILURE/*,LOADER_STYLE*/);
 }
     public final void get(){
         request(HttpMethod.GET);

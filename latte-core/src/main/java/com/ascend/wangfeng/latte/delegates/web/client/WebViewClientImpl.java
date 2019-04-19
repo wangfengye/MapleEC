@@ -9,10 +9,9 @@ import android.webkit.WebViewClient;
 import com.ascend.wangfeng.latte.app.ConfigType;
 import com.ascend.wangfeng.latte.app.Latte;
 import com.ascend.wangfeng.latte.delegates.web.WebDelegate;
-import com.ascend.wangfeng.latte.delegates.web.route.Router;
-import com.ascend.wangfeng.latte.ui.loader.LatteLoader;
+
 import com.ascend.wangfeng.latte.util.storage.LattePreference;
-import com.orhanobut.logger.Logger;
+
 
 /**
  * Created by fengye on 2017/8/30.
@@ -54,7 +53,7 @@ public class WebViewClientImpl extends WebViewClient {
         if (mIPageLoadListener != null) {
             mIPageLoadListener.onLoadStart();
         }
-        LatteLoader.showLoading(view.getContext());
+        //LatteLoader.showLoading(view.getContext());
 
     }
 
@@ -76,6 +75,6 @@ public class WebViewClientImpl extends WebViewClient {
         if (mIPageLoadListener != null) {
             mIPageLoadListener.onLoadFinish();
         }
-        LatteLoader.stopLoading();
+        //LatteLoader.stopLoading();
     }
 }

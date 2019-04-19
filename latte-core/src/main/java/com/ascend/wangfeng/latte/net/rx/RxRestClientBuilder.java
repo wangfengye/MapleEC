@@ -3,7 +3,7 @@ package com.ascend.wangfeng.latte.net.rx;
 import android.content.Context;
 
 import com.ascend.wangfeng.latte.net.RestCreator;
-import com.ascend.wangfeng.latte.ui.loader.LoaderStyle;
+
 
 import java.io.File;
 import java.util.Map;
@@ -20,7 +20,7 @@ public class RxRestClientBuilder {
     private String mUrl;
     private static final Map<String, Object> PARAMS = RestCreator.getParams();
     private RequestBody mBody;
-    private LoaderStyle mLoaderStyle;
+//    private LoaderStyle mLoaderStyle;
     private File mFile;
     private Context mContext;
     private int mType = 0;
@@ -56,29 +56,29 @@ public class RxRestClientBuilder {
         return this;
     }
 
-    public final RxRestClientBuilder loader(LoaderStyle style, Context context) {
+/*    public final RxRestClientBuilder loader(LoaderStyle style, Context context) {
         this.mContext = context;
         this.mLoaderStyle = style;
         return this;
-    }
+    }*/
 
     public final RxRestClientBuilder type(int type) {
         this.mType = type;
         return this;
     }
 
-    public final RxRestClientBuilder loader(Context context) {
+/*    public final RxRestClientBuilder loader(Context context) {
         this.mContext = context;
         this.mLoaderStyle = LoaderStyle.BallClipRotatePulseIndicator;
         return this;
-    }
+    }*/
 
     public final RxRestClient build() {
         if (mType == 0) {
             mType = RxRestClient.TYPE_DEFAULT;
         }
         return new RxRestClient(mUrl, PARAMS,
-                mBody, mFile, mLoaderStyle,
+                mBody, mFile, /*mLoaderStyle,*/
                 mContext, mType);
     }
 }

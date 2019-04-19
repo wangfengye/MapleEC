@@ -6,8 +6,6 @@ import android.widget.Toast;
 
 import com.ascend.wangfeng.latte.app.ConfigType;
 import com.ascend.wangfeng.latte.app.Latte;
-import com.ascend.wangfeng.latte.ui.loader.LatteLoader;
-
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -31,13 +29,13 @@ public abstract class BaseObserver<T> implements Observer<T> {
     @Override
     public void onError(@NonNull Throwable e) {
         if (getShowContext()!=null){
-        LatteLoader.stopLoading();
+     //   LatteLoader.stopLoading();
         Toast.makeText(getShowContext(), e.getMessage(), Toast.LENGTH_SHORT).show();}
     }
 
     @Override
     public void onComplete() {
-        LatteLoader.stopLoading();
+       // LatteLoader.stopLoading();
     }
 
 }

@@ -28,10 +28,11 @@ import com.ascend.wangfeng.latte.ec.R;
 import com.ascend.wangfeng.latte.ec.R2;
 import com.ascend.wangfeng.latte.net.rx.BaseObserver;
 import com.ascend.wangfeng.latte.net.rx.RxRestClient;
-import com.ascend.wangfeng.latte.ui.banner.HolderCreator;
+
 import com.ascend.wangfeng.latte.ui.widget.CircleTextView;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.joanzapata.iconify.widget.IconTextView;
+import com.ms.banner.holder.HolderCreator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -187,12 +188,12 @@ public class GoodsDetailDelegate extends LatteDelegate implements OnOffsetChange
         for (int i = 0; i < size; i++) {
             images.add(array.getString(i));
         }
-        mDetailBanner.setPages(new HolderCreator(),images)
+      /*  mDetailBanner.setPages(new HolderCreator(),images)
                 .setPageIndicator(new int[]{R.drawable.dot_normal,R.drawable.dot_focus})
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL)
                 .setPageTransformer(new DefaultTransformer())
                 .startTurning(3000)
-                .setCanLoop(true);
+                .setCanLoop(true);*/
     }
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {

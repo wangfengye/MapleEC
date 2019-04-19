@@ -4,8 +4,6 @@ import android.content.Context;
 
 import com.ascend.wangfeng.latte.net.HttpMethod;
 import com.ascend.wangfeng.latte.net.RestCreator;
-import com.ascend.wangfeng.latte.ui.loader.LatteLoader;
-import com.ascend.wangfeng.latte.ui.loader.LoaderStyle;
 
 import java.io.File;
 import java.util.Map;
@@ -29,7 +27,7 @@ public class RxRestClient {
     private final String URL;
     private static final Map<String, Object> PARAMS = RestCreator.getParams();
     private final RequestBody BODY;
-    private final LoaderStyle LOADER_STYLE;
+   // private final LoaderStyle LOADER_STYLE;
     private final File FILE;
     private final Context CONTEXT;
     private final int  TYPE;//type决定observer,subject的工作线程
@@ -39,14 +37,14 @@ public class RxRestClient {
                         Map<String, Object> params,
                         RequestBody body,
                         File file,
-                        LoaderStyle loaderStyle,
+                    /*    LoaderStyle loaderStyle,*/
                         Context context,int type) {
         this.URL = url;
         this.PARAMS.putAll(params);
 
         this.BODY = body;
         this.FILE = file;
-        this.LOADER_STYLE = loaderStyle;
+      //  this.LOADER_STYLE = loaderStyle;
         this.CONTEXT = context;
         this.TYPE = type;
     }
@@ -58,9 +56,9 @@ public class RxRestClient {
     private Observable<String> request(HttpMethod method) {
         final RxRestService service = RestCreator.getRxRestService();
         Observable<String> observable = null;
-        if (LOADER_STYLE != null) {
+     /*   if (LOADER_STYLE != null) {
             LatteLoader.showLoading(CONTEXT, LOADER_STYLE);
-        }
+        }*/
         switch (method) {
             case GET:
                 observable = service.get(URL, PARAMS);

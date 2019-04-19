@@ -1,8 +1,10 @@
 package com.ascend.wangfeng.latte.ui.loader;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatDialog;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -24,6 +26,15 @@ public class LatteLoader {
     public static final String DEFAULT_LOADER = LoaderStyle.BallClipRotatePulseIndicator.name();
 
     public static void showLoading(Context context, String type) {
+        showLoading(context, type, false);
+    }
+
+    /**
+     * @param context  依赖的activity content
+     * @param type     加载图标(AVLoading的图标)
+     * @param hideBack 是否屏蔽返回键
+     */
+    public static void showLoading(Context context, String type, boolean hideBack) {
         final AppCompatDialog dialog = new AppCompatDialog(context, R.style.dialog);
         final AVLoadingIndicatorView avLoadingIndicatorView = LoadCreator.create(type, context);
         dialog.setContentView(avLoadingIndicatorView);
@@ -38,15 +49,19 @@ public class LatteLoader {
             lp.height = lp.height + deviceHeight / LOADER_OFFSET_SCALE;
             lp.gravity = Gravity.CENTER;
         }
+        dialog.setCanceledOnTouchOutside(false);// click outside do nothing
+        if (hideBack) dialog.setCancelable(false);
         LOADERS.add(dialog);
+
         dialog.show();
     }
 
     public static void showLoading(Context context) {
         showLoading(context, DEFAULT_LOADER);
     }
-    public static void showLoading(Context context,Enum<LoaderStyle> type){
-        showLoading(context,type.name());
+
+    public static void showLoading(Context context, Enum<LoaderStyle> type) {
+        showLoading(context, type.name());
     }
 
     public static void stopLoading() {

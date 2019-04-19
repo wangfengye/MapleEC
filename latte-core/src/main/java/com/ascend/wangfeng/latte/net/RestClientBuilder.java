@@ -6,7 +6,7 @@ import com.ascend.wangfeng.latte.net.callback.IError;
 import com.ascend.wangfeng.latte.net.callback.IFailure;
 import com.ascend.wangfeng.latte.net.callback.IRequest;
 import com.ascend.wangfeng.latte.net.callback.ISuccess;
-import com.ascend.wangfeng.latte.ui.loader.LoaderStyle;
+
 
 import java.io.File;
 import java.util.Map;
@@ -30,7 +30,7 @@ public class RestClientBuilder {
     private IError mError;
     private IFailure mFailure;
     private RequestBody mBody;
-    private LoaderStyle mLoaderStyle;
+  //  private LoaderStyle mLoaderStyle;
     private File mFile;
     private Context mContext;
 
@@ -99,23 +99,27 @@ public class RestClientBuilder {
         return this;
     }
 
+/*
     public final RestClientBuilder loader(LoaderStyle style, Context context) {
         this.mContext = context;
         this.mLoaderStyle = style;
         return this;
     }
+*/
 
+/*
     public final RestClientBuilder loader(Context context) {
         this.mContext = context;
         this.mLoaderStyle = LoaderStyle.BallClipRotatePulseIndicator;
         return this;
     }
+*/
 
     public final RestClient build() {
         return new RestClient(mUrl, PARAMS, mRequest,
                 mDownloadUrl, mExtension, mName,
                 mSuccess, mError, mFailure,
-                mBody, mFile, mLoaderStyle,
+                mBody, mFile,/* mLoaderStyle,*/
                 mContext);
     }
 }

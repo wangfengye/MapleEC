@@ -4,8 +4,7 @@ import com.ascend.wangfeng.latte.net.callback.IError;
 import com.ascend.wangfeng.latte.net.callback.IFailure;
 import com.ascend.wangfeng.latte.net.callback.IRequest;
 import com.ascend.wangfeng.latte.net.callback.ISuccess;
-import com.ascend.wangfeng.latte.ui.loader.LatteLoader;
-import com.ascend.wangfeng.latte.ui.loader.LoaderStyle;
+
 
 /**
  * Created by fengye on 2017/8/16.
@@ -17,15 +16,15 @@ public class RequestCallback implements retrofit2.Callback<String> {
     private final ISuccess SUCCESS;
     private final IError ERROR;
     private final IFailure FAILURE;
-    private final LoaderStyle LOADER_STYLE;
+    //private final LoaderStyle LOADER_STYLE;
 
-    public RequestCallback(IRequest REQUEST, ISuccess SUCCESS, IError ERROR, IFailure FAILURE,
-                           LoaderStyle loaderStyle) {
+    public RequestCallback(IRequest REQUEST, ISuccess SUCCESS, IError ERROR, IFailure FAILURE
+                           /*,LoaderStyle loaderStyle*/) {
         this.REQUEST = REQUEST;
         this.SUCCESS = SUCCESS;
         this.ERROR = ERROR;
         this.FAILURE = FAILURE;
-        this.LOADER_STYLE = loaderStyle;
+/*        this.LOADER_STYLE = loaderStyle;*/
     }
 
     @Override
@@ -41,9 +40,9 @@ public class RequestCallback implements retrofit2.Callback<String> {
                 ERROR.onError(response.code(), response.message());
             }
         }
-        if (LOADER_STYLE != null) {
+     /*   if (LOADER_STYLE != null) {
             LatteLoader.stopLoading();
-        }
+        }*/
     }
 
     @Override
@@ -54,8 +53,8 @@ public class RequestCallback implements retrofit2.Callback<String> {
         if (REQUEST != null) {
             REQUEST.onRequestEnd();
         }
-        if (LOADER_STYLE != null) {
+  /*      if (LOADER_STYLE != null) {
             LatteLoader.stopLoading();
-        }
+        }*/
     }
 }
