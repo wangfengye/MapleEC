@@ -66,8 +66,8 @@ public class DimenUtil {
         try {
             c = Class.forName("android.view.Display");
             @SuppressWarnings("unchecked")
-            Method method = c.getMethod("getRealMetrics", DisplayMetrics.class);
-            method.invoke(display, displayMetrics);
+            Method method = c.getMethod("getRealMetrics", DisplayMetrics.class);//反射获取被隐藏的方法
+            method.invoke(display, displayMetrics);//display,被反射类的实例,displayMetrics:参数
             dpi = displayMetrics.heightPixels;
         } catch (Exception e) {
             e.printStackTrace();
