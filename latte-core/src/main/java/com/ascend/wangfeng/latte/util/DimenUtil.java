@@ -56,7 +56,8 @@ public class DimenUtil {
      * @return realHeight
      */
     public static int getScreenHeightReal(Context context) {
-        int dpi = 0;
+        //之前 getRealMetrics方法被隐藏,使用反射调用方法
+/*        int dpi = 0;
         WindowManager windowManager = (WindowManager)
                 context.getSystemService(Context.WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
@@ -72,7 +73,28 @@ public class DimenUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return dpi;
+        return dpi;*/
+        Display display = getDisplay(context);
+        if (display == null) {
+            return 0;
+        }
+        DisplayMetrics dm = new DisplayMetrics();
+        display.getRealMetrics(dm);
+        return dm.heightPixels;
+    }
+
+    private static Display getDisplay(Context context) {
+        WindowManager wm;
+        if (context instanceof Activity) {
+            Activity activity = (Activity) context;
+            wm = activity.getWindowManager();
+        } else {
+            wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        }
+        if (wm != null) {
+            return wm.getDefaultDisplay();
+        }
+        return null;
     }
 
     public static int dp2px(float dp) {
@@ -175,6 +197,7 @@ public class DimenUtil {
     /**
      * 获取设备信息（目前支持几大主流的全面屏手机，亲测华为、小米、oppo、魅族、vivo都可以）
      * 锤子无虚拟按键不考虑.
+     *
      * @return 设备类型字符串
      */
     private static String getDeviceInfo() {
@@ -193,4 +216,5 @@ public class DimenUtil {
             return "navigationbar_is_min";
         }
     }
+
 }
